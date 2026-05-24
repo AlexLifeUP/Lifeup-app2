@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeUp Network</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body style="margin: 0; background: #060411;">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // ═══════════════════════════════════════════════════════════════
+        // DATA
+        // ═══════════════════════════════════════════════════════════════
+        const ALL_USERS = [
+          { id:1,  name:"Алиса Шевченко",    location:"Украина, Харьков", occupation:"Дизайнер",         bio:"Я не стремлюсь быть привлекательной. Моё дело — заставлять людей становиться лучше.", tags:["#tourism","#фото","#friends","#road","#fitness"], socialLinks:{instagram:"alice_shev",twitter:"aliceshev"}, isHost:true,  lookingForCompanion:true,  canDrive:true,  againstSmoking:true,  drinksAlcohol:false, isVegetarian:false, doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:26,dislikes:25,reviews:10,subscribers:30,online:30,subscriptions:30 },
+          { id:2,  name:"Андрей Мотьков",    location:"Украина, Киев",    occupation:"Дизайнер",         bio:"Ежедневно езжу Киев–Бровары. Ищу попутчиков для совместных поездок.",                  tags:["#road","#car","#activel","#music"],                socialLinks:{instagram:"andrey_m",vk:"andrey_mot"},       isHost:false, lookingForCompanion:true,  canDrive:true,  againstSmoking:true,  drinksAlcohol:true,  isVegetarian:false, doesSport:false, openToOffers:true,  lookingForRelations:false, openToMeet:false, likes:14,dislikes:3, reviews:7, subscribers:12,online:5, subscriptions:18 },
+          { id:3,  name:"Евгений Савченко",  location:"Украина, Киев",    occupation:"Креативный дир.",  bio:"Создаю уникальные маршруты по нехоженым тропам Украины. Готов принять путешественников.",tags:["#archite","#origami","#tourism","#friends"],        socialLinks:{instagram:"evg_sav",twitter:"evgsav"},       isHost:true,  lookingForCompanion:false, canDrive:false, againstSmoking:false, drinksAlcohol:true,  isVegetarian:true,  doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:41,dislikes:2, reviews:19,subscribers:58,online:11,subscriptions:44 },
+          { id:4,  name:"Александра Коваль", location:"Украина, Борисполь",occupation:"Представитель",  bio:"Путешествую налегке. Ищу попутчиков Борисполь–Киев и вылазок на природу.",              tags:["#summer","#fitness","#friends","#road"],           socialLinks:{instagram:"alex_koval"},                     isHost:false, lookingForCompanion:true,  canDrive:false, againstSmoking:true,  drinksAlcohol:false, isVegetarian:false, doesSport:true,  openToOffers:false, lookingForRelations:false, openToMeet:true,  likes:8, dislikes:1, reviews:3, subscribers:7, online:2, subscriptions:10 },
+          { id:5,  name:"Наталья Осадчук",   location:"Украина, Ирпень",  occupation:"Копирайтер",       bio:"Ведно блог о путешествиях. Знаю уникальные места Украины, которых нет в Google.",       tags:["#tourism","#music","#фото","#car"],                socialLinks:{instagram:"natalia_o",twitter:"nataliao"},   isHost:true,  lookingForCompanion:true,  canDrive:true,  againstSmoking:false, drinksAlcohol:false, isVegetarian:true,  doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:33,dislikes:4, reviews:15,subscribers:44,online:8, subscriptions:29 },
+          { id:6,  name:"Людмила Коршунова", location:"Украина, Киев",    occupation:"Переводчик",       bio:"Говорю на 4 языках. Помогу с общением за рубежом. Ищу компанию для путешествий.",      tags:["#languages","#europe","#tourism"],                 socialLinks:{instagram:"ludmila_k"},                      isHost:false, lookingForCompanion:true,  canDrive:false, againstSmoking:true,  drinksAlcohol:false, isVegetarian:false, doesSport:false, openToOffers:true,  lookingForRelations:true,  openToMeet:true,  likes:19,dislikes:2, reviews:8, subscribers:23,online:3, subscriptions:31 },
+          { id:7,  name:"Лия Зелёная",       location:"Украина, Одесса",  occupation:"Модель",           bio:"Море, солнце и новые знакомства — моя стихия. Готова к спонтанным приключениям!",     tags:["#summer","#sea","#smile","#happy"],                socialLinks:{instagram:"lia_green",twitter:"liagreen"},   isHost:true,  lookingForCompanion:true,  canDrive:false, againstSmoking:true,  drinksAlcohol:true,  isVegetarian:true,  doesSport:true,  openToOffers:true,  lookingForRelations:true,  openToMeet:true,  likes:55,dislikes:3, reviews:22,subscribers:87,online:15,subscriptions:61 },
+          { id:8,  name:"Леонид Крюков",     location:"Украина, Харьков", occupation:"Учитель",          bio:"Путешествую в свободное время. Интересуют исторические маршруты и архитектура.",       tags:["#archite","#history","#road","#car"],              socialLinks:{vk:"leonid_k"},                              isHost:false, lookingForCompanion:true,  canDrive:true,  againstSmoking:true,  drinksAlcohol:false, isVegetarian:false, doesSport:false, openToOffers:false, lookingForRelations:false, openToMeet:true,  likes:11,dislikes:5, reviews:4, subscribers:9, online:1, subscriptions:14 },
+          { id:9,  name:"Лариса Новая",      location:"Украина, Днепр",   occupation:"Путешественник",   bio:"Объездила 23 страны. Провожу туры по Украине. Могу принять туристов у себя.",         tags:["#tourism","#travel","#world","#фото"],             socialLinks:{instagram:"larisa_new",twitter:"larisanew"}, isHost:true,  lookingForCompanion:false, canDrive:true,  againstSmoking:false, drinksAlcohol:true,  isVegetarian:false, doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:72,dislikes:1, reviews:31,subscribers:110,online:22,subscriptions:88 },
+          { id:10, name:"Михаил Шетилов",    location:"Украина, Киев",    occupation:"Дизайнер",         bio:"UI/UX дизайнер. В свободное время — велопутешествия по окраинам Киева.",               tags:["#design","#bike","#fitness","#road"],              socialLinks:{instagram:"misha_shet"},                     isHost:false, lookingForCompanion:true,  canDrive:false, againstSmoking:true,  drinksAlcohol:false, isVegetarian:true,  doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:28,dislikes:6, reviews:12,subscribers:34,online:7, subscriptions:27 },
+        ];
+
+        const HOUSING = [
+          { id:1, title:"1-я квартира",       price:"500 грн/сутки",   address:"Харьков, ул.Сумская 21/50",        type:"apartment", hostId:1  },
+          { id:2, title:"Кровать в комнате",  price:"бесплатно",       address:"Харьков, ул.Валентиновская 23/2",  type:"room",      hostId:13 },
+          { id:3, title:"Хостел",             price:"от 150 грн/сутки",address:"Харьков, ул.Блюхера 2",            type:"hostel",    hostId:9  },
+          { id:4, title:"Уютная студия",      price:"350 грн/сутки",   address:"Киев, ул.Крещатик 10",             type:"apartment", hostId:3  },
+          { id:5, title:"Комната у хозяев",   price:"200 грн/сутки",   address:"Киев, ул.Лесная 5",                type:"room",      hostId:5  },
+        ];
+
+        const STATUS_OPTIONS = [
+          { key:"canDrive",           icon:"🚗", label:"Могу подвезти" },
+          { key:"lookingForCompanion",icon:"✈️", label:"Ищу попутчика" },
+          { key:"isHost",             icon:"🏠", label:"Готов принять" },
+          { key:"lookingForRelations",icon:"❤️", label:"В поиске отношений" },
+          { key:"openToMeet",         icon:"😊", label:"Открыт к знакомству" },
+          { key:"againstSmoking",     icon:"🚭", label:"Я против курения" },
+          { key:"drinksAlcohol",      icon:"🍷", label:"Пью спиртные напитки" },
+          { key:"isVegetarian",       icon:"🥗", label:"Я вегетарианец" },
+          { key:"doesSport",          icon:"🏃", label:"Занимаюсь спортом" },
+          { key:"openToOffers",       icon:"💡", label:"Открыт к предложениям" },
+        ];
+
+        const TRANSPORT_MODES = [
+          { key:"walk",icon:"🚶" }, { key:"bike",icon:"🚲" }, { key:"car",icon:"🚗" },
+          { key:"bus",icon:"🚌" }, { key:"metro",icon:"🚇" }, { key:"plane",icon:"✈️" },
+        ];
+
+        const SEED_MSGS = {
+          2: [
+            { id:1,from:"them",text:"Привет! Хочу узнать насчёт маршрута на этой неделе.",time:"15:20",read:true },
+            { id:2,from:"me",  text:"Привет! Да, я планирую ехать в пятницу вечером.",    time:"15:22",read:true },
+            { id:3,from:"them",text:"Отлично! Могу ли я присоединиться?",                 time:"15:23",read:true },
+            { id:4,from:"me",  text:"Конечно, давай договоримся о времени.",              time:"15:25",read:true },
+          ],
+          9:  [{ id:1,from:"them",text:"Здравствуйте! Интересует тур по Карпатам.",  time:"10:00",read:true }],
+        };
+
+        const REVIEWS_DATA = {
+          1:  [{ id:1,author:"Андрей Мотьков",   text:"Замечательный хост! Очень уютно и чисто.", rating:5, date:"15 апр" }],
+        };
+
+        const TC = "#00bfb3"; const TD = "#007a75"; const PU = "#7c3aed";
+        const BG = "linear-gradient(160deg,#1a0533 0%,#0d1f3c 100%)";
+        const BR = "rgba(255,255,255,.09)";
+        const ACOLS = ["#00897b","#7c3aed","#0e9af0","#e91e8c","#f59e0b"];
+        const acol = id => ACOLS[id % ACOLS.length];
+        const ini = n => n.split(" ").map(x=>x[0]).join("").slice(0,2).toUpperCase();
+
+        function Ava({ user, size=48 }) {
+          return <div style={{ width:size,height:size,borderRadius:"50%",background:acol(user.id),display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:size*.33,color:"#fff",flexShrink:0,border:"2px solid rgba(255,255,255,.12)" }}>{ini(user.name)}</div>;
+        }
+
+        function Toggle({ value, onChange }) {
+          return <div onClick={()=>onChange(!value)} style={{ width:46,height:26,borderRadius:13,background:value?TC:"rgba(255,255,255,.15)",cursor:"pointer",position:"relative",transition:"background .25s",flexShrink:0 }}><div style={{ position:"absolute",top:3,left:value?23:3,width:20,height:20,borderRadius:"50%",background:"#fff",transition:"left .25s" }} /></div>;
+        }
+
+        function Stars({ n=5 }) { return <span style={{ color:"#f59e0b",fontSize:13 }}>{"★".repeat(n)}{"☆".repeat(5-n)}</span>; }
+
+        function Bar({ title, onBack, right }) {
+          return (
+            <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 16px",background:TC,flexShrink:0 }}>
+              <div style={{ width:44 }}>
+                {onBack ? <button onClick={onBack} style={{ background:"transparent",border:"none",color:"#fff",fontSize:22,cursor:"pointer" }}>←</button> : <span style={{ color:"#fff",fontSize:20 }}>☰</span>}
+              </div>
+              <span style={{ fontSize:17,fontWeight:700,color:"#fff" }}>{title}</span>
+              <div style={{ width:44,display:"flex",justifyContent:"flex-end" }}>{right||<span style={{color:"#fff",fontSize:18}}>🔍</span>}</div>
+            </div>
+          );
+        }
+
+        const W = { display:"flex",flexDirection:"column",height:"100%",background:BG,color:"#fff" };
+        const SC = { overflowY:"auto",flex:1 };
+        const IS = { width:"100%",padding:"11px 14px",background:"rgba(255,255,255,.07)",border:"1px solid rgba(255,255,255,.12)",borderRadius:10,color:"#fff",fontSize:14,outline:"none",boxSizing:"border-box",marginBottom:6 };
+        const Lbl = ({ c, mt=12 }) => <div style={{ fontSize:11,color:"rgba(255,255,255,.4)",fontWeight:600,marginBottom:5,marginTop:mt }}>{c}</div>;
+
+        function Register({ onDone }) {
+          const [mode,setMode] = useState("login");
+          const [name,setName] = useState("");
+          const [phone,setPhone] = useState("");
+          const [pass,setPass] = useState("");
+          return (
+            <div style={{ minHeight:"100vh",background:"linear-gradient(135deg,#1a0533,#2d1060,#0f2a4a)",display:"flex",alignItems:"center",justifyContent:"center",padding:24 }}>
+              <div style={{ width:"100%",maxWidth:340,background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.12)",borderRadius:40,padding:"38px 28px 30px",backdropFilter:"blur(20px)" }}>
+                <div style={{ textAlign:"center",marginBottom:26 }}>
+                  <span style={{ border:"2px solid "+TC,padding:"5px 10px",fontSize:24,fontWeight:800,color:TC,borderRadius:"6px 0 0 6px" }}>LIFE</span>
+                  <span style={{ background:TC,padding:"5px 10px",fontSize:24,fontWeight:800,color:"#fff",borderRadius:"0 6px 6px 0" }}>UP</span>
+                </div>
+                <div style={{ display:"flex",marginBottom:18,background:"rgba(255,255,255,.07)",borderRadius:10,padding:3 }}>
+                  {[["login","Войти"],["register","Регистрация"]].map(([m,l])=><button key={m} onClick={()=>setMode(m)} style={{ flex:1,padding:"8px 0",borderRadius:8,border:"none",background:mode===m?TC:"transparent",color:"#fff",fontWeight:600 }}>{l}</button>)}
+                </div>
+                {mode==="register" && <input placeholder="Ваше имя" value={name} onChange={e=>setName(e.target.value)} style={IS} />}
+                <input placeholder="Телефон или email" value={phone} onChange={e=>setPhone(e.target.value)} style={IS} />
+                <input type="password" placeholder="Пароль" value={pass} onChange={e=>setPass(e.target.value)} style={IS} />
+                <button onClick={()=>onDone(name||"Пользователь")} style={{ width:"100%",padding:"13px 0",background:`linear-gradient(90deg,${TC},${PU})`,border:"none",borderRadius:12,color:"#fff",fontSize:15,fontWeight:700 }}>
+                  {mode==="login"?"ВОЙТИ":"ЗАРЕГИСТРИРОВАТЬСЯ"}
+                </button>
+              </div>
+            </div>
+          );
+        }
+
+        function Feed({ users, me, favIds, onToggleFav, onProfile, onMyProfile, onAbout, onMsg, isFavScreen = false }) {
+          const [q,setQ] = useState(""); const [f,setF] = useState("all");
+          const list = users.filter(u => {
+            if (isFavScreen && !favIds.includes(u.id)) return false;
+            const mS = !q || u.name.toLowerCase().includes(q.toLowerCase()) || u.tags.some(t => t.toLowerCase().includes(q.toLowerCase()));
+            const mF = f === "all" || (f === "host" && u.isHost) || (f === "companion" && u.lookingForCompanion);
+            return mS && mF;
+          });
+          return (
+            <div style={W}>
+              <div style={{ background:TC,padding:"12px 16px 10px",flexShrink:0 }}>
+                <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:9 }}>
+                  <button onClick={onAbout} style={{ background:"rgba(255,255,255,.18)",border:"none",borderRadius:8,padding:"3px 8px",color:"#fff" }}>ℹ О проекте</button>
+                  <button onClick={onMyProfile} style={{ background:"rgba(255,255,255,.18)",border:"none",borderRadius:20,padding:"5px 10px",color:"#fff",display:"flex",alignItems:"center",gap:6 }}>
+                    <Ava user={me} size={22} /><span>{me.name}</span>
+                  </button>
+                </div>
+                <input value={q} onChange={e=>setQ(e.target.value)} placeholder="🔍 Поиск людей или тегов..." style={IS} />
+              </div>
+              <div style={SC}>
+                {list.map(u=>(
+                  <div key={u.id} onClick={()=>onProfile(u)} style={{ display:"flex",gap:12,padding:"13px 16px",borderBottom:"1px solid rgba(255,255,255,.06)" }}>
+                    <Ava user={u} size={54} />
+                    <div style={{ flex:1 }}>
+                      <div style={{ fontWeight:700 }}>{u.name}</div>
+                      <div style={{ fontSize:12,color:"rgba(255,255,255,.4)" }}>{u.location}</div>
+                      <div style={{ fontSize:13,color:"rgba(255,255,255,.6)" }}>{u.bio}</div>
+                    </div>
+                    <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                      <button onClick={e=>{e.stopPropagation();onMsg(u);}} style={{ background:"transparent",border:"none",fontSize:16 }}>💬</button>
+                      <button onClick={e=>{e.stopPropagation();onToggleFav(u.id);}} style={{ background:"transparent", border:"none", fontSize:20, color:favIds.includes(u.id)?"#f59e0b":"#fff" }}>{favIds.includes(u.id)?"★":"☆"}</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        }
+
+        function Profile({ user, isSelf, onEdit, onBack, onMsg }) {
+          return (
+            <div style={W}>
+              <Bar title={user.name} onBack={onBack} right={isSelf && <button onClick={onEdit} style={{color:"#fff",background:"none",border:"none"}}>✎</button>} />
+              <div style={{...SC, padding:20}}>
+                <Ava user={user} size={78} />
+                <h2>{user.name}</h2>
+                <p>{user.bio}</p>
+                <Lbl c="Статусы" />
+                {STATUS_OPTIONS.filter(o=>user[o.key]).map(o=><div key={o.key}>{o.icon} {o.label}</div>)}
+              </div>
+            </div>
+          );
+        }
+
+        function EditProfile({ user, onSave, onCancel }) {
+          const [form,setForm] = useState({...user});
+          return (
+            <div style={W}>
+              <Bar title="Редактировать" onBack={onCancel} right={<button onClick={()=>onSave(form)} style={{color:"#fff",background:"none",border:"none"}}>Готово</button>} />
+              <div style={{...SC, padding:20}}>
+                <Lbl c="Имя"/><input value={form.name} onChange={e=>setForm({...form, name:e.target.value})} style={IS} />
+                <Lbl c="О себе"/><input value={form.bio} onChange={e=>setForm({...form, bio:e.target.value})} style={IS} />
+              </div>
+            </div>
+          );
+        }
+
+        function MsgList({ users, msgs, onBack, onChat }) {
+          const chats = users.filter(u => msgs[u.id] && msgs[u.id].length > 0).map(u => ({ user: u, last: msgs[u.id].at(-1) }));
+          return (
+            <div style={W}>
+              <Bar title="Сообщения" onBack={onBack} />
+              <div style={SC}>
+                {chats.map(({user:u,last})=>(
+                  <div key={u.id} onClick={()=>onChat(u)} style={{ display:"flex",padding:16,borderBottom:`1px solid ${BR}` }}>
+                    <Ava user={u} size={40} />
+                    <div style={{marginLeft:12}}>
+                      <div style={{fontWeight:600}}>{u.name}</div>
+                      <div style={{fontSize:13,color:"gray"}}>{last.text}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        }
+
+        function Chat({ user, messages, onBack, onSend }) {
+          const [txt,setTxt] = useState("");
+          return (
+            <div style={W}>
+              <Bar title={user.name} onBack={onBack} />
+              <div style={{...SC, padding:10}}>
+                {messages.map(m=><div key={m.id} style={{textAlign:m.from==="me"?"right":"left", margin:"5px 0"}}><span style={{background:m.from==="me"?TC:"#333", padding:"6px 10px", borderRadius:10, display:"inline-block"}}>{m.text}</span></div>)}
+              </div>
+              <div style={{padding:10, display:"flex", gap:10}}>
+                <input value={txt} onChange={e=>setTxt(e.target.value)} style={{...IS, margin:0}} placeholder="Сообщение..." />
+                <button onClick={()=>{if(txt.trim()){onSend(txt);setTxt("");}}} style={{background:TC, border:"none", color:"#fff", borderRadius:10, padding:"0 15px"}}>Отправить</button>
+              <
