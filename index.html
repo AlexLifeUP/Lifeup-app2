@@ -15,62 +15,348 @@
         const { useState, useEffect, useRef } = React;
 
         // ═══════════════════════════════════════════════════════════════
-        // DATA
+        // СЛОВАРИ ДЛЯ ЛОКАЛИЗАЦИИ (ЯЗЫКИ)
         // ═══════════════════════════════════════════════════════════════
-        const ALL_USERS = [
-          { id:1,  name:"Алиса Шевченко",    location:"Украина, Харьков", occupation:"Дизайнер",         bio:"Я не стремлюсь быть привлекательной. Моё дело — заставлять людей становиться лучше.", tags:["#tourism","#фото","#friends","#road","#fitness"], socialLinks:{instagram:"alice_shev",twitter:"aliceshev"}, isHost:true,  lookingForCompanion:true,  canDrive:true,  againstSmoking:true,  drinksAlcohol:false, isVegetarian:false, doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:26,dislikes:25,reviews:10,subscribers:30,online:30,subscriptions:30 },
-          { id:2,  name:"Андрей Мотьков",    location:"Украина, Киев",    occupation:"Дизайнер",         bio:"Ежедневно езжу Киев–Бровары. Ищу попутчиков для совместных поездок.",                  tags:["#road","#car","#activel","#music"],                socialLinks:{instagram:"andrey_m",vk:"andrey_mot"},       isHost:false, lookingForCompanion:true,  canDrive:true,  againstSmoking:true,  drinksAlcohol:true,  isVegetarian:false, doesSport:false, openToOffers:true,  lookingForRelations:false, openToMeet:false, likes:14,dislikes:3, reviews:7, subscribers:12,online:5, subscriptions:18 },
-          { id:3,  name:"Евгений Савченко",  location:"Украина, Киев",    occupation:"Креативный дир.",  bio:"Создаю уникальные маршруты по нехоженым тропам Украины. Готов принять путешественников.",tags:["#archite","#origami","#tourism","#friends"],        socialLinks:{instagram:"evg_sav",twitter:"evgsav"},       isHost:true,  lookingForCompanion:false, canDrive:false, againstSmoking:false, drinksAlcohol:true,  isVegetarian:true,  doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:41,dislikes:2, reviews:19,subscribers:58,online:11,subscriptions:44 },
-          { id:4,  name:"Александра Коваль", location:"Украина, Борисполь",occupation:"Представитель",  bio:"Путешествую налегке. Ищу попутчиков Борисполь–Киев и вылазок на природу.",              tags:["#summer","#fitness","#friends","#road"],           socialLinks:{instagram:"alex_koval"},                     isHost:false, lookingForCompanion:true,  canDrive:false, againstSmoking:true,  drinksAlcohol:false, isVegetarian:false, doesSport:true,  openToOffers:false, lookingForRelations:false, openToMeet:true,  likes:8, dislikes:1, reviews:3, subscribers:7, online:2, subscriptions:10 },
-          { id:5,  name:"Наталья Осадчук",   location:"Украина, Ирпень",  occupation:"Копирайтер",       bio:"Ведно блог о путешествиях. Знаю уникальные места Украины, которых нет в Google.",       tags:["#tourism","#music","#фото","#car"],                socialLinks:{instagram:"natalia_o",twitter:"nataliao"},   isHost:true,  lookingForCompanion:true,  canDrive:true,  againstSmoking:false, drinksAlcohol:false, isVegetarian:true,  doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:33,dislikes:4, reviews:15,subscribers:44,online:8, subscriptions:29 },
-          { id:6,  name:"Людмила Коршунова", location:"Украина, Киев",    occupation:"Переводчик",       bio:"Говорю на 4 языках. Помогу с общением за рубежом. Ищу компанию для путешествий.",      tags:["#languages","#europe","#tourism"],                 socialLinks:{instagram:"ludmila_k"},                      isHost:false, lookingForCompanion:true,  canDrive:false, againstSmoking:true,  drinksAlcohol:false, isVegetarian:false, doesSport:false, openToOffers:true,  lookingForRelations:true,  openToMeet:true,  likes:19,dislikes:2, reviews:8, subscribers:23,online:3, subscriptions:31 },
-          { id:7,  name:"Лия Зелёная",       location:"Украина, Одесса",  occupation:"Модель",           bio:"Море, солнце и новые знакомства — моя стихия. Готова к спонтанным приключениям!",     tags:["#summer","#sea","#smile","#happy"],                socialLinks:{instagram:"lia_green",twitter:"liagreen"},   isHost:true,  lookingForCompanion:true,  canDrive:false, againstSmoking:true,  drinksAlcohol:true,  isVegetarian:true,  doesSport:true,  openToOffers:true,  lookingForRelations:true,  openToMeet:true,  likes:55,dislikes:3, reviews:22,subscribers:87,online:15,subscriptions:61 },
-          { id:8,  name:"Леонид Крюков",     location:"Украина, Харьков", occupation:"Учитель",          bio:"Путешествую в свободное время. Интересуют исторические маршруты и архитектура.",       tags:["#archite","#history","#road","#car"],              socialLinks:{vk:"leonid_k"},                              isHost:false, lookingForCompanion:true,  canDrive:true,  againstSmoking:true,  drinksAlcohol:false, isVegetarian:false, doesSport:false, openToOffers:false, lookingForRelations:false, openToMeet:true,  likes:11,dislikes:5, reviews:4, subscribers:9, online:1, subscriptions:14 },
-          { id:9,  name:"Лариса Новая",      location:"Украина, Днепр",   occupation:"Путешественник",   bio:"Объездила 23 страны. Провожу туры по Украине. Могу принять туристов у себя.",         tags:["#tourism","#travel","#world","#фото"],             socialLinks:{instagram:"larisa_new",twitter:"larisanew"}, isHost:true,  lookingForCompanion:false, canDrive:true,  againstSmoking:false, drinksAlcohol:true,  isVegetarian:false, doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:72,dislikes:1, reviews:31,subscribers:110,online:22,subscriptions:88 },
-          { id:10, name:"Михаил Шетилов",    location:"Украина, Киев",    occupation:"Дизайнер",         bio:"UI/UX дизайнер. В свободное время — велопутешествия по окраинам Киева.",               tags:["#design","#bike","#fitness","#road"],              socialLinks:{instagram:"misha_shet"},                     isHost:false, lookingForCompanion:true,  canDrive:false, againstSmoking:true,  drinksAlcohol:false, isVegetarian:true,  doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:28,dislikes:6, reviews:12,subscribers:34,online:7, subscriptions:27 },
-        ];
+        const TRANSLATIONS = {
+          ua: {
+            selectLang: "Виберіть мову",
+            login: "Увійти",
+            register: "Реєстрація",
+            namePlh: "Ваше ім'я",
+            phonePlh: "Телефон або email",
+            passPlh: "Пароль",
+            btnReg: "ЗАРЕЄСТРУВАТИСЯ",
+            btnIn: "УВІЙТИ",
+            searchPlh: "🔍 Пошук людей або тегів...",
+            aboutProj: "ℹ Про проєкт",
+            mapDev: "🗺️ Карта в розробці",
+            searchEmpty: "🔍 Пошук порожній",
+            aboutTitle: "Про проєкт",
+            aboutDesc: "Платформа для пошуку хостів та попутників.",
+            msgPlh: "Повідомлення...",
+            send: "Відправити",
+            editTitle: "Редагувати",
+            done: "Готово",
+            nameLbl: "Ім'я",
+            aboutLbl: "Про себе",
+            statusLbl: "Статуси",
+            messagesTitle: "Повідомлення",
+            mapTitle: "Карта",
+            searchTitle: "Пошук",
+            newUserBio: "Новий користувач",
+            ukraine: "Україна",
+            kharkiv: "Україна, Харків",
+            kyiv: "Україна, Київ",
+            boryspil: "Україна, Бориспіль",
+            irpin: "Україна, Ірпінь",
+            odesa: "Україна, Одеса",
+            dnipro: "Україна, Дніпро",
+            designer: "Дизайнер",
+            creativeDir: "Креативний дир.",
+            representative: "Представник",
+            copywriter: "Копірайтер",
+            translator: "Перекладач",
+            model: "Модель",
+            teacher: "Вчитель",
+            traveler: "Мандрівник",
+            apt1: "1-кімнатна квартира",
+            bedRoom: "Ліжко в кімнаті",
+            hostel: "Хостел",
+            studio: "Затишна студія",
+            roomHost: "Кімната у господарів",
+            free: "безкоштовно",
+            day: "грн/доба",
+            from: "від",
+            // Статусы
+            canDrive: "🚗 Можу підвезти",
+            lookingForCompanion: "✈️ Шукаю попутника",
+            isHost: "🏠 Готовий прийняти",
+            lookingForRelations: "❤️ В пошуку відносин",
+            openToMeet: "😊 Відкритий до знайомств",
+            againstSmoking: "🚭 Я проти куріння",
+            drinksAlcohol: "🍷 П'ю алкогольні напої",
+            isVegetarian: "🥗 Я вегетаріанець",
+            doesSport: "🏃 Займаюся спортом",
+            openToOffers: "💡 Відкритий до пропозицій",
+            // Био пользователей
+            bio1: "Я не прагну бути привабливою. Моя справа — змушувати людей ставати кращими.",
+            bio2: "Щодня їжджу Київ–Бровари. Шукаю попутників для спільних поїздок.",
+            bio3: "Створюю унікальні маршрути неходженими стежками України. Готовий прийняти мандрівників.",
+            bio4: "Подорожую без зайвих речей. Шукаю попутників Бориспіль–Київ та для виїздів на природу.",
+            bio5: "Веду блог про подорожі. Знаю унікальні місця України, яких немає в Google.",
+            bio6: "Розмовляю 4 мовами. Допоможу зі спілкуванням за кордоном. Шукаю компанію для подорожей.",
+            bio7: "Море, сонце і нові знайомства — моя стихія. Готова до спонтанних пригод!",
+            bio8: "Подорожую у вільний час. Цікавлять історичні маршрути та архітектура.",
+            bio9: "Об'їздила 23 країни. Проводжу тури Україною. Можу прийняти туристів у себе.",
+            bio10: "UI/UX дизайнер. У вільний час — велоподорожі околицями Києва.",
+            // Чат заготовки
+            chat1: "Привіт! Хочу дізнатися щодо маршруту на цьому тижні.",
+            chat2: "Привіт! Так, я планую їхати в п'ятницю ввечері.",
+            chat3: "Чудово! Чи можу я приєднатися?",
+            chat4: "Звичайно, давай домовимося про час.",
+            chat5: "Вітаю! Цікавить тур Карпатами.",
+            chat6: "Чудовий хост! Дуже затишно і чисто."
+          },
+          ru: {
+            selectLang: "Выберите язык",
+            login: "Войти",
+            register: "Регистрация",
+            namePlh: "Ваше имя",
+            phonePlh: "Телефон или email",
+            passPlh: "Пароль",
+            btnReg: "ЗАРЕГИСТРИРОВАТЬСЯ",
+            btnIn: "ВОЙТИ",
+            searchPlh: "🔍 Поиск людей или тегов...",
+            aboutProj: "ℹ О проекте",
+            mapDev: "🗺️ Карта в разработке",
+            searchEmpty: "🔍 Поиск пуст",
+            aboutTitle: "О проекте",
+            aboutDesc: "Платформа для поиска хостов и попутчиков.",
+            msgPlh: "Сообщение...",
+            send: "Отправить",
+            editTitle: "Редактировать",
+            done: "Готово",
+            nameLbl: "Имя",
+            aboutLbl: "О себе",
+            statusLbl: "Статусы",
+            messagesTitle: "Сообщения",
+            mapTitle: "Карта",
+            searchTitle: "Поиск",
+            newUserBio: "Новый пользователь",
+            ukraine: "Украина",
+            kharkiv: "Украина, Харьков",
+            kyiv: "Украина, Киев",
+            boryspil: "Украина, Борисполь",
+            irpin: "Украина, Ирпень",
+            odesa: "Украина, Одесса",
+            dnipro: "Украина, Днепр",
+            designer: "Дизайнер",
+            creativeDir: "Креативный дир.",
+            representative: "Представитель",
+            copywriter: "Копирайтер",
+            translator: "Переводчик",
+            model: "Модель",
+            teacher: "Учитель",
+            traveler: "Путешественник",
+            apt1: "1-я квартира",
+            bedRoom: "Кровать в комнате",
+            hostel: "Хостел",
+            studio: "Уютная студия",
+            roomHost: "Комната у хозяев",
+            free: "бесплатно",
+            day: "грн/сутки",
+            from: "от",
+            canDrive: "🚗 Могу подвезти",
+            lookingForCompanion: "✈️ Ищу попутчика",
+            isHost: "🏠 Готов принять",
+            lookingForRelations: "❤️ В поиске отношений",
+            openToMeet: "😊 Открыт к знакомству",
+            againstSmoking: "🚭 Я против курения",
+            drinksAlcohol: "🍷 Пью спиртные напитки",
+            isVegetarian: "🥗 Я вегетарианец",
+            doesSport: "🏃 Занимаюсь спортом",
+            openToOffers: "💡 Открыт к предложениям",
+            bio1: "Я не стремлюсь быть привлекательной. Моё дело — заставлять людей становиться лучше.",
+            bio2: "Ежедневно езжу Киев–Бровары. Ищу попутчиков для совместных поездок.",
+            bio3: "Создаю уникальные маршруты по нехоженым тропам Украины. Готов принять путешественников.",
+            bio4: "Путешествую налегке. Ищу попутчиков Борисполь–Киев и вылазок на природу.",
+            bio5: "Веду блог о путешествиях. Знаю уникальные места Украины, которых нет в Google.",
+            bio6: "Говорю на 4 языках. Помогу с общением за рубежом. Ищу компанию для путешествий.",
+            bio7: "Море, солнце и новые знакомства — моя стихия. Готова к спонтанным приключениям!",
+            bio8: "Путешествую в свободное время. Интересуют исторические маршруты и архитектура.",
+            bio9: "Объездила 23 страны. Проводжу туры по Украине. Могу принять туристов у себя.",
+            bio10: "UI/UX дизайнер. В свободное время — велопутешествия по окраинам Киева.",
+            chat1: "Привет! Хочу узнать насчёт маршрута на этой неделе.",
+            chat2: "Привет! Да, я планирую ехать в пятницу вечером.",
+            chat3: "Отлично! Могу ли я присоединиться?",
+            chat4: "Конечно, давай договоримся о времени.",
+            chat5: "Здравствуйте! Интересует тур по Карпатам.",
+            chat6: "Замечательный хост! Очень уютно и чисто."
+          },
+          en: {
+            selectLang: "Select Language",
+            login: "Login",
+            register: "Register",
+            namePlh: "Your Name",
+            phonePlh: "Phone or email",
+            passPlh: "Password",
+            btnReg: "SIGN UP",
+            btnIn: "LOG IN",
+            searchPlh: "🔍 Search users or tags...",
+            aboutProj: "ℹ About project",
+            mapDev: "🗺️ Map under development",
+            searchEmpty: "🔍 Search is empty",
+            aboutTitle: "About Project",
+            aboutDesc: "A platform for finding hosts and travel companions.",
+            msgPlh: "Message...",
+            send: "Send",
+            editTitle: "Edit Profile",
+            done: "Done",
+            nameLbl: "Name",
+            aboutLbl: "About me",
+            statusLbl: "Statuses",
+            messagesTitle: "Messages",
+            mapTitle: "Map",
+            searchTitle: "Search",
+            newUserBio: "New User",
+            ukraine: "Ukraine",
+            kharkiv: "Ukraine, Kharkiv",
+            kyiv: "Ukraine, Kyiv",
+            boryspil: "Ukraine, Boryspil",
+            irpin: "Ukraine, Irpin",
+            odesa: "Ukraine, Odesa",
+            dnipro: "Ukraine, Dnipro",
+            designer: "Designer",
+            creativeDir: "Creative Dir.",
+            representative: "Representative",
+            copywriter: "Copywriter",
+            translator: "Translator",
+            model: "Model",
+            teacher: "Teacher",
+            traveler: "Traveler",
+            apt1: "1-room apartment",
+            bedRoom: "Bed in a room",
+            hostel: "Hostel",
+            studio: "Cozy studio",
+            roomHost: "Room from hosts",
+            free: "free",
+            day: "uah/day",
+            from: "from",
+            canDrive: "🚗 I can drive",
+            lookingForCompanion: "✈️ Looking for companion",
+            isHost: "🏠 Ready to host",
+            lookingForRelations: "❤️ Looking for relations",
+            openToMeet: "😊 Open to meet",
+            againstSmoking: "🚭 Against smoking",
+            drinksAlcohol: "🍷 Drinks alcohol",
+            isVegetarian: "🥗 Vegetarian",
+            doesSport: "🏃 Does sports",
+            openToOffers: "💡 Open to offers",
+            bio1: "I don't strive to be attractive. My business is to make people better.",
+            bio2: "Commuting Kyiv–Brovary daily. Looking for companions for joint rides.",
+            bio3: "I create unique routes off the beaten path in Ukraine. Ready to host travelers.",
+            bio4: "Traveling light. Looking for Boryspil–Kyiv companions and nature trips.",
+            bio5: "Blogging about travel. I know unique places in Ukraine not found on Google.",
+            bio6: "I speak 4 languages. Can help with communication abroad. Looking for travel company.",
+            bio7: "Sea, sun and new acquaintances are my element. Ready for spontaneous adventures!",
+            bio8: "Traveling in my free time. Interested in historical routes and architecture.",
+            bio9: "Traveled to 23 countries. Conducting tours around Ukraine. Can host tourists.",
+            bio10: "UI/UX designer. In my free time — cycling trips around Kyiv.",
+            chat1: "Hi! I want to know about the route this week.",
+            chat2: "Hi! Yes, I plan to leave on Friday evening.",
+            chat3: "Great! Can I join?",
+            chat4: "Sure, let's agree on the time.",
+            chat5: "Hello! Interested in a tour to the Carpathians.",
+            chat6: "Wonderful host! Very cozy and clean."
+          },
+          de: {
+            selectLang: "Sprache auswählen",
+            login: "Einloggen",
+            register: "Registrieren",
+            namePlh: "Ihr Name",
+            phonePlh: "Telefon oder E-Mail",
+            passPlh: "Passwort",
+            btnReg: "REGISTRIEREN",
+            btnIn: "EINLOGGEN",
+            searchPlh: "🔍 Benutzer oder Tags suchen...",
+            aboutProj: "ℹ Über das Projekt",
+            mapDev: "🗺️ Karte in Entwicklung",
+            searchEmpty: "🔍 Suche ist leer",
+            aboutTitle: "Über das Projekt",
+            aboutDesc: "Eine Plattform zur Suche nach Gastgebern und Reisepartnern.",
+            msgPlh: "Nachricht...",
+            send: "Senden",
+            editTitle: "Profil bearbeiten",
+            done: "Fertig",
+            nameLbl: "Name",
+            aboutLbl: "Über mich",
+            statusLbl: "Status",
+            messagesTitle: "Nachrichten",
+            mapTitle: "Karte",
+            searchTitle: "Suche",
+            newUserBio: "Neuer Benutzer",
+            ukraine: "Ukraine",
+            kharkiv: "Ukraine, Charkiw",
+            kyiv: "Ukraine, Kiew",
+            boryspil: "Ukraine, Boryspil",
+            irpin: "Ukraine, Irpin",
+            odesa: "Ukraine, Odessa",
+            dnipro: "Ukraine, Dnipro",
+            designer: "Designer",
+            creativeDir: "Kreativdirektor",
+            representative: "Vertreter",
+            copywriter: "Texter",
+            translator: "Übersetzer",
+            model: "Modell",
+            teacher: "Lehrer",
+            traveler: "Reisender",
+            apt1: "1-Zimmer-Wohnung",
+            bedRoom: "Bett im Zimmer",
+            hostel: "Hostel",
+            studio: "Gemütliches Studio",
+            roomHost: "Zimmer von Gastgebern",
+            free: "kostenlos",
+            day: "uah/Tag",
+            from: "ab",
+            canDrive: "🚗 Kann mitnehmen",
+            lookingForCompanion: "✈️ Suche Reisepartner",
+            isHost: "🏠 Kann Gäste aufnehmen",
+            lookingForRelations: "❤️ Auf Beziehungssuche",
+            openToMeet: "😊 Offen für Kennenlernen",
+            againstSmoking: "🚭 Nichtraucher",
+            drinksAlcohol: "🍷 Trinke Alkohol",
+            isVegetarian: "🥗 Vegetarianer",
+            doesSport: "🏃 Treibe Sport",
+            openToOffers: "💡 Offen für Angebote",
+            bio1: "Ich strebe nicht danach, attraktiv zu sein. Meine Aufgabe ist es, Menschen besser zu machen.",
+            bio2: "Pendle täglich Kiew–Browary. Suche Mitfahrer für gemeinsame Fahrten.",
+            bio3: "Ich erstelle einzigartige Routen abseits der Pfade in der Ukraine. Bereit, Reisende aufzunehmen.",
+            bio4: "Reise mit leichtem Gepäck. Suche Boryspil–Kiew Begleiter und Naturausflüge.",
+            bio5: "Blogge über das Reisen. Kenne einzigartige Orte in der Ukraine, die nicht auf Google stehen.",
+            bio6: "Ich spreche 4 Sprachen. Kann bei der Kommunikation im Ausland helfen. Suche Reisebegleitung.",
+            bio7: "Meer, Sonne und neue Bekanntschaften sind mein Element. Bereit für spontane Abenteuer!",
+            bio8: "Reise in meiner Freizeit. Interessiert an historischen Routen und Architektur.",
+            bio9: "In 23 Länder gereist. Führe Touren durch die Ukraine. Kann Touristen aufnehmen.",
+            bio10: "UI/UX-Designer. In meiner Freizeit — Radtouren in der Umgebung von Kiew.",
+            chat1: "Hallo! Ich möchte mich über die Route diese Woche informieren.",
+            chat2: "Hallo! Ja, ich plane am Freitagabend zu fahren.",
+            chat3: "Super! Kann ich mich anschließen?",
+            chat4: "Klar, lass uns die Zeit vereinbaren.",
+            chat5: "Hallo! Interessiert an einer Tour in die Karpaten.",
+            chat6: "Wunderbarer Gastgeber! Sehr gemütlich und sauber."
+          }
+        };
 
-        const HOUSING = [
-          { id:1, title:"1-я квартира",       price:"500 грн/сутки",   address:"Харьков, ул.Сумская 21/50",        type:"apartment", hostId:1  },
-          { id:2, title:"Кровать в комнате",  price:"бесплатно",       address:"Харьков, ул.Валентиновская 23/2",  type:"room",      hostId:13 },
-          { id:3, title:"Хостел",             price:"от 150 грн/сутки",address:"Харьков, ул.Блюхера 2",            type:"hostel",    hostId:9  },
-          { id:4, title:"Уютная студия",      price:"350 грн/сутки",   address:"Киев, ул.Крещатик 10",             type:"apartment", hostId:3  },
-          { id:5, title:"Комната у хозяев",   price:"200 грн/сутки",   address:"Киев, ул.Лесная 5",                type:"room",      hostId:5  },
+        // ═══════════════════════════════════════════════════════════════
+        // ДИНАМИЧЕСКИЕ ДАННЫЕ С СИСТЕМОЙ ПЕРЕВОДАключей
+        // ═══════════════════════════════════════════════════════════════
+        const getLocalizedUsers = (lang) => [
+          { id:1,  name:"Алиса Шевченко",    location:TRANSLATIONS[lang].kharkiv, occupation:TRANSLATIONS[lang].designer,         bio:TRANSLATIONS[lang].bio1, tags:["#tourism","#фото","#friends","#road","#fitness"], socialLinks:{instagram:"alice_shev",twitter:"aliceshev"}, isHost:true,  lookingForCompanion:true,  canDrive:true,  againstSmoking:true,  drinksAlcohol:false, isVegetarian:false, doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:26,dislikes:25,reviews:10,subscribers:30,online:30,subscriptions:30 },
+          { id:2,  name:"Андрей Мотьков",    location:TRANSLATIONS[lang].kyiv,    occupation:TRANSLATIONS[lang].designer,         bio:TRANSLATIONS[lang].bio2, tags:["#road","#car","#activel","#music"],                socialLinks:{instagram:"andrey_m",vk:"andrey_mot"},       isHost:false, lookingForCompanion:true,  canDrive:true,  againstSmoking:true,  drinksAlcohol:true,  isVegetarian:false, doesSport:false, openToOffers:true,  lookingForRelations:false, openToMeet:false, likes:14,dislikes:3, reviews:7, subscribers:12,online:5, subscriptions:18 },
+          { id:3,  name:"Евгений Савченко",  location:TRANSLATIONS[lang].kyiv,    occupation:TRANSLATIONS[lang].creativeDir,  bio:TRANSLATIONS[lang].bio3, tags:["#archite","#origami","#tourism","#friends"],        socialLinks:{instagram:"evg_sav",twitter:"evgsav"},       isHost:true,  lookingForCompanion:false, canDrive:false, againstSmoking:false, drinksAlcohol:true,  isVegetarian:true,  doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:41,dislikes:2, reviews:19,subscribers:58,online:11,subscriptions:44 },
+          { id:4,  name:"Александра Коваль", location:TRANSLATIONS[lang].boryspil,occupation:TRANSLATIONS[lang].representative,  bio:TRANSLATIONS[lang].bio4, tags:["#summer","#fitness","#friends","#road"],           socialLinks:{instagram:"alex_koval"},                     isHost:false, lookingForCompanion:true,  canDrive:false, againstSmoking:true,  drinksAlcohol:false, isVegetarian:false, doesSport:true,  openToOffers:false, lookingForRelations:false, openToMeet:true,  likes:8, dislikes:1, reviews:3, subscribers:7, online:2, subscriptions:10 },
+          { id:5,  name:"Наталья Осадчук",   location:TRANSLATIONS[lang].irpin,  occupation:TRANSLATIONS[lang].copywriter,       bio:TRANSLATIONS[lang].bio5, tags:["#tourism","#music","#фото","#car"],                socialLinks:{instagram:"natalia_o",twitter:"nataliao"},   isHost:true,  lookingForCompanion:true,  canDrive:true,  againstSmoking:false, drinksAlcohol:false, isVegetarian:true,  doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:33,dislikes:4, reviews:15,subscribers:44,online:8, subscriptions:29 },
+          { id:6,  name:"Людмила Коршунова", location:TRANSLATIONS[lang].kyiv,    occupation:TRANSLATIONS[lang].translator,       bio:TRANSLATIONS[lang].bio6, tags:["#languages","#europe","#tourism"],                 socialLinks:{instagram:"ludmila_k"},                      isHost:false, lookingForCompanion:true,  canDrive:false, againstSmoking:true,  drinksAlcohol:false, isVegetarian:false, doesSport:false, openToOffers:true,  lookingForRelations:true,  openToMeet:true,  likes:19,dislikes:2, reviews:8, subscribers:23,online:3, subscriptions:31 },
+          { id:7,  name:"Лия Зелёная",       location:TRANSLATIONS[lang].odesa,  occupation:TRANSLATIONS[lang].model,           bio:TRANSLATIONS[lang].bio7, tags:["#summer","#sea","#smile","#happy"],                socialLinks:{instagram:"lia_green",twitter:"liagreen"},   isHost:true,  lookingForCompanion:true,  canDrive:false, againstSmoking:true,  drinksAlcohol:true,  isVegetarian:true,  doesSport:true,  openToOffers:true,  lookingForRelations:true,  openToMeet:true,  likes:55,dislikes:3, reviews:22,subscribers:87,online:15,subscriptions:61 },
+          { id:8,  name:"Леонид Крюков",     location:TRANSLATIONS[lang].kharkiv, occupation:TRANSLATIONS[lang].teacher,          bio:TRANSLATIONS[lang].bio8, tags:["#archite","#history","#road","#car"],              socialLinks:{vk:"leonid_k"},                              isHost:false, lookingForCompanion:true,  canDrive:true,  againstSmoking:true,  drinksAlcohol:false, isVegetarian:false, doesSport:false, openToOffers:false, lookingForRelations:false, openToMeet:true,  likes:11,dislikes:5, reviews:4, subscribers:9, online:1, subscriptions:14 },
+          { id:9,  name:"Лариса Новая",      location:TRANSLATIONS[lang].dnipro,   occupation:TRANSLATIONS[lang].traveler,   bio:TRANSLATIONS[lang].bio9, tags:["#tourism","#travel","#world","#фото"],             socialLinks:{instagram:"larisa_new",twitter:"larisanew"}, isHost:true,  lookingForCompanion:false, canDrive:true,  againstSmoking:false, drinksAlcohol:true,  isVegetarian:false, doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:72,dislikes:1, reviews:31,subscribers:110,online:22,subscriptions:88 },
+          { id:10, name:"Михаил Шетилов",    location:TRANSLATIONS[lang].kyiv,    occupation:TRANSLATIONS[lang].designer,         bio:TRANSLATIONS[lang].bio10,tags:["#design","#bike","#fitness","#road"],              socialLinks:{instagram:"misha_shet"},                     isHost:false, lookingForCompanion:true,  canDrive:false, againstSmoking:true,  drinksAlcohol:false, isVegetarian:true,  doesSport:true,  openToOffers:true,  lookingForRelations:false, openToMeet:true,  likes:28,dislikes:6, reviews:12,subscribers:34,online:7, subscriptions:27 },
         ];
 
         const STATUS_OPTIONS = [
-          { key:"canDrive",           icon:"🚗", label:"Могу подвезти" },
-          { key:"lookingForCompanion",icon:"✈️", label:"Ищу попутчика" },
-          { key:"isHost",             icon:"🏠", label:"Готов принять" },
-          { key:"lookingForRelations",icon:"❤️", label:"В поиске отношений" },
-          { key:"openToMeet",         icon:"😊", label:"Открыт к знакомству" },
-          { key:"againstSmoking",     icon:"🚭", label:"Я против курения" },
-          { key:"drinksAlcohol",      icon:"🍷", label:"Пью спиртные напитки" },
-          { key:"isVegetarian",       icon:"🥗", label:"Я вегетарианец" },
-          { key:"doesSport",          icon:"🏃", label:"Занимаюсь спортом" },
-          { key:"openToOffers",       icon:"💡", label:"Открыт к предложениям" },
+          { key:"canDrive",           icon:"🚗", labelKey:"canDrive" },
+          { key:"lookingForCompanion",icon:"✈️", labelKey:"lookingForCompanion" },
+          { key:"isHost",             icon:"🏠", labelKey:"isHost" },
+          { key:"lookingForRelations",icon:"❤️", labelKey:"lookingForRelations" },
+          { key:"openToMeet",         icon:"😊", labelKey:"openToMeet" },
+          { key:"againstSmoking",     icon:"🚭", labelKey:"againstSmoking" },
+          { key:"drinksAlcohol",      icon:"🍷", labelKey:"drinksAlcohol" },
+          { key:"isVegetarian",       icon:"🥗", labelKey:"isVegetarian" },
+          { key:"doesSport",          icon:"🏃", labelKey:"doesSport" },
+          { key:"openToOffers",       icon:"💡", labelKey:"openToOffers" },
         ];
 
-        const TRANSPORT_MODES = [
-          { key:"walk",icon:"🚶" }, { key:"bike",icon:"🚲" }, { key:"car",icon:"🚗" },
-          { key:"bus",icon:"🚌" }, { key:"metro",icon:"🚇" }, { key:"plane",icon:"✈️" },
-        ];
-
-        const SEED_MSGS = {
-          2: [
-            { id:1,from:"them",text:"Привет! Хочу узнать насчёт маршрута на этой неделе.",time:"15:20",read:true },
-            { id:2,from:"me",  text:"Привет! Да, я планирую ехать в пятницу вечером.",    time:"15:22",read:true },
-            { id:3,from:"them",text:"Отлично! Могу ли я присоединиться?",                 time:"15:23",read:true },
-            { id:4,from:"me",  text:"Конечно, давай договоримся о времени.",              time:"15:25",read:true },
-          ],
-          9:  [{ id:1,from:"them",text:"Здравствуйте! Интересует тур по Карпатам.",  time:"10:00",read:true }],
-        };
-
-        const REVIEWS_DATA = {
-          1:  [{ id:1,author:"Андрей Мотьков",   text:"Замечательный хост! Очень уютно и чисто.", rating:5, date:"15 апр" }],
-        };
-
-        const TC = "#00bfb3"; const TD = "#007a75"; const PU = "#7c3aed";
+        const TC = "#00bfb3"; const PU = "#7c3aed";
         const BG = "linear-gradient(160deg,#1a0533 0%,#0d1f3c 100%)";
         const BR = "rgba(255,255,255,.09)";
         const ACOLS = ["#00897b","#7c3aed","#0e9af0","#e91e8c","#f59e0b"];
@@ -81,20 +367,17 @@
           return <div style={{ width:size,height:size,borderRadius:"50%",background:acol(user.id),display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:size*.33,color:"#fff",flexShrink:0,border:"2px solid rgba(255,255,255,.12)" }}>{ini(user.name)}</div>;
         }
 
-        function Toggle({ value, onChange }) {
-          return <div onClick={()=>onChange(!value)} style={{ width:46,height:26,borderRadius:13,background:value?TC:"rgba(255,255,255,.15)",cursor:"pointer",position:"relative",transition:"background .25s",flexShrink:0 }}><div style={{ position:"absolute",top:3,left:value?23:3,width:20,height:20,borderRadius:"50%",background:"#fff",transition:"left .25s" }} /></div>;
-        }
-
-        function Stars({ n=5 }) { return <span style={{ color:"#f59e0b",fontSize:13 }}>{"★".repeat(n)}{"☆".repeat(5-n)}</span>; }
-
-        function Bar({ title, onBack, right }) {
+        function Bar({ title, onBack, right, lang, onLangClick }) {
           return (
             <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 16px",background:TC,flexShrink:0 }}>
               <div style={{ width:44 }}>
                 {onBack ? <button onClick={onBack} style={{ background:"transparent",border:"none",color:"#fff",fontSize:22,cursor:"pointer" }}>←</button> : <span style={{ color:"#fff",fontSize:20 }}>☰</span>}
               </div>
               <span style={{ fontSize:17,fontWeight:700,color:"#fff" }}>{title}</span>
-              <div style={{ width:44,display:"flex",justifyContent:"flex-end" }}>{right||<span style={{color:"#fff",fontSize:18}}>🔍</span>}</div>
+              <div style={{ width:55,display:"flex",justifyContent:"flex-end", gap: 8, alignItems:"center" }}>
+                <span onClick={onLangClick} style={{fontSize:13, fontWeight:700, background:"rgba(0,0,0,0.2)", padding:"2px 5px", borderRadius:4, cursor:"pointer", textTransform:"uppercase"}}>{lang}</span>
+                {right||<span style={{color:"#fff",fontSize:18}}>🔍</span>}
+              </div>
             </div>
           );
         }
@@ -104,7 +387,38 @@
         const IS = { width:"100%",padding:"11px 14px",background:"rgba(255,255,255,.07)",border:"1px solid rgba(255,255,255,.12)",borderRadius:10,color:"#fff",fontSize:14,outline:"none",boxSizing:"border-box",marginBottom:6 };
         const Lbl = ({ c, mt=12 }) => <div style={{ fontSize:11,color:"rgba(255,255,255,.4)",fontWeight:600,marginBottom:5,marginTop:mt }}>{c}</div>;
 
-        function Register({ onDone }) {
+        // ═══════════════════════════════════════════════════════════════
+        // ЭКРАН ВЫБОРА ЯЗЫКА (НОВЫЙ)
+        // ═══════════════════════════════════════════════════════════════
+        function LangSelect({ onSelect }) {
+          const langs = [
+            {code: "ua", name: "🇺🇦 Українська"},
+            {code: "ru", name: "🇷🇺 Русский"},
+            {code: "en", name: "🇬🇧 English"},
+            {code: "de", name: "🇩🇪 Deutsch"}
+          ];
+          return (
+            <div style={{ minHeight:"100vh",background:"linear-gradient(135deg,#1a0533,#2d1060,#0f2a4a)",display:"flex",alignItems:"center",justifyContent:"center",padding:24 }}>
+              <div style={{ width:"100%",maxWidth:340,background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.12)",borderRadius:40,padding:"38px 28px 30px",backdropFilter:"blur(20px)", textAlign:"center" }}>
+                <div style={{ marginBottom:26 }}>
+                  <span style={{ border:"2px solid "+TC,padding:"5px 10px",fontSize:24,fontWeight:800,color:TC,borderRadius:"6px 0 0 6px" }}>LIFE</span>
+                  <span style={{ background:TC,padding:"5px 10px",fontSize:24,fontWeight:800,color:"#fff",borderRadius:"0 6px 6px 0" }}>UP</span>
+                </div>
+                <h3 style={{color:"#fff", marginBottom:20, fontFamily:"sans-serif"}}>Select Language / Виберіть мову</h3>
+                <div style={{display:"flex", flexDirection:"column", gap:12}}>
+                  {langs.map(l => (
+                    <button key={l.code} onClick={() => onSelect(l.code)} style={{ width:"100%",padding:"13px 0",background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,0.15)", borderRadius:12,color:"#fff",fontSize:16,fontWeight:600, cursor:"pointer" }}>
+                      {l.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        function Register({ onDone, lang }) {
+          const t = TRANSLATIONS[lang];
           const [mode,setMode] = useState("login");
           const [name,setName] = useState("");
           const [phone,setPhone] = useState("");
@@ -117,50 +431,53 @@
                   <span style={{ background:TC,padding:"5px 10px",fontSize:24,fontWeight:800,color:"#fff",borderRadius:"0 6px 6px 0" }}>UP</span>
                 </div>
                 <div style={{ display:"flex",marginBottom:18,background:"rgba(255,255,255,.07)",borderRadius:10,padding:3 }}>
-                  {[["login","Войти"],["register","Регистрация"]].map(([m,l])=><button key={m} onClick={()=>setMode(m)} style={{ flex:1,padding:"8px 0",borderRadius:8,border:"none",background:mode===m?TC:"transparent",color:"#fff",fontWeight:600 }}>{l}</button>)}
+                  {[["login",t.login],["register",t.register]].map(([m,l])=><button key={m} onClick={()=>setMode(m)} style={{ flex:1,padding:"8px 0",borderRadius:8,border:"none",background:mode===m?TC:"transparent",color:"#fff",fontWeight:600 }}>{l}</button>)}
                 </div>
-                {mode==="register" && <input placeholder="Ваше имя" value={name} onChange={e=>setName(e.target.value)} style={IS} />}
-                <input placeholder="Телефон или email" value={phone} onChange={e=>setPhone(e.target.value)} style={IS} />
-                <input type="password" placeholder="Пароль" value={pass} onChange={e=>setPass(e.target.value)} style={IS} />
-                <button onClick={()=>onDone(name||"Пользователь")} style={{ width:"100%",padding:"13px 0",background:`linear-gradient(90deg,${TC},${PU})`,border:"none",borderRadius:12,color:"#fff",fontSize:15,fontWeight:700 }}>
-                  {mode==="login"?"ВОЙТИ":"ЗАРЕГИСТРИРОВАТЬСЯ"}
+                {mode==="register" && <input placeholder={t.namePlh} value={name} onChange={e=>setName(e.target.value)} style={IS} />}
+                <input placeholder={t.phonePlh} value={phone} onChange={e=>setPhone(e.target.value)} style={IS} />
+                <input type="password" placeholder={t.passPlh} value={pass} onChange={e=>setPass(e.target.value)} style={IS} />
+                <button onClick={()=>onDone(name||"User")} style={{ width:"100%",padding:"13px 0",background:`linear-gradient(90deg,${TC},${PU})`,border:"none",borderRadius:12,color:"#fff",fontSize:15,fontWeight:700, cursor:"pointer" }}>
+                  {mode==="login"?t.btnIn:t.btnReg}
                 </button>
               </div>
             </div>
           );
         }
 
-        function Feed({ users, me, favIds, onToggleFav, onProfile, onMyProfile, onAbout, onMsg, isFavScreen = false }) {
-          const [q,setQ] = useState(""); const [f,setF] = useState("all");
+        function Feed({ users, me, favIds, onToggleFav, onProfile, onMyProfile, onAbout, onMsg, isFavScreen = false, lang, changeLang }) {
+          const t = TRANSLATIONS[lang];
+          const [q,setQ] = useState("");
           const list = users.filter(u => {
             if (isFavScreen && !favIds.includes(u.id)) return false;
-            const mS = !q || u.name.toLowerCase().includes(q.toLowerCase()) || u.tags.some(t => t.toLowerCase().includes(q.toLowerCase()));
-            const mF = f === "all" || (f === "host" && u.isHost) || (f === "companion" && u.lookingForCompanion);
-            return mS && mF;
+            const mS = !q || u.name.toLowerCase().includes(q.toLowerCase()) || u.tags.some(t => t.toLowerCase().includes(q.toLowerCase())) || u.location.toLowerCase().includes(q.toLowerCase());
+            return mS;
           });
           return (
             <div style={W}>
               <div style={{ background:TC,padding:"12px 16px 10px",flexShrink:0 }}>
                 <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:9 }}>
-                  <button onClick={onAbout} style={{ background:"rgba(255,255,255,.18)",border:"none",borderRadius:8,padding:"3px 8px",color:"#fff" }}>ℹ О проекте</button>
-                  <button onClick={onMyProfile} style={{ background:"rgba(255,255,255,.18)",border:"none",borderRadius:20,padding:"5px 10px",color:"#fff",display:"flex",alignItems:"center",gap:6 }}>
+                  <button onClick={onAbout} style={{ background:"rgba(255,255,255,.18)",border:"none",borderRadius:8,padding:"3px 8px",color:"#fff", cursor:"pointer" }}>{t.aboutProj}</button>
+                  <button onClick={onMyProfile} style={{ background:"rgba(255,255,255,.18)",border:"none",borderRadius:20,padding:"5px 10px",color:"#fff",display:"flex",alignItems:"center",gap:6, cursor:"pointer" }}>
                     <Ava user={me} size={22} /><span>{me.name}</span>
                   </button>
                 </div>
-                <input value={q} onChange={e=>setQ(e.target.value)} placeholder="🔍 Поиск людей или тегов..." style={IS} />
+                <div style={{display:"flex", gap:8, alignItems:"center"}}>
+                  <input value={q} onChange={e=>setQ(e.target.value)} placeholder={t.searchPlh} style={{...IS, margin:0}} />
+                  <span onClick={changeLang} style={{fontSize:12, fontWeight:700, background:"rgba(0,0,0,0.2)", padding:"6px 8px", borderRadius:8, cursor:"pointer", textTransform:"uppercase"}}>{lang}</span>
+                </div>
               </div>
               <div style={SC}>
                 {list.map(u=>(
-                  <div key={u.id} onClick={()=>onProfile(u)} style={{ display:"flex",gap:12,padding:"13px 16px",borderBottom:"1px solid rgba(255,255,255,.06)" }}>
+                  <div key={u.id} onClick={()=>onProfile(u)} style={{ display:"flex",gap:12,padding:"13px 16px",borderBottom:"1px solid rgba(255,255,255,.06)", cursor:"pointer" }}>
                     <Ava user={u} size={54} />
                     <div style={{ flex:1 }}>
                       <div style={{ fontWeight:700 }}>{u.name}</div>
                       <div style={{ fontSize:12,color:"rgba(255,255,255,.4)" }}>{u.location}</div>
                       <div style={{ fontSize:13,color:"rgba(255,255,255,.6)" }}>{u.bio}</div>
                     </div>
-                    <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
-                      <button onClick={e=>{e.stopPropagation();onMsg(u);}} style={{ background:"transparent",border:"none",fontSize:16 }}>💬</button>
-                      <button onClick={e=>{e.stopPropagation();onToggleFav(u.id);}} style={{ background:"transparent", border:"none", fontSize:20, color:favIds.includes(u.id)?"#f59e0b":"#fff" }}>{favIds.includes(u.id)?"★":"☆"}</button>
+                    <div style={{ display:"flex", flexDirection:"column", gap:10, justifyContent:"center" }}>
+                      <button onClick={e=>{e.stopPropagation();onMsg(u);}} style={{ background:"transparent",border:"none",fontSize:18, cursor:"pointer" }}>💬</button>
+                      <button onClick={e=>{e.stopPropagation();onToggleFav(u.id);}} style={{ background:"transparent", border:"none", fontSize:20, color:favIds.includes(u.id)?"#f59e0b":"#fff", cursor:"pointer" }}>{favIds.includes(u.id)?"★":"☆"}</button>
                     </div>
                   </div>
                 ))}
@@ -169,46 +486,60 @@
           );
         }
 
-        function Profile({ user, isSelf, onEdit, onBack, onMsg }) {
+        function Profile({ user, isSelf, onEdit, onBack, lang, changeLang }) {
+          const t = TRANSLATIONS[lang];
           return (
             <div style={W}>
-              <Bar title={user.name} onBack={onBack} right={isSelf && <button onClick={onEdit} style={{color:"#fff",background:"none",border:"none"}}>✎</button>} />
+              <Bar title={user.name} onBack={onBack} lang={lang} onLangClick={changeLang} right={isSelf && <button onClick={onEdit} style={{color:"#fff",background:"none",border:"none", fontSize:16, cursor:"pointer"}}>✎</button>} />
               <div style={{...SC, padding:20}}>
-                <Ava user={user} size={78} />
-                <h2>{user.name}</h2>
-                <p>{user.bio}</p>
-                <Lbl c="Статусы" />
-                {STATUS_OPTIONS.filter(o=>user[o.key]).map(o=><div key={o.key}>{o.icon} {o.label}</div>)}
+                <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:16}}>
+                   <Ava user={user} size={78} />
+                   <div>
+                     <h2 style={{margin:0}}>{user.name}</h2>
+                     <div style={{fontSize:14, color:"rgba(255,255,255,0.4)"}}>{user.location}</div>
+                   </div>
+                </div>
+                <p style={{background:"rgba(255,255,255,0.04)", padding:14, borderRadius:12, border:`1px solid ${BR}`}}>{user.bio}</p>
+                <Lbl c={t.statusLbl} />
+                <div style={{display:"flex", flexDirection:"column", gap:8, marginTop:8}}>
+                  {STATUS_OPTIONS.filter(o=>user[o.key]).map(o=>(
+                    <div key={o.key} style={{background:"rgba(255,255,255,0.06)", padding:"8px 12px", borderRadius:8, fontSize:14}}>
+                      {t[o.labelKey]}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           );
         }
 
-        function EditProfile({ user, onSave, onCancel }) {
+        function EditProfile({ user, onSave, onCancel, lang }) {
+          const t = TRANSLATIONS[lang];
           const [form,setForm] = useState({...user});
           return (
             <div style={W}>
-              <Bar title="Редактировать" onBack={onCancel} right={<button onClick={()=>onSave(form)} style={{color:"#fff",background:"none",border:"none"}}>Готово</button>} />
+              <Bar title={t.editTitle} onBack={onCancel} lang={lang} right={<button onClick={()=>onSave(form)} style={{color:"#fff",background:"none",border:"none", fontWeight:700, cursor:"pointer"}}>{t.done}</button>} />
               <div style={{...SC, padding:20}}>
-                <Lbl c="Имя"/><input value={form.name} onChange={e=>setForm({...form, name:e.target.value})} style={IS} />
-                <Lbl c="О себе"/><input value={form.bio} onChange={e=>setForm({...form, bio:e.target.value})} style={IS} />
+                <Lbl c={t.nameLbl}/><input value={form.name} onChange={e=>setForm({...form, name:e.target.value})} style={IS} />
+                <Lbl c={t.aboutLbl}/><textarea value={form.bio} onChange={e=>setForm({...form, bio:e.target.value})} style={{...IS, height:100, resize:"none"}} />
               </div>
             </div>
           );
         }
 
-        function MsgList({ users, msgs, onBack, onChat }) {
+        function MsgList({ users, msgs, onBack, onChat, lang, changeLang }) {
+          const t = TRANSLATIONS[lang];
           const chats = users.filter(u => msgs[u.id] && msgs[u.id].length > 0).map(u => ({ user: u, last: msgs[u.id].at(-1) }));
           return (
             <div style={W}>
-              <Bar title="Сообщения" onBack={onBack} />
+              <Bar title={t.messagesTitle} onBack={onBack} lang={lang} onLangClick={changeLang} />
               <div style={SC}>
                 {chats.map(({user:u,last})=>(
-                  <div key={u.id} onClick={()=>onChat(u)} style={{ display:"flex",padding:16,borderBottom:`1px solid ${BR}` }}>
-                    <Ava user={u} size={40} />
-                    <div style={{marginLeft:12}}>
+                  <div key={u.id} onClick={()=>onChat(u)} style={{ display:"flex",padding:16,borderBottom:`1px solid ${BR}`, cursor:"pointer", alignItems:"center" }}>
+                    <Ava user={u} size={44} />
+                    <div style={{marginLeft:12, flex:1}}>
                       <div style={{fontWeight:600}}>{u.name}</div>
-                      <div style={{fontSize:13,color:"gray"}}>{last.text}</div>
+                      <div style={{fontSize:13,color:"rgba(255,255,255,0.5)", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis", maxWidth:200}}>{last.text}</div>
                     </div>
                   </div>
                 ))}
@@ -217,112 +548,38 @@
           );
         }
 
-        function Chat({ user, messages, onBack, onSend }) {
+        function Chat({ user, messages, onBack, onSend, lang }) {
+          const t = TRANSLATIONS[lang];
           const [txt,setTxt] = useState("");
           return (
             <div style={W}>
-              <Bar title={user.name} onBack={onBack} />
-              <div style={{...SC, padding:10}}>
-                {messages.map(m=><div key={m.id} style={{textAlign:m.from==="me"?"right":"left", margin:"5px 0"}}><span style={{background:m.from==="me"?TC:"#333", padding:"6px 10px", borderRadius:10, display:"inline-block"}}>{m.text}</span></div>)}
+              <Bar title={user.name} onBack={onBack} lang={lang} />
+              <div style={{...SC, padding:12}}>
+                {messages.map(m=><div key={m.id} style={{textAlign:m.from==="me"?"right":"left", margin:"8px 0"}}><span style={{background:m.from==="me"?TC:"rgba(255,255,255,0.1)", padding:"8px 12px", borderRadius:14, display:"inline-block", maxWidth:"75%", textAlign:"left", fontSize:14}}>{m.text}</span></div>)}
               </div>
-              <div style={{padding:10, display:"flex", gap:10}}>
-                <input value={txt} onChange={e=>setTxt(e.target.value)} style={{...IS, margin:0}} placeholder="Сообщение..." />
-                <button onClick={()=>{if(txt.trim()){onSend(txt);setTxt("");}}} style={{background:TC, border:"none", color:"#fff", borderRadius:10, padding:"0 15px"}}>Отправить</button>
+              <div style={{padding:12, display:"flex", gap:10, borderTop:`1px solid ${BR}`, background:"rgba(0,0,0,0.1)"}}>
+                <input value={txt} onChange={e=>setTxt(e.target.value)} style={{...IS, margin:0}} placeholder={t.msgPlh} />
+                <button onClick={()=>{if(txt.trim()){onSend(txt);setTxt("");}}} style={{background:TC, border:"none", color:"#fff", borderRadius:10, padding:"0 16px", fontWeight:700, cursor:"pointer"}}>{t.send}</button>
               </div>
             </div>
           );
         }
 
-        function MapScr({ onBack }) {
-          return <div style={W}><Bar title="Карта" onBack={onBack} /><div style={{...SC, padding:40, textAlign:"center"}}>🗺️ Карта в разработке</div></div>;
+        function MapScr({ onBack, lang }) {
+          const t = TRANSLATIONS[lang];
+          return <div style={W}><Bar title={t.mapTitle} onBack={onBack} lang={lang} /><div style={{...SC, padding:40, textAlign:"center", color:"rgba(255,255,255,0.4)"}}>{t.mapDev}</div></div>;
         }
 
-        function Subscribers({ onBack }) {
-          return <div style={W}><Bar title="Поиск" onBack={onBack} /><div style={{...SC, padding:40, textAlign:"center"}}>🔍 Поиск пуст</div></div>;
+        function Subscribers({ onBack, lang }) {
+          const t = TRANSLATIONS[lang];
+          return <div style={W}><Bar title={t.searchTitle} onBack={onBack} lang={lang} /><div style={{...SC, padding:40, textAlign:"center", color:"rgba(255,255,255,0.4)"}}>{t.searchEmpty}</div></div>;
         }
 
-        function About({ onClose }) {
-          return <div style={W}><Bar title="О проекте" onBack={onClose} /><div style={{...SC, padding:20}}><h3>LifeUp Network</h3><p>Платформа для поиска хостов и попутчиков.</p></div></div>;
+        function About({ onClose, lang }) {
+          const t = TRANSLATIONS[lang];
+          return <div style={W}><Bar title={t.aboutTitle} onBack={onClose} lang={lang} /><div style={{...SC, padding:20}}><h3>LifeUp Network</h3><p style={{color:"rgba(255,255,255,0.7)"}}>{t.aboutDesc}</p></div></div>;
         }
 
-        function Nav({ active, onChange, unread }) {
+        function Nav({ active, onChange }) {
           return (
-            <div style={{ position:"fixed",bottom:0,left:0,width:"100%",background:"#080412",display:"flex",justifyContent:"space-around",padding:"10px 0",borderTop:`1px solid ${BR}` }}>
-              {[["feed","🏠"],["map","📍"],["fav","☆"],["messages","✉"],["search","🔍"]].map(([id,ic])=>(
-                <button key={id} onClick={()=>onChange(id)} style={{ background:"transparent",border:"none",fontSize:20,color:active===id?TC:"#fff" }}>{ic}</button>
-              ))}
-            </div>
-          );
-        }
-
-        export default function App() {
-          const [users,setUsers] = useState(ALL_USERS);
-          const [me,setMe] = useState(null);
-          const [scr,setScr] = useState("register");
-          const [viewUser,setViewUser] = useState(null);
-          const [chatUser,setChatUser] = useState(null);
-          const [tab,setTab] = useState("feed");
-          const [msgs,setMsgs] = useState(SEED_MSGS);
-          const [favIds, setFavIds] = useState([]);
-
-          const doRegister = name => {
-            const nextId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
-            const nu = { id:nextId,name,location:"Украина",bio:"Новый пользователь",tags:[],isHost:false,lookingForCompanion:false };
-            setUsers(p=>[nu,...p]); setMe(nu); setScr("feed"); setTab("feed");
-          };
-          
-          const doSave = updated => { setMe(updated); setUsers(p=>p.map(u=>u.id===updated.id?updated:u)); setScr("profile"); };
-          const doSend = (toUser,text) => { const m={id:Date.now(),from:"me",text,time:"12:00",read:true}; setMsgs(ms=>({...ms,[toUser.id]:[...(ms[toUser.id]||[]),m]})); };
-          
-          const doChat = user => { 
-            setChatUser(user); setScr("chat"); 
-            setMsgs(prev => {
-              if (!prev[user.id]) return prev;
-              return { ...prev, [user.id]: prev[user.id].map(m => m.from === "them" ? { ...m, read: true } : m) };
-            });
-          };
-
-          const handleToggleFav = id => { setFavIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]); };
-
-          const doNav = t => {
-            setTab(t);
-            if(t==="feed") setScr("feed");
-            else if(t==="map") setScr("map");
-            else if(t==="fav") setScr("fav");
-            else if(t==="messages") setScr("msgList");
-            else if(t==="search") setScr("subscribers");
-          };
-
-          const showNav = me && !["register"].includes(scr);
-
-          const render = () => {
-            if(scr==="register") return <Register onDone={doRegister} />;
-            if(scr==="about") return <About onClose={()=>setScr("feed")} />;
-            if(!me) return null;
-            if(scr==="feed") return <Feed users={users} me={me} favIds={favIds} onToggleFav={handleToggleFav} onProfile={u=>{setViewUser(u);setScr("viewProfile");}} onMyProfile={()=>setScr("profile")} onAbout={()=>setScr("about")} onMsg={doChat} />;
-            if(scr==="fav") return <Feed users={users} me={me} favIds={favIds} onToggleFav={handleToggleFav} onProfile={u=>{setViewUser(u);setScr("viewProfile");}} onMyProfile={()=>setScr("profile")} onAbout={()=>setScr("about")} onMsg={doChat} isFavScreen={true} />;
-            if(scr==="profile") return <Profile user={me} isSelf onEdit={()=>setScr("editProfile")} onBack={()=>setScr("feed")} onMsg={doChat} />;
-            if(scr==="editProfile") return <EditProfile user={me} onSave={doSave} onCancel={()=>setScr("profile")} />;
-            if(scr==="viewProfile"&&viewUser) return <Profile user={viewUser} isSelf={false} onBack={() => setScr(tab)} onMsg={doChat} />;
-            if(scr==="subscribers") return <Subscribers onBack={()=>setScr("feed")} />;
-            if(scr==="msgList") return <MsgList users={users} msgs={msgs} onBack={()=>setScr("feed")} onChat={doChat} />;
-            if(scr==="chat"&&chatUser) return <Chat user={chatUser} messages={msgs[chatUser.id]||[]} onBack={()=>setScr("msgList")} onSend={t=>doSend(chatUser,t)} />;
-            if(scr==="map") return <MapScr onBack={()=>setScr("feed")} />;
-            return null;
-          };
-
-          return (
-            <div style={{ display:"flex",justifyContent:"center",minHeight:"100vh" }}>
-              <div style={{ width:"100%",maxWidth:430,height:"100vh",overflow:"hidden",position:"relative" }}>
-                {render()}
-                {showNav && <Nav active={tab} onChange={doNav} />}
-              </div>
-            </div>
-          );
-        }
-
-        const root = tragedies = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
-</body>
-</html>
+            <div style={{ position:"fixed",bottom:0
