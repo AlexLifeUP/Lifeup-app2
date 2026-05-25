@@ -33,109 +33,131 @@
         const BR = "rgba(255, 255, 255, .09)";
         
         const W = { display: "flex", flexDirection: "column", height: "100vh", background: BG, color: "#fff", boxSizing: "border-box" };
-        const SC = { overflowY: "auto", flex: 1, paddingBottom: 80 };
         const IS = { width: "100%", padding: "11px 14px", background: "rgba(255,255,255,.07)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 10, color: "#fff", fontSize: 14, outline: "none", boxSizing: "border-box", marginBottom: 6 };
 
-        // Опции фильтров и тегов статуса
         const STATUS_OPTIONS = [
-          { key: "canDrive", icon: "🚗", labelUa: "Можу підвезти", labelRu: "Могу подвезти", labelEn: "Can drive" },
-          { key: "lookingForCompanion", icon: "✈️", labelUa: "Шукаю попутника", labelRu: "Ищу попутчика", labelEn: "Looking for companion" },
-          { key: "isHost", icon: "🏠", labelUa: "Готовий прийняти (Житло)", labelRu: "Готов принять (Жилье)", labelEn: "Ready to host" },
-          { key: "lookingForRelations", icon: "❤️", labelUa: "В пошуку відносин", labelRu: "В поиске отношений", labelEn: "Looking for relations" },
-          { key: "openToMeet", icon: "😊", labelUa: "Відкритий до знайомств", labelRu: "Открыт к знакомствам", labelEn: "Open to meet" },
-          { key: "againstSmoking", icon: "🚭", labelUa: "Проти куріння", labelRu: "Против курения", labelEn: "Against smoking" },
-          { key: "drinksAlcohol", icon: "🍷", labelUa: "Вживаю алкоголь", labelRu: "Пью алкоголь", labelEn: "Drinks alcohol" },
-          { key: "isVegetarian", icon: "🥗", labelUa: "Вегетаріанець", labelRu: "Вегетарианец", labelEn: "Vegetarian" },
-          { key: "doesSport", icon: "🏃", labelUa: "Займаюся спортом", labelRu: "Занимаюсь спортом", labelEn: "Does sports" },
-          { key: "openToOffers", icon: "💡", labelUa: "Відкритий до пропозицій", labelRu: "Открыт к предложениям", labelEn: "Open to offers" }
+          { key: "canDrive", icon: "🚗", labelUa: "Можу підвезти", labelRu: "Могу подвезти", labelEn: "Can drive", labelFr: "Peut conduire", labelDe: "Kann fahren" },
+          { key: "lookingForCompanion", icon: "✈️", labelUa: "Шукаю попутника", labelRu: "Ищу попутчика", labelEn: "Looking for companion", labelFr: "Cherche compagnon", labelDe: "Sucht Begleiter" },
+          { key: "isHost", icon: "🏠", labelUa: "Готовий прийняти (Житло)", labelRu: "Готов принять (Жилье)", labelEn: "Ready to host", labelFr: "Prêt à héberger", labelDe: "Bereit zu hosten" },
+          { key: "lookingForRelations", icon: "❤️", labelUa: "В пошуку відносин", labelRu: "В поиске отношений", labelEn: "Looking for relations", labelFr: "Cherche relation", labelDe: "Sucht Beziehung" },
+          { key: "openToMeet", icon: "😊", labelUa: "Відкритий до знайомств", labelRu: "Открыт к знакомствам", labelEn: "Open to meet", labelFr: "Ouvert aux rencontres", labelDe: "Offen für Treffen" },
+          { key: "againstSmoking", icon: "🚭", labelUa: "Проти куріння", labelRu: "Против курения", labelEn: "Against smoking", labelFr: "Non-fumeur", labelDe: "Nichtraucher" },
+          { key: "drinksAlcohol", icon: "🍷", labelUa: "Вживаю алкоголь", labelRu: "Пью алкоголь", labelEn: "Drinks alcohol", labelFr: "Prend de l'alcool", labelDe: "Trinkt Alkohol" },
+          { key: "isVegetarian", icon: "🥗", labelUa: "Вегетаріанець", labelRu: "Вегетарианец", labelEn: "Vegetarian", labelFr: "Végétarien", labelDe: "Vegetarier" },
+          { key: "doesSport", icon: "🏃", labelUa: "Займаюся спортом", labelRu: "Занимаюсь спортом", labelEn: "Does sports", labelFr: "Fait du sport", labelDe: "Treibt Sport" },
+          { key: "openToOffers", icon: "💡", labelUa: "Відкритий до пропозицій", labelRu: "Открыт к предложениям", labelEn: "Open to offers", labelFr: "Ouvert aux propositions", labelDe: "Offen für Angebote" }
         ];
 
-        // Глобальные тексты локализации
         const TRANSLATIONS_DATA = {
           ua: {
-            appTitle: "LifeUp Network", feed: "Стрічка", map: "Карта", housing: "Житло", messages: "Чати", profile: "Профіль",
+            appTitle: "LifeUp", feed: "Стрічка", map: "Карта", housing: "Житло", messages: "Чати", profile: "Профіль",
             searchPlh: "🔍 Пошук людей, міст, тегів...", emptyList: "🌍 Нікого не знайдено",
-            aboutProj: "ℹ Про проєкт", login: "Увійти", register: "Реєстрація", namePlh: "Ваше ім'я", phonePlh: "Телефон або email", passPlh: "Пароль",
-            btnIn: "УВІЙТИ", btnReg: "ЗАРЕЄСТРУВАТИСЯ", hostBadge: "HOST", companionBadge: "ПОПУТНИК", driverBadge: "ДРАЙВ",
+            login: "Увійти", register: "Реєстрація", namePlh: "Ваше ім'я", phonePlh: "Телефон або email", passPlh: "Пароль",
+            btnIn: "УВІЙТИ", btnReg: "ЗАРЕЄСТРУВАТИСЯ", hostBadge: "HOST", companionBadge: "ПОПУТНИК",
             btnMsg: "Написати", btnCall: "Дзвінок", btnRent: "Забронювати", tabsFeed: "Усі", tabsFav: "Обране",
             statsLikes: "Лайки", statsSubs: "Підписники", statsRev: "Відгуки", statusTitle: "Особливості & Статус",
-            editTitle: "Редагувати профіль", done: "Зберегти", cancel: "Скасувати", nameLbl: "Ім'я", aboutLbl: "Про себе", locLbl: "Місто/Локація", occLbl: "Професія/Діяльність",
+            editTitle: "Редагувати профіль", done: "Зберегти", cancel: "Скасувати", nameLbl: "Ім'я", aboutLbl: "Про себе", locLbl: "Місто/Локація",
             housingTitle: "Каталог житла (Couchsurfing)", housingDesc: "Знайди безкоштовне або дружнє житло у мандрівників",
             mapDesc: "Інтерактивний радар мандрівників навколо тебе", mapSearch: "Шукати в цьому районі",
-            emptyMsgs: "У вас ще немає активних діалогів. Напишіть кому-небудь!", msgPlh: "Введіть повідомлення...", send: "Відправити",
-            revTitle: "Відгуки користувачів", addRev: "Залишити відгук", revPlh: "Опишіть ваш досвід спілкування або проживання...",
-            priceFree: "Безкоштовно / За відгук", rating: "Рейтинг", filterAll: "Усі локації", logout: "Вийти",
-            kharkiv: "Україна, Харків", kyiv: "Україна, Київ", boryspil: "Україна, Бориспіль", irpin: "Україна, Ірпінь", odesa: "Україна, Одеса", dnipro: "Україна, Дніпро", львов: "Україна, Львів",
-            designer: "Дизайнер", creativeDir: "Креативний дир.", representative: "Представник", copywriter: "Копірайтер", translator: "Перекладач", model: "Модель", teacher: "Вчитель", traveler: "Мандрівник",
-            bio1: "Я не прагну бути привабливою. Моя справа — заставлять людей ставать кращими.", bio2: "Щодня їжджу Київ-Бровари.", bio3: "Створюю маршрути по Україні.", newUserBio: "Новий користувач", ukraine: "Україна"
+            emptyMsgs: "У вас ще немає активних діалогів.", msgPlh: "Введіть повідомлення...", send: "Відправити",
+            revTitle: "Відгуки користувачів", addRev: "Залишити відгук", revPlh: "Опишіть ваш досвід...",
+            priceFree: "Безкоштовно / За відгук", rating: "Рейтинг", filterAll: "Усі локації", logout: "Вийти", translateBtn: "🌐 Перекласти",
+            kharkiv: "Україна, Харків", kyiv: "Україна, Київ", odesa: "Україна, Одеса", designer: "Дизайнер", traveler: "Мандрівник",
+            bio1: "Я не прагну бути привабливою. Моя справа — заставлять людей ставать кращими.", bio2: "Щодня їжджу Київ-Бровари.", bio3: "Створюю маршрути по Україні.", ukraine: "Україна"
           },
           ru: {
-            appTitle: "LifeUp Network", feed: "Лента", map: "Карта", housing: "Жилье", messages: "Чаты", profile: "Профиль",
+            appTitle: "LifeUp", feed: "Лента", map: "Карта", housing: "Жилье", messages: "Чаты", profile: "Профиль",
             searchPlh: "🔍 Поиск людей, городов, тегов...", emptyList: "🌍 Никого не найдено",
-            aboutProj: "ℹ О проекте", login: "Войти", register: "Регистрация", namePlh: "Ваше имя", phonePlh: "Телефон или email", passPlh: "Пароль",
-            btnIn: "ВОЙТИ", btnReg: "ЗАРЕГИСТРИРОВАТЬСЯ", hostBadge: "HOST", companionBadge: "ПОПУТЧИК", driverBadge: "ДРАЙВ",
+            login: "Войти", register: "Регистрация", namePlh: "Ваше имя", phonePlh: "Телефон или email", passPlh: "Пароль",
+            btnIn: "ВОЙТИ", btnReg: "ЗАРЕГИСТРИРОВАТЬСЯ", hostBadge: "HOST", companionBadge: "ПОПУТЧИК",
             btnMsg: "Написать", btnCall: "Звонок", btnRent: "Забронировать", tabsFeed: "Все", tabsFav: "Избранное",
             statsLikes: "Лайки", statsSubs: "Подписчики", statsRev: "Отзывы", statusTitle: "Особенности & Статус",
-            editTitle: "Редактировать профиль", done: "Сохранить", cancel: "Отмена", nameLbl: "Имя", aboutLbl: "О себе", locLbl: "Город/Локация", occLbl: "Профессия/Деятельность",
+            editTitle: "Редактировать профиль", done: "Сохранить", cancel: "Отмена", nameLbl: "Имя", aboutLbl: "О себе", locLbl: "Город/Локация",
             housingTitle: "Каталог жилья (Couchsurfing)", housingDesc: "Найди бесплатное или дружественное жилье у путешественников",
             mapDesc: "Интерактивный радар путешественников вокруг тебя", mapSearch: "Искать в этом районе",
-            emptyMsgs: "У вас еще нет активных диалогов. Напишите кому-нибудь!", msgPlh: "Введите сообщение...", send: "Отправить",
-            revTitle: "Отзывы пользователей", addRev: "Оставить отзыв", revPlh: "Опишите ваш опыт общения или проживания...",
-            priceFree: "Бесплатно / За отзыв", rating: "Рейтинг", filterAll: "Все локации", logout: "Выйти",
-            kharkiv: "Украина, Харьков", kyiv: "Украина, Киев", boryspil: "Украина, Борисполь", irpin: "Украина, Ирпень", odesa: "Украина, Одесса", dnipro: "Украина, Днепр", львов: "Украина, Львов",
-            designer: "Дизайнер", creativeDir: "Креативный дир.", representative: "Представитель", copywriter: "Копирайтер", translator: "Переводчик", model: "Модель", teacher: "Учитель", traveler: "Путешественник",
-            bio1: "Я не стремлюсь быть привлекательной. Моё дело — заставлять людей становиться лучше.", bio2: "Ежедневно езжу Киев-Бровары.", bio3: "Создаю маршруты по Украине.", newUserBio: "Новый пользователь", ukraine: "Украина"
+            emptyMsgs: "У вас еще нет активных диалогов.", msgPlh: "Введите сообщение...", send: "Отправить",
+            revTitle: "Отзывы пользователей", addRev: "Оставить отзыв", revPlh: "Опишите ваш опыт...",
+            priceFree: "Бесплатно / За отзыв", rating: "Рейтинг", filterAll: "Все локации", logout: "Выйти", translateBtn: "🌐 Перевести",
+            kharkiv: "Украина, Харьков", kyiv: "Украина, Киев", odesa: "Украина, Одесса", designer: "Дизайнер", traveler: "Путешественник",
+            bio1: "Я не стремлюсь быть привлекательной. Моё дело — заставлять людей становиться лучше.", bio2: "Ежедневно езжу Киев-Бровары.", bio3: "Создаю маршруты по Украине.", ukraine: "Украина"
           },
           en: {
-            appTitle: "LifeUp Network", feed: "Feed", map: "Map", housing: "Housing", messages: "Chats", profile: "Profile",
-            searchPlh: "🔍 Search users, locations, tags...", emptyList: "🌍 No users found",
-            aboutProj: "ℹ About project", login: "Login", register: "Register", namePlh: "Your name", phonePlh: "Phone or email", passPlh: "Password",
-            btnIn: "LOG IN", btnReg: "SIGN UP", hostBadge: "HOST", companionBadge: "COMPANION", driverBadge: "DRIVER",
-            btnMsg: "Message", btnCall: "Call", btnRent: "Book Stay", tabsFeed: "All", tabsFav: "Favorites",
+            appTitle: "LifeUp", feed: "Feed", map: "Map", housing: "Housing", messages: "Chats", profile: "Profile",
+            searchPlh: "🔍 Search users...", emptyList: "🌍 No users found",
+            login: "Login", register: "Register", namePlh: "Your name", phonePlh: "Phone/Email", passPlh: "Password",
+            btnIn: "LOG IN", btnReg: "SIGN UP", hostBadge: "HOST", companionBadge: "COMPANION",
+            btnMsg: "Message", btnCall: "Call", btnRent: "Book", tabsFeed: "All", tabsFav: "Favorites",
             statsLikes: "Likes", statsSubs: "Followers", statsRev: "Reviews", statusTitle: "Features & Status",
-            editTitle: "Edit Profile", done: "Save", cancel: "Cancel", nameLbl: "Name", aboutLbl: "About me", locLbl: "City/Location", occupation: "Occupation",
-            housingTitle: "Housing Directory (Couchsurfing)", housingDesc: "Find free or friendly hosting from fellow travelers",
+            editTitle: "Edit Profile", done: "Save", cancel: "Cancel", nameLbl: "Name", aboutLbl: "About me", locLbl: "Location",
+            housingTitle: "Housing Directory", housingDesc: "Find free or friendly hosting from fellow travelers",
             mapDesc: "Interactive radar of travelers near you", mapSearch: "Search this area",
-            emptyMsgs: "No active dialogs yet. Drop a line to someone!", msgPlh: "Type a message...", send: "Send",
-            revTitle: "User Reviews", addRev: "Leave Review", revPlh: "Describe your experience communicating or staying...",
-            priceFree: "Free / For Review", rating: "Rating", filterAll: "All locations", logout: "Log Out",
-            kharkiv: "Ukraine, Kharkiv", kyiv: "Ukraine, Kyiv", boryspil: "Ukraine, Boryspil", irpin: "Ukraine, Irpin", odesa: "Ukraine, Odesa", dnipro: "Ukraine, Dnipro", львов: "Ukraine, Lviv",
-            designer: "Designer", creativeDir: "Creative Dir.", representative: "Representative", copywriter: "Copywriter", translator: "Translator", model: "Model", teacher: "Teacher", traveler: "Traveler",
-            bio1: "I don't strive to be attractive. My goal is to inspire people to become better.", bio2: "Commuting Kyiv-Brovary daily.", bio3: "Creating travel routes in Ukraine.", newUserBio: "New User", ukraine: "Ukraine"
+            emptyMsgs: "No active dialogs yet.", msgPlh: "Type a message...", send: "Send",
+            revTitle: "User Reviews", addRev: "Leave Review", revPlh: "Describe your experience...",
+            priceFree: "Free / For Review", rating: "Rating", filterAll: "All locations", logout: "Log Out", translateBtn: "🌐 Translate",
+            kharkiv: "Kharkiv, Ukraine", kyiv: "Kyiv, Ukraine", odesa: "Odesa, Ukraine", designer: "Designer", traveler: "Traveler",
+            bio1: "I don't strive to be attractive. My goal is to make people better.", bio2: "Commuting Kyiv-Brovary daily.", bio3: "Creating travel routes in Ukraine.", ukraine: "Ukraine"
+          },
+          fr: {
+            appTitle: "LifeUp", feed: "Flux", map: "Carte", housing: "Logement", messages: "Chats", profile: "Profil",
+            searchPlh: "🔍 Rechercher...", emptyList: "🌍 Aucun utilisateur trouvé",
+            login: "Connexion", register: "Inscription", namePlh: "Votre nom", phonePlh: "Téléphone / Email", passPlh: "Mot de passe",
+            btnIn: "SE CONNECTER", btnReg: "S'INSCRIRE", hostBadge: "HÔTE", companionBadge: "COMPAGNON",
+            btnMsg: "Message", btnCall: "Appeler", btnRent: "Réserver", tabsFeed: "Tout", tabsFav: "Favoris",
+            statsLikes: "J'aime", statsSubs: "Abonnés", statsRev: "Avis", statusTitle: "Caractéristiques & Statut",
+            editTitle: "Modifier le profil", done: "Enregistrer", cancel: "Annuler", nameLbl: "Nom", aboutLbl: "À propos", locLbl: "Emplacement",
+            housingTitle: "Répertoire des logements", housingDesc: "Trouvez un hébergement gratuit chez des voyageurs",
+            mapDesc: "Radar interactif des voyageurs autour de vous", mapSearch: "Chercher dans cette zone",
+            emptyMsgs: "Pas encore de dialogues actifs.", msgPlh: "Tapez un message...", send: "Envoyer",
+            revTitle: "Avis des utilisateurs", addRev: "Laisser un avis", revPlh: "Décrivez votre expérience...",
+            priceFree: "Gratuit / Pour avis", rating: "Note", filterAll: "Tous les lieux", logout: "Se déconnecter", translateBtn: "🌐 Traduire",
+            kharkiv: "Kharkiv, Ukraine", kyiv: "Kyiv, Ukraine", odesa: "Odesa, Ukraine", designer: "Designeur", traveler: "Voyageur",
+            bio1: "Je ne cherche pas à être attrayante. Mon but est d'inspirer les gens à devenir meilleurs.", bio2: "Déplacement quotidien Kiev-Brovary.", bio3: "Création d'itinéraires de voyage en Ukraine.", ukraine: "Ukraine"
+          },
+          de: {
+            appTitle: "LifeUp", feed: "Feed", map: "Karte", housing: "Unterkunft", messages: "Chats", profile: "Profil",
+            searchPlh: "🔍 Suchen...", emptyList: "🌍 Keine Benutzer gefunden",
+            login: "Einloggen", register: "Registrieren", namePlh: "Ihr Name", phonePlh: "Telefon / E-Mail", passPlh: "Passwort",
+            btnIn: "EINLOGGEN", btnReg: "REGISTRIEREN", hostBadge: "HOST", companionBadge: "BEGLEITER",
+            btnMsg: "Nachricht", btnCall: "Anrufen", btnRent: "Buchen", tabsFeed: "Alle", tabsFav: "Favoriten",
+            statsLikes: "Likes", statsSubs: "Follower", statsRev: "Bewertungen", statusTitle: "Merkmale & Status",
+            editTitle: "Profil bearbeiten", done: "Speichern", cancel: "Abbrechen", nameLbl: "Name", aboutLbl: "Über mich", locLbl: "Standort",
+            housingTitle: "Unterkunftsverzeichnis", housingDesc: "Finden Sie eine kostenlose Unterkunft bei Reisenden",
+            mapDesc: "Interaktives Radar von Reisenden in Ihrer Nähe", mapSearch: "In dieser Zone suchen",
+            emptyMsgs: "Noch keine aktiven Dialoge.", msgPlh: "Nachricht schreiben...", send: "Senden",
+            revTitle: "Benutzerbewertungen", addRev: "Bewertung abgeben", revPlh: "Beschreiben Sie Ihre Erfahrung...",
+            priceFree: "Kostenlos / Für Bewertung", rating: "Bewertung", filterAll: "Alle Standorte", logout: "Ausloggen", translateBtn: "🌐 Übersetzen",
+            kharkiv: "Charkiw, Ukraine", kyiv: "Kiew, Ukraine", odesa: "Odesa, Ukraine", designer: "Designer", traveler: "Reisender",
+            bio1: "Ich strebe nicht danach, attraktiv zu sein. Mein Ziel ist es, Menschen besser zu machen.", bio2: "Pendle täglich zwischen Kiew und Browary.", bio3: "Ich erstelle Reiserouten in der Ukraine.", ukraine: "Ukraine"
           }
+        };
+
+        // Тексты для демонстрации функции перевода в чатах
+        const CHAT_TRANSLATIONS = {
+          ua: { "Привет! Будешь в городе?": "Привіт! Будеш у місті?", "Привет! Есть свободные места в машине на пятницу.": "Привіт! Є вільні місця в машині на п'ятницю." },
+          en: { "Привет! Будешь в городе?": "Hi! Will you be in town?", "Привет! Есть свободные места в машине на пятницу.": "Hi! There are free spots in the car for Friday." },
+          fr: { "Привет! Будешь в городе?": "Salut! Tu seras en ville?", "Привет! Есть свободные места в машине на пятницу.": "Salut! Il y a des places disponibles dans la voiture pour vendredi." },
+          de: { "Привет! Будешь в городе?": "Hallo! Wirst du в der Stadt sein?", "Привет! Есть свободные места в машине на пятницу.": "Hallo! Es gibt noch freie Plätze im Auto für Freitag." }
         };
 
         const getLocalizedUsers = (lang) => [
           {
             id: 1, name: "Алиса Шевченко", location: TRANSLATIONS_DATA[lang].kharkiv, occupation: TRANSLATIONS_DATA[lang].designer,
-            bio: TRANSLATIONS_DATA[lang].bio1, tags: ["#tourism", "#фото", "#friends", "#road"],
+            bio: TRANSLATIONS_DATA[lang].bio1, tags: ["#tourism", "#фото", "#friends"],
             isHost: true, lookingForCompanion: true, canDrive: true, againstSmoking: true, drinksAlcohol: false, isVegetarian: true, doesSport: true, openToOffers: true, lookingForRelations: false, openToMeet: true,
             likes: 142, subscribers: 320, reviewsCount: 12, rating: 4.9, lat: 49.9935, lng: 36.2304,
-            reviews: [
-                { id: 1, author: "Андрей М.", text: "Отличный хост! Квартира очень чистая и уютная." },
-                { id: 2, author: "Евгений С.", text: "Прекрасный человек и интересный собеседник." }
-            ],
+            reviews: [{ id: 1, author: "Андрей М.", text: "Отличный хост! Квартира очень чистая и уютная." }],
             housingInfo: { title: "Уютная комната в центре возле парка", sleepPlaces: 2, rules: "Без шумных вечеринок." }
           },
           {
-            id: 2, name: "Андрей Мотьков", location: TRANSLATIONS_DATA[lang].kyiv, occupation: TRANSLATIONS_DATA[lang].designer,
+            id: 2, name: "Андрей Мотьков", location: TRANSLATIONS_DATA[lang].kyiv, occupation: TRANSLATIONS_DATA[lang].traveler,
             bio: TRANSLATIONS_DATA[lang].bio2, tags: ["#road", "#car", "#music"],
             isHost: false, lookingForCompanion: true, canDrive: true, againstSmoking: true, drinksAlcohol: true, isVegetarian: false, doesSport: true, openToOffers: true, lookingForRelations: false, openToMeet: true,
             likes: 98, subscribers: 154, reviewsCount: 8, rating: 4.7, lat: 50.4501, lng: 30.5234,
-            reviews: [{ id: 1, author: "Лариса Н.", text: "Доехали с комфортом, Андрей отличный водитель." }],
-            housingInfo: null
-          },
-          {
-            id: 3, name: "Евгений Савченко", location: TRANSLATIONS_DATA[lang].kyiv, occupation: TRANSLATIONS_DATA[lang].designer,
-            bio: TRANSLATIONS_DATA[lang].bio3, tags: ["#architecture", "#tourism"],
-            isHost: true, lookingForCompanion: false, canDrive: false, againstSmoking: false, drinksAlcohol: true, isVegetarian: false, doesSport: true, openToOffers: true, lookingForRelations: true, openToMeet: true,
-            likes: 210, subscribers: 489, reviewsCount: 24, rating: 5.0, lat: 49.8397, lng: 24.0297,
-            reviews: [{ id: 1, author: "Алиса Ш.", text: "Лучший гид по городу! Атмосфера дома невероятная." }],
-            housingInfo: { title: "Аутентичный диван в старинном доме", sleepPlaces: 1, rules: "Любить кофе и тишину." }
+            reviews: [], housingInfo: null
           }
         ];
 
-        const ACOLS = ["#00897b", "#7c3aed", "#0e9af0", "#e91e8c", "#f59e0b", "#059669"];
+        const ACOLS = ["#00897b", "#7c3aed", "#0e9af0", "#e91e8c"];
         const getAvatarColor = id => ACOLS[id % ACOLS.length];
         const getInitials = name => name ? name.split(" ").map(x => x[0]).join("").slice(0, 2).toUpperCase() : "U";
 
@@ -144,73 +166,74 @@
             style: {
               width: size, height: size, borderRadius: "50%", background: getAvatarColor(user?.id || 0),
               display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: size * 0.36, color: "#fff",
-              flexShrink: 0, border: "2px solid rgba(255,255,255,.15)", boxShadow: "0 2px 6px rgba(0,0,0,0.2)"
+              flexShrink: 0, border: "2px solid rgba(255,255,255,.15)"
             }
           }, getInitials(user?.name));
         }
 
-        // КРАСИВЫЙ СТИЛЬНЫЙ ЛОГОТИП С ИНДИКАТОРОМ СЕТИ
+        // ОБНОВЛЕННЫЙ СТИЛЬНЫЙ МИНИМАЛИСТИЧНЫЙ ЛОГОТИП БЕЗ ЛИШНЕГО ТЕКСТА
         function LogoComponent() {
-          return e('div', { style: { display: "flex", alignItems: "center", gap: 5, userSelect: "none" } },
-            e('div', { style: { display: "flex", alignItems: "center", position: "relative" } },
-              e('span', { style: { border: `2px solid ${TC}`, padding: "4px 8px", fontSize: 18, fontWeight: 800, color: TC, borderRadius: "8px 0 0 8px", letterSpacing: "1px" } }, "LIFE"),
-              e('span', { style: { background: TC, padding: "4px 8px", fontSize: 18, fontWeight: 800, color: "#fff", borderRadius: "0 8px 8px 0", letterSpacing: "1px", boxShadow: `0 0 10px ${TC}80` } }, "UP")
+          return e('div', { style: { display: "flex", alignItems: "center", gap: 6, userSelect: "none" } },
+            e('div', { style: { display: "flex", alignItems: "center" } },
+              e('span', { style: { background: `linear-gradient(90deg, ${TD}, ${TC})`, padding: "5px 12px", fontSize: 16, fontWeight: 900, color: "#fff", borderRadius: 8, letterSpacing: "1.5px", boxShadow: `0 0 12px ${TC}60`, border: "1px solid rgba(255,255,255,0.1)" } }, "LIFEUP")
             ),
-            e('div', { style: { width: 8, height: 8, borderRadius: "50%", background: "#10b981", marginLeft: 4, animation: "pulse 2s infinite", boxShadow: "0 0 8px #10b981" }, title: "Network Active" })
+            e('div', { style: { width: 7, height: 7, borderRadius: "50%", background: "#10b981", boxShadow: "0 0 8px #10b981" } })
           );
         }
 
         function HeaderBar({ title, onBack, rightElement, lang, onLangToggle }) {
           return e('div', {
             style: {
-              display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px", background: `linear-gradient(90deg, ${TD}, ${TC})`,
-              flexShrink: 0, boxShadow: "0 2px 10px rgba(0,0,0,0.3)", zIndex: 5
+              display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 14px", background: "rgba(15, 10, 30, 0.85)",
+              borderBottom: `1px solid ${BR}`, flexShrink: 0, zIndex: 5, backdropFilter: "blur(10px)"
             }
           },
-            e('div', { style: { width: 44, display: "flex", alignItems: "center" } },
-              onBack ? e('button', { onClick: onBack, style: { background: "transparent", border: "none", color: "#fff", fontSize: 22, cursor: "pointer", padding: 0 } }, "←") : e('span', { style: { fontSize: 20, opacity: 0.8 } }, "⚡")
+            e('div', { style: { width: 50, display: "flex", alignItems: "center" } },
+              onBack && e('button', { onClick: onBack, style: { background: "rgba(255,255,255,0.06)", border: `1px solid ${BR}`, color: "#fff", fontSize: 16, cursor: "pointer", padding: "5px 10px", borderRadius: 8 } }, "←")
             ),
-            typeof title === 'string' ? e('span', { style: { fontSize: 17, fontWeight: 700, color: "#fff", letterSpacing: "0.5px" } }, title) : title,
-            e('div', { style: { display: "flex", alignItems: "center", gap: 10 } },
-              onLangToggle && e('button', { onClick: onLangToggle, style: { background: "rgba(0,0,0,0.2)", border: "none", color: "#fff", padding: "4px 8px", borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: "pointer", textTransform: "uppercase" } }, lang),
-              rightElement || e('div', { style: { width: 30 } })
+            typeof title === 'string' ? e('span', { style: { fontSize: 16, fontWeight: 700, color: "#fff" } }, title) : title,
+            e('div', { style: { display: "flex", alignItems: "center", gap: 8 } },
+              onLangToggle && e('button', { onClick: onLangToggle, style: { background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", padding: "4px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700, cursor: "pointer", textTransform: "uppercase" } }, lang),
+              rightElement || e('div', { style: { width: 20 } })
             )
           );
         }
 
         function FieldLabel({ text, marginTop = 0 }) {
-          return e('label', { style: { display: "block", fontSize: 12, fontWeight: 600, color: TC, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 8, marginTop: marginTop } }, text);
+          return e('label', { style: { display: "block", fontSize: 11, fontWeight: 700, color: TC, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 6, marginTop: marginTop } }, text);
         }
         function LangSelectScreen({ onSelect }) {
           return e('div', { style: { minHeight: "100vh", background: "linear-gradient(135deg, #120326, #091326)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 } },
-            e('div', { style: { width: "100%", maxWidth: 340, background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 32, padding: "40px 24px", backdropFilter: "blur(20px)", textAlign: "center", boxShadow: "0 15px 35px rgba(0,0,0,0.5)" } },
-              e('div', { style: { marginBottom: 30, display: "flex", justifyContent: "center" } }, e(LogoComponent)),
-              e('h3', { style: { color: "#fff", marginBottom: 24, fontSize: 16, fontWeight: 500, opacity: 0.9 } }, "Select Language / Выберите язык"),
-              e('div', { style: { display: "flex", flexDirection: "column", gap: 12 } },
-                [ { code: "ua", name: "🇺🇦 Українська" }, { code: "ru", name: "🇷🇺 Русский" }, { code: "en", name: "🇬🇧 English" } ].map(l => e('button', { key: l.code, onClick: () => onSelect(l.code), style: { width: "100%", padding: "14px 0", background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 14, color: "#fff", fontSize: 16, fontWeight: 600, cursor: "pointer" } }, l.name))
+            e('div', { style: { width: "100%", maxWidth: 340, background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 28, padding: "35px 22px", backdropFilter: "blur(20px)", textAlign: "center" } },
+              e('div', { style: { marginBottom: 24, display: "flex", justifyContent: "center" } }, e(LogoComponent)),
+              e('div', { style: { display: "flex", flexDirection: "column", gap: 10 } },
+                [ { code: "ua", name: "🇺🇦 Українська" }, { code: "ru", name: "🇷🇺 Русский" }, { code: "en", name: "🇬🇧 English" }, { code: "fr", name: "🇫🇷 Français" }, { code: "de", name: "🇩🇪 Deutsch" } ].map(l => e('button', { key: l.code, onClick: () => onSelect(l.code), style: { width: "100%", padding: "12px 0", background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer" } }, l.name))
               )
             )
           );
         }
 
-        function AuthScreen({ onDone, lang }) {
+        function AuthScreen({ onDone, lang, onBack }) {
           const t = TRANSLATIONS_DATA[lang];
           const [mode, setMode] = useState("login");
           const [name, setName] = useState("");
           const [phone, setPhone] = useState("");
           const [pass, setPass] = useState("");
 
-          return e('div', { style: { minHeight: "100vh", background: "linear-gradient(135deg, #120326, #091326)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 } },
-            e('div', { style: { width: "100%", maxWidth: 350, background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 32, padding: "35px 24px", backdropFilter: "blur(20px)", boxShadow: "0 15px 35px rgba(0,0,0,0.5)" } },
-              e('div', { style: { display: "flex", justifyContent: "center", marginBottom: 24 } }, e(LogoComponent)),
-              e('div', { style: { display: "flex", marginBottom: 20, background: "rgba(255,255,255,.06)", borderRadius: 12, padding: 3 } },
-                e('button', { onClick: () => setMode("login"), style: { flex: 1, padding: "10px 0", borderRadius: 10, border: "none", background: mode === "login" ? TC : "transparent", color: "#fff", fontWeight: 600, cursor: "pointer" } }, t.login),
-                e('button', { onClick: () => setMode("register"), style: { flex: 1, padding: "10px 0", borderRadius: 10, border: "none", background: mode === "register" ? TC : "transparent", color: "#fff", fontWeight: 600, cursor: "pointer" } }, t.register)
-              ),
-              mode === "register" ? e('input', { placeholder: t.namePlh, value: name, onChange: e => setName(e.target.value), style: IS }) : null,
-              e('input', { placeholder: t.phonePlh, value: phone, onChange: e => setPhone(e.target.value), style: IS }),
-              e('input', { type: "password", placeholder: t.passPlh, value: pass, onChange: e => setPass(e.target.value), style: IS }),
-              e('button', { onClick: () => onDone(name || "Traveler"), style: { width: "100%", padding: "14px 0", background: `linear-gradient(90deg, ${TC}, ${PU})`, border: "none", borderRadius: 12, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", marginTop: 8 } }, mode === "login" ? t.btnIn : t.btnReg)
+          return e('div', { style: { minHeight: "100vh", background: "linear-gradient(135deg, #120326, #091326)", display: "flex", flexDirection: "column" } },
+            e(HeaderBar, { title: "", onBack: onBack, lang: lang }),
+            e('div', { style: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 } },
+              e('div', { style: { width: "100%", maxWidth: 340, background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 28, padding: "30px 22px", backdropFilter: "blur(20px)" } },
+                e('div', { style: { display: "flex", justifyContent: "center", marginBottom: 20 } }, e(LogoComponent)),
+                e('div', { style: { display: "flex", marginBottom: 16, background: "rgba(255,255,255,.06)", borderRadius: 10, padding: 3 } },
+                  e('button', { onClick: () => setMode("login"), style: { flex: 1, padding: "8px 0", borderRadius: 8, border: "none", background: mode === "login" ? TC : "transparent", color: "#fff", fontWeight: 600 } }, t.login),
+                  e('button', { onClick: () => setMode("register"), style: { flex: 1, padding: "8px 0", borderRadius: 8, border: "none", background: mode === "register" ? TC : "transparent", color: "#fff", fontWeight: 600 } }, t.register)
+                ),
+                mode === "register" ? e('input', { placeholder: t.namePlh, value: name, onChange: e => setName(e.target.value), style: IS }) : null,
+                e('input', { placeholder: t.phonePlh, value: phone, onChange: e => setPhone(e.target.value), style: IS }),
+                e('input', { type: "password", placeholder: t.passPlh, value: pass, onChange: e => setPass(e.target.value), style: IS }),
+                e('button', { onClick: () => onDone(name || "Traveler"), style: { width: "100%", padding: "12px 0", background: `linear-gradient(90deg, ${TC}, ${PU})`, border: "none", borderRadius: 10, color: "#fff", fontSize: 14, fontWeight: 700, marginTop: 6 } }, mode === "login" ? t.btnIn : t.btnReg)
+              )
             )
           );
         }
@@ -224,38 +247,37 @@
             if (activeSubTab === "fav" && !favIds.includes(u.id)) return false;
             if (!search.trim()) return true;
             const q = search.toLowerCase();
-            return u.name.toLowerCase().includes(q) || u.location.toLowerCase().includes(q) || u.tags.some(tag => tag.toLowerCase().includes(q));
+            return u.name.toLowerCase().includes(q) || u.location.toLowerCase().includes(q);
           });
 
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
-            e('div', { style: { background: `linear-gradient(135deg, ${TD}, #0d1f3c)`, padding: "14px 16px 12px", flexShrink: 0 } },
-              e('div', { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } },
+            e('div', { style: { background: "rgba(15, 10, 30, 0.85)", padding: "12px 14px", flexShrink: 0, borderBottom: `1px solid ${BR}` } },
+              e('div', { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 } },
                 e(LogoComponent),
-                e('div', { style: { display: "flex", alignItems: "center", gap: 10 } },
-                  e('button', { onClick: onLangToggle, style: { background: "rgba(255,255,255,0.12)", border: "none", color: "#fff", padding: "4px 8px", borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: "pointer" } }, lang),
-                  e('div', { onClick: onSelectMyProfile, style: { display: "flex", alignItems: "center", gap: 6, cursor: "pointer", background: "rgba(0,0,0,0.2)", padding: "4px 10px", borderRadius: 20 } }, e(Avatar, { user: me, size: 24 }), e('span', { style: { fontSize: 12, fontWeight: 600 } }, me?.name?.split(" ")[0]))
+                e('div', { style: { display: "flex", alignItems: "center", gap: 8 } },
+                  e('button', { onClick: onLangToggle, style: { background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", padding: "4px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700 } }, lang),
+                  e('div', { onClick: onSelectMyProfile, style: { display: "flex", alignItems: "center", gap: 6, cursor: "pointer", background: "rgba(255,255,255,0.06)", padding: "4px 8px", borderRadius: 16 } }, e(Avatar, { user: me, size: 22 }), e('span', { style: { fontSize: 12 } }, me?.name?.split(" ")[0]))
                 )
               ),
               e('input', { value: search, onChange: e => setSearch(e.target.value), placeholder: t.searchPlh, style: IS }),
-              e('div', { style: { display: "flex", gap: 10, marginTop: 12 } },
-                e('button', { onClick: () => setActiveSubTab("all"), style: { flex: 1, padding: "6px 0", background: activeSubTab === "all" ? TC : "rgba(255,255,255,0.06)", border: "none", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" } }, t.tabsFeed),
-                e('button', { onClick: () => setActiveSubTab("fav"), style: { flex: 1, padding: "6px 0", background: activeSubTab === "fav" ? PU : "rgba(255,255,255,0.06)", border: "none", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" } }, `${t.tabsFav} (${favIds.length})`)
+              e('div', { style: { display: "flex", gap: 8, marginTop: 8 } },
+                e('button', { onClick: () => setActiveSubTab("all"), style: { flex: 1, padding: "6px 0", background: activeSubTab === "all" ? TC : "rgba(255,255,255,0.04)", border: "none", borderRadius: 8, color: "#fff", fontSize: 12, fontWeight: 600 } }, t.tabsFeed),
+                e('button', { onClick: () => setActiveSubTab("fav"), style: { flex: 1, padding: "6px 0", background: activeSubTab === "fav" ? PU : "rgba(255,255,255,0.04)", border: "none", borderRadius: 8, color: "#fff", fontSize: 12, fontWeight: 600 } }, `${t.tabsFav} (${favIds.length})`)
               )
             ),
             e('div', { style: { overflowY: "auto", flex: 1, paddingBottom: 20 } },
-              filteredUsers.length === 0 ? e('div', { style: { textAlign: "center", color: "rgba(255,255,255,0.3)", marginTop: 40 } }, t.emptyList) : null,
+              filteredUsers.length === 0 ? e('div', { style: { textAlign: "center", color: "rgba(255,255,255,0.3)", marginTop: 30 } }, t.emptyList) : null,
               filteredUsers.map(u => (
-                e('div', { key: u.id, onClick: () => onSelectUser(u), style: { display: "flex", gap: 12, padding: "16px", borderBottom: `1px solid ${BR}`, cursor: "pointer", alignItems: "flex-start" } },
-                  e(Avatar, { user: u, size: 52 }),
+                e('div', { key: u.id, onClick: () => onSelectUser(u), style: { display: "flex", gap: 12, padding: "14px", borderBottom: `1px solid ${BR}`, cursor: "pointer", alignItems: "flex-start" } },
+                  e(Avatar, { user: u, size: 48 }),
                   e('div', { style: { flex: 1, minWidth: 0 } },
-                    e('div', { style: { fontWeight: 700, fontSize: 15, display: "flex", alignItems: "center", gap: 6 } }, u.name, u.isHost && e('span', { style: { fontSize: 9, background: "#f59e0b", color: "#fff", padding: "2px 5px", borderRadius: 4 } }, t.hostBadge)),
-                    e('div', { style: { fontSize: 12, color: TC, margin: "2px 0" } }, u.location),
-                    e('div', { style: { fontSize: 13, color: "rgba(255,255,255,.7)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, u.bio),
-                    e('div', { style: { display: "flex", gap: 5, flexWrap: "wrap", marginTop: 6 } }, u.tags.map(tag => e('span', { key: tag, style: { fontSize: 11, background: "rgba(0,191,179,.1)", color: TC, padding: "1px 6px", borderRadius: 4 } }, tag)))
+                    e('div', { style: { fontWeight: 700, fontSize: 14, display: "flex", alignItems: "center", gap: 6 } }, u.name, u.isHost && e('span', { style: { fontSize: 9, background: "#f59e0b", color: "#fff", padding: "1px 4px", borderRadius: 4 } }, t.hostBadge)),
+                    e('div', { style: { fontSize: 11, color: TC, margin: "2px 0" } }, u.location),
+                    e('div', { style: { fontSize: 13, color: "rgba(255,255,255,.6)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, u.bio)
                   ),
-                  e('div', { style: { display: "flex", flexDirection: "column", gap: 14, alignItems: "center" } },
-                    e('button', { onClick: e => { e.stopPropagation(); onToggleFav(u.id); }, style: { background: "transparent", border: "none", fontSize: 20, color: favIds.includes(u.id) ? "#f59e0b" : "rgba(255,255,255,0.2)", cursor: "pointer" } }, favIds.includes(u.id) ? "★" : "☆"),
-                    e('span', { style: { fontSize: 12, color: "#f59e0b", fontWeight: 700 } }, `⭐${u.rating}`)
+                  e('div', { style: { display: "flex", flexDirection: "column", gap: 10, alignItems: "center" } },
+                    e('button', { onClick: e => { e.stopPropagation(); onToggleFav(u.id); }, style: { background: "transparent", border: "none", fontSize: 18, color: favIds.includes(u.id) ? "#f59e0b" : "rgba(255,255,255,0.15)" } }, "★"),
+                    e('span', { style: { fontSize: 11, color: "#f59e0b", fontWeight: 700 } }, `⭐${u.rating}`)
                   )
                 )
               ))
@@ -265,53 +287,38 @@
 
         function MapScreen({ users, onSelectUser, lang }) {
           const t = TRANSLATIONS_DATA[lang];
-          return e('div', { style: { display: "flex", flexDirection: "column", height: "100%", background: "#0a1128" } },
+          return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
             e(HeaderBar, { title: e(LogoComponent), lang: lang }),
-            e('div', { style: { padding: "10px 16px", background: "rgba(255,255,255,0.04)", fontSize: 13, color: "rgba(255,255,255,0.6)", textAlign: "center" } }, t.mapDesc),
-            e('div', { style: { flex: 1, position: "relative", overflow: "hidden", background: "radial-gradient(circle, #102a45 0%, #050b14 100%)", display: "flex", alignItems: "center", justifyContent: "center" } },
-              e('div', { style: { position: "absolute", width: 280, height: 280, border: "1px solid rgba(0,191,179,0.15)", borderRadius: "50%" } }),
-              e('div', { style: { position: "absolute", width: 160, height: 160, border: "1px solid rgba(0,191,179,0.2)", borderRadius: "50%" } }),
-              e('button', { style: { position: "absolute", top: 16, background: "rgba(0,191,179,0.2)", border: `1px solid ${TC}`, color: "#fff", padding: "6px 14px", borderRadius: 20, fontSize: 12, cursor: "pointer" } }, t.mapSearch),
+            e('div', { style: { flex: 1, position: "relative", overflow: "hidden", background: "radial-gradient(circle, #111a33 0%, #050714 100%)", display: "flex", alignItems: "center", justifyContent: "center" } },
+              e('div', { style: { position: "absolute", width: 240, height: 240, border: "1px solid rgba(0,191,179,0.1)", borderRadius: "50%" } }),
               users.map((u, index) => {
-                const positions = [ { top: "25%", left: "30%" }, { top: "45%", left: "75%" }, { top: "65%", left: "20%" } ];
+                const positions = [ { top: "30%", left: "25%" }, { top: "50%", left: "65%" } ];
                 const pos = positions[index % positions.length];
-                return e('div', { key: u.id, onClick: () => onSelectUser(u), style: { position: "absolute", top: pos.top, left: pos.left, display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer", zIndex: 10 } },
-                  e('div', { style: { width: 36, height: 36, borderRadius: "50%", background: getAvatarColor(u.id), border: `2px solid ${u.isHost ? '#f59e0b' : '#fff'}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700 } }, getInitials(u.name)),
-                  e('div', { style: { background: "rgba(0,0,0,0.75)", padding: "2px 6px", borderRadius: 4, fontSize: 10, marginTop: 4, whiteSpace: "nowrap" } }, u.name.split(" ")[0])
+                return e('div', { key: u.id, onClick: () => onSelectUser(u), style: { position: "absolute", top: pos.top, left: pos.left, display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer" } },
+                  e('div', { style: { width: 34, height: 34, borderRadius: "50%", background: getAvatarColor(u.id), border: "2px solid #fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700 } }, getInitials(u.name)),
+                  e('div', { style: { background: "rgba(0,0,0,0.7)", padding: "2px 5px", borderRadius: 4, fontSize: 10, marginTop: 3 } }, u.name.split(" ")[0])
                 );
               })
             )
           );
         }
-
         function HousingScreen({ users, onSelectUser, lang }) {
           const t = TRANSLATIONS_DATA[lang];
           const hosts = users.filter(u => u.isHost && u.housingInfo);
 
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
             e(HeaderBar, { title: e(LogoComponent), lang: lang }),
-            e('div', { style: { padding: "14px 16px", background: "rgba(255,255,255,0.02)", borderBottom: `1px solid ${BR}`, flexShrink: 0 } },
-              e('h3', { style: { margin: "0 0 4px 0", fontSize: 16, color: TC } }, t.housingTitle),
-              e('p', { style: { margin: 0, fontSize: 12, color: "rgba(255,255,255,0.5)" } }, t.housingDesc)
-            ),
-            e('div', { style: { overflowY: "auto", flex: 1, padding: 14 } },
+            e('div', { style: { overflowY: "auto", flex: 1, padding: 12 } },
               hosts.map(u => (
-                e('div', { key: u.id, onClick: () => onSelectUser(u), style: { background: "rgba(255,255,255,0.03)", border: `1px solid ${BR}`, borderRadius: 16, padding: 14, marginBottom: 14, cursor: "pointer" } },
-                  e('div', { style: { display: "flex", justifyContent: "space-between", marginBottom: 10 } },
-                    e('span', { style: { background: "rgba(245,158,11,0.15)", color: "#f59e0b", fontSize: 11, fontWeight: 700, padding: "3px 8px", borderRadius: 6 } }, t.hostBadge),
-                    e('span', { style: { fontSize: 12, color: TC, fontWeight: 600 } }, t.priceFree)
-                  ),
-                  e('div', { style: { fontSize: 15, fontWeight: 700, marginBottom: 6 } }, u.housingInfo.title),
-                  e('div', { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 10 } },
-                    e(Avatar, { user: u, size: 24 }),
-                    e('div', null, e('div', { style: { fontSize: 12, fontWeight: 600 } }, u.name), e('div', { style: { fontSize: 11, color: "rgba(255,255,255,0.4)" } }, u.location))
-                  ),
-                  e('div', { style: { display: "flex", gap: 12, fontSize: 12, color: "rgba(255,255,255,0.6)" } }, e('span', null, `🛏️ Мест: ${u.housingInfo.sleepPlaces}`), e('span', { style: { whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", flex: 1 } }, `📝 ${u.housingInfo.rules}`))
+                e('div', { key: u.id, onClick: () => onSelectUser(u), style: { background: "rgba(255,255,255,0.02)", border: `1px solid ${BR}`, borderRadius: 14, padding: 12, marginBottom: 12, cursor: "pointer" } },
+                  e('div', { style: { fontSize: 14, fontWeight: 700, marginBottom: 4 } }, u.housingInfo.title),
+                  e('div', { style: { fontSize: 11, color: "rgba(255,255,255,0.4)" } }, u.location)
                 )
               ))
             )
           );
         }
+
         function ChatsScreen({ users, msgs, onOpenChat, lang }) {
           const t = TRANSLATIONS_DATA[lang];
           const activeChats = users.filter(u => msgs[u.id] && msgs[u.id].length > 0).map(u => ({ user: u, lastMsg: msgs[u.id][msgs[u.id].length - 1] }));
@@ -319,13 +326,13 @@
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
             e(HeaderBar, { title: t.messages, lang: lang }),
             e('div', { style: { overflowY: "auto", flex: 1 } },
-              activeChats.length === 0 ? e('div', { style: { textAlign: "center", color: "rgba(255,255,255,0.3)", marginTop: 50 } }, t.emptyMsgs) : null,
+              activeChats.length === 0 ? e('div', { style: { textAlign: "center", color: "rgba(255,255,255,0.2)", marginTop: 40 } }, t.emptyMsgs) : null,
               activeChats.map(({ user, lastMsg }) => (
-                e('div', { key: user.id, onClick: () => onOpenChat(user), style: { display: "flex", padding: "14px 16px", borderBottom: `1px solid ${BR}`, cursor: "pointer", alignItems: "center" } },
-                  e(Avatar, { user: user, size: 46 }),
-                  e('div', { style: { marginLeft: 12, flex: 1, minWidth: 0 } },
-                    e('div', { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 3 } }, e('span', { style: { fontWeight: 700, fontSize: 14 } }, user.name), e('span', { style: { fontSize: 10, color: "rgba(255,255,255,0.3)" } }, lastMsg?.time)),
-                    e('div', { style: { fontSize: 13, color: "rgba(255,255,255,0.5)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, lastMsg?.from === "me" ? "Вы: " : "", lastMsg?.text)
+                e('div', { key: user.id, onClick: () => onOpenChat(user), style: { display: "flex", padding: "12px 14px", borderBottom: `1px solid ${BR}`, cursor: "pointer", alignItems: "center" } },
+                  e(Avatar, { user: user, size: 42 }),
+                  e('div', { style: { marginLeft: 10, flex: 1, minWidth: 0 } },
+                    e('div', { style: { fontWeight: 700, fontSize: 14 } }, user.name),
+                    e('div', { style: { fontSize: 12, color: "rgba(255,255,255,0.5)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, lastMsg?.text)
                   )
                 )
               ))
@@ -333,100 +340,77 @@
           );
         }
 
+        // ЭКРАН ЧАТА С КНОПКОЙ МГНОВЕННОГО ПЕРЕВОДА СООБЩЕНИЙ
         function SingleChatView({ user, messages, onBack, onSend, lang }) {
           const t = TRANSLATIONS_DATA[lang];
           const [text, setText] = useState("");
-          const containerRef = useRef(null);
+          const [translatedMsgs, setTranslatedMsgs] = useState({});
 
-          useEffect(() => { if (containerRef.current) containerRef.current.scrollTop = containerRef.current.scrollHeight; }, [messages]);
+          const handleTranslate = (msgId, originalText) => {
+            if (translatedMsgs[msgId]) {
+              setTranslatedMsgs(prev => ({ ...prev, [msgId]: null }));
+            } else {
+              const transDB = CHAT_TRANSLATIONS[lang];
+              const result = (transDB && transDB[originalText]) || `[Translated to ${lang.toUpperCase()}]: ${originalText}`;
+              setTranslatedMsgs(prev => ({ ...prev, [msgId]: result }));
+            }
+          };
 
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
             e(HeaderBar, { title: user.name, onBack: onBack, lang: lang }),
-            e('div', { ref: containerRef, style: { flex: 1, overflowY: "auto", padding: "16px 12px" } },
+            e('div', { style: { flex: 1, overflowY: "auto", padding: "14px" } },
               messages.map(m => {
                 const isMe = m.from === "me";
-                return e('div', { key: m.id, style: { display: "flex", justifyContent: isMe ? "flex-end" : "flex-start", marginBottom: 12 } },
-                  e('div', { style: { background: isMe ? `linear-gradient(135deg, ${TD}, ${TC})` : "rgba(255,255,255,0.08)", padding: "10px 14px", borderRadius: isMe ? "14px 14px 0 14px" : "14px 14px 14px 0", maxWidth: "80%" } },
-                    e('div', { style: { fontSize: 14, color: "#fff", wordBreak: "break-word" } }, m.text),
+                const isTrans = !!translatedMsgs[m.id];
+                return e('div', { key: m.id, style: { display: "flex", justifyContent: isMe ? "flex-end" : "flex-start", marginBottom: 12, flexDirection: "column", alignItems: isMe ? "flex-end" : "flex-start" } },
+                  e('div', { style: { background: isMe ? `linear-gradient(135deg, ${TD}, ${TC})` : "rgba(255,255,255,0.06)", padding: "10px 12px", borderRadius: isMe ? "12px 12px 0 12px" : "12px 12px 12px 0", maxWidth: "85%" } },
+                    e('div', { style: { fontSize: 14 } }, isTrans ? translatedMsgs[m.id] : m.text),
                     e('div', { style: { fontSize: 9, color: "rgba(255,255,255,0.4)", textAlign: "right", marginTop: 4 } }, m.time)
-                  )
+                  ),
+                  !isMe && e('button', { 
+                    onClick: () => handleTranslate(m.id, m.text), 
+                    style: { background: "transparent", border: "none", color: TC, fontSize: 11, cursor: "pointer", marginTop: 2, padding: "2px 4px" } 
+                  }, isTrans ? "↩ Оригинал" : t.translateBtn)
                 );
               })
             ),
-            e('div', { style: { padding: "10px 12px", background: "#0b0816", borderTop: `1px solid ${BR}`, display: "flex", gap: 8, alignItems: "center", marginBottom: 10 } },
-              e('input', { value: text, onChange: e => setText(e.target.value), onKeyDown: e => e.key === "Enter" && text.trim() && (onSend(text.trim()), setText("")), placeholder: t.msgPlh, style: { flex: 1, padding: "12px 14px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, color: "#fff", fontSize: 14, outline: "none" } }),
-              e('button', { onClick: () => { if (text.trim()) { onSend(text.trim()); setText(""); } }, style: { background: TC, border: "none", width: 44, height: 44, borderRadius: 12, color: "#fff", fontWeight: 700, cursor: "pointer" } }, "➔")
+            e('div', { style: { padding: "10px", background: "#0b0816", borderTop: `1px solid ${BR}`, display: "flex", gap: 8, marginBottom: 8 } },
+              e('input', { value: text, onChange: e => setText(e.target.value), placeholder: t.msgPlh, style: { flex: 1, padding: "10px 12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, color: "#fff" } }),
+              e('button', { onClick: () => { if (text.trim()) { onSend(text.trim()); setText(""); } }, style: { background: TC, border: "none", width: 40, height: 40, borderRadius: 10, color: "#fff", fontWeight: 700 } }, "➔")
             )
           );
         }
 
-        function UserProfileView({ user, isSelf, onBack, onOpenChat, onEdit, lang, onAddReview }) {
+        function UserProfileView({ user, isSelf, onBack, onOpenChat, onEdit, lang }) {
           const t = TRANSLATIONS_DATA[lang];
-          const [newReviewText, setNewReviewText] = useState("");
 
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
             e(HeaderBar, { 
               title: user?.name || "", 
               onBack: onBack, 
               lang: lang, 
-              rightElement: isSelf ? e('button', { 
+              rightElement: isSelf && e('button', { 
                 onClick: onEdit, 
-                style: { color: "#fff", background: "rgba(255,255,255,0.15)", border: `1px solid ${TC}`, fontSize: 12, fontWeight: 700, cursor: "pointer", padding: "6px 14px", borderRadius: 8, textTransform: "uppercase", letterSpacing: "0.5px", boxShadow: `0 0 8px ${TC}30` } 
-              }, "✎ Edit") : null 
+                style: { color: "#fff", background: "rgba(255,255,255,0.1)", border: `1px solid ${TC}`, fontSize: 11, fontWeight: 700, padding: "5px 12px", borderRadius: 8 } 
+              }, "✎ Edit") 
             }),
-            e('div', { style: { overflowY: "auto", flex: 1, padding: "20px 16px", paddingBottom: 60 } },
-              e('div', { style: { display: "flex", alignItems: "center", gap: 16, marginBottom: 20 } },
-                e(Avatar, { user: user, size: 74 }),
-                e('div', { style: { flex: 1, minWidth: 0 } },
-                  e('h2', { style: { margin: "0 0 4px 0", fontSize: 20 } }, user?.name),
-                  e('div', { style: { fontSize: 13, color: TC, fontWeight: 500 } }, user?.location),
-                  e('div', { style: { fontSize: 12, color: "rgba(255,255,255,0.4)", textTransform: "uppercase" } }, user?.occupation)
-                )
+            e('div', { style: { overflowY: "auto", flex: 1, padding: "16px", paddingBottom: 70 } },
+              e('div', { style: { display: "flex", alignItems: "center", gap: 14, marginBottom: 16 } },
+                e(Avatar, { user: user, size: 68 }),
+                e('div', null, e('h2', { style: { margin: 0, fontSize: 18 } }, user?.name), e('div', { style: { fontSize: 12, color: TC } }, user?.location))
               ),
-              !isSelf && e('div', { style: { display: "flex", gap: 10, marginBottom: 22 } },
-                e('button', { onClick: () => onOpenChat(user), style: { flex: 1, padding: "11px 0", background: TC, border: "none", borderRadius: 10, color: "#fff", fontWeight: 700, cursor: "pointer" } }, `💬 ${t.btnMsg}`),
-                e('button', { onClick: () => alert(`Calling...`), style: { flex: 1, padding: "11px 0", background: "rgba(255,255,255,0.08)", border: `1px solid ${BR}`, borderRadius: 10, color: "#fff", cursor: "pointer" } }, `📞 ${t.btnCall}`)
-              ),
-              e('p', { style: { background: "rgba(255,255,255,0.03)", border: `1px solid ${BR}`, padding: 14, borderRadius: 14, fontSize: 14, lineHeight: 1.5 } }, user?.bio),
-              user?.isHost && user?.housingInfo && e('div', { style: { background: "rgba(245,158,11,0.04)", border: "1px solid rgba(245,158,11,0.2)", padding: 14, borderRadius: 14, marginBottom: 20 } },
-                e('div', { style: { fontSize: 12, fontWeight: 700, color: "#f59e0b", marginBottom: 6 } }, `🏠 ${t.housing}`),
-                e('div', { style: { fontSize: 14, fontWeight: 700, marginBottom: 4 } }, user.housingInfo.title),
-                e('div', { style: { fontSize: 12, color: "rgba(255,255,255,0.6)", marginBottom: 10 } }, `🛏️ Мест: ${user.housingInfo.sleepPlaces} | ${user.housingInfo.rules}`),
-                !isSelf && e('button', { onClick: () => alert("Успешно!"), style: { width: "100%", padding: "8px 0", background: "#f59e0b", border: "none", borderRadius: 8, color: "#fff", fontWeight: 700, cursor: "pointer" } }, t.btnRent)
-              ),
-              e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 22 } },
-                [ { label: t.statsLikes, val: `👍 ${user?.likes || 0}` }, { label: t.statsSubs, val: `👥 ${user?.subscribers || 0}` }, { label: t.rating, val: `⭐ ${user?.rating || 5.0}` } ].map((s, idx) => e('div', { key: idx, style: { background: "rgba(255,255,255,0.03)", padding: "10px 6px", borderRadius: 10, textAlign: "center", border: `1px solid ${BR}` } }, e('div', { style: { fontSize: 11, color: "rgba(255,255,255,0.4)" } }, s.label), e('div', { style: { fontSize: 14, fontWeight: 700 } }, s.val)))
-              ),
-              e(FieldLabel, { text: t.statusTitle }),
+              !isSelf && e('button', { onClick: () => onOpenChat(user), style: { width: "100%", padding: "10px 0", background: TC, border: "none", borderRadius: 10, color: "#fff", fontWeight: 700, marginBottom: 14 } }, t.btnMsg),
+              e('p', { style: { background: "rgba(255,255,255,0.02)", border: `1px solid ${BR}`, padding: 12, borderRadius: 12, fontSize: 13 } }, user?.bio),
               
-              // КРАСИВЫЕ ПЛАШКИ СТАТУСОВ С НЕОНОВЫМ КОНТУРОМ
-              e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 24 } },
+              e(FieldLabel, { text: t.statusTitle, marginTop: 14 }),
+              e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 } },
                 STATUS_OPTIONS.map(opt => {
                   const hasOpt = user && user[opt.key];
-                  return e('div', { 
-                    key: opt.key, 
-                    style: { 
-                      display: "flex", alignItems: "center", gap: 8, 
-                      background: hasOpt ? "rgba(0, 191, 179, 0.08)" : "rgba(255,255,255,0.02)", 
-                      padding: "10px 12px", borderRadius: 12, 
-                      border: `1px solid ${hasOpt ? 'rgba(0,191,179,0.4)' : 'rgba(255,255,255,0.05)'}`,
-                      opacity: hasOpt ? 1 : 0.35,
-                      boxShadow: hasOpt ? "0 2px 8px rgba(0,191,179,0.1)" : "none",
-                      transition: "all 0.2s ease"
-                    } 
-                  }, 
-                    e('span', { style: { fontSize: 16 } }, opt.icon), 
-                    e('span', { style: { fontSize: 11, fontWeight: 500, lineHeight: 1.2, color: hasOpt ? "#fff" : "rgba(255,255,255,0.7)" } }, lang === 'ua' ? opt.labelUa : lang === 'ru' ? opt.labelRu : opt.labelEn)
+                  const labelKey = 'label' + lang.charAt(0).toUpperCase() + lang.slice(1);
+                  return e('div', { key: opt.key, style: { display: "flex", alignItems: "center", gap: 6, background: hasOpt ? "rgba(0, 191, 179, 0.08)" : "rgba(255,255,255,0.02)", padding: "8px 10px", borderRadius: 10, border: `1px solid ${hasOpt ? 'rgba(0,191,179,0.3)' : 'transparent'}`, opacity: hasOpt ? 1 : 0.3 } },
+                    e('span', null, opt.icon), e('span', { style: { fontSize: 10 } }, opt[labelKey] || opt.labelEn)
                   );
                 })
-              ),
-              e('div', { style: { borderTop: `1px solid ${BR}`, paddingTop: 16 } },
-                e('h3', { style: { fontSize: 15, margin: "0 0 12px 0", color: TC } }, `${t.revTitle} (${user?.reviews?.length || 0})`),
-                e('div', { style: { marginBottom: 16 } },
-                  e('textarea', { value: newReviewText, onChange: e => setNewReviewText(e.target.value), placeholder: t.revPlh, style: { width: "100%", height: 60, padding: 10, background: "rgba(255,255,255,0.04)", border: `1px solid ${BR}`, borderRadius: 10, color: "#fff", fontSize: 13, resize: "none", outline: "none" } }),
-                  e('button', { onClick: () => { if (newReviewText.trim()) { onAddReview(user.id, newReviewText.trim()); setNewReviewText(""); } }, style: { marginTop: 6, padding: "6px 14px", background: "rgba(255,255,255,0.1)", border: "none", borderRadius: 6, color: "#fff", fontSize: 12, cursor: "pointer" } }, t.addRev)
-                ),
-                user?.reviews?.map(r => e('div', { key: r.id, style: { background: "rgba(255,255,255,0.02)", padding: 10, borderRadius: 10, marginBottom: 8, borderLeft: `3px solid ${TC}` } }, e('div', { style: { fontSize: 11, fontWeight: 700, color: TC } }, r.author), e('div', { style: { fontSize: 13, color: "rgba(255,255,255,0.8)" } }, r.text)))
               )
             )
           );
@@ -435,40 +419,38 @@
         function EditProfileScreen({ user, onSave, onCancel, lang }) {
           const t = TRANSLATIONS_DATA[lang];
           const [form, setForm] = useState({ ...user });
-
           return e('div', { style: W },
-            e(HeaderBar, { title: t.editTitle, onBack: onCancel, lang: lang, rightElement: e('button', { onClick: () => onSave(form), style: { color: TC, background: "none", border: "none", fontWeight: 700, fontSize: 15, cursor: "pointer" } }, t.done) }),
-            e('div', { style: { overflowY: "auto", flex: 1, padding: "16px" } },
+            e(HeaderBar, { title: t.editTitle, onBack: onCancel, lang: lang, rightElement: e('button', { onClick: () => onSave(form), style: { color: TC, background: "none", border: "none", fontWeight: 700 } }, t.done) }),
+            e('div', { style: { overflowY: "auto", flex: 1, padding: "14px" } },
               e(FieldLabel, { text: t.nameLbl }), e('input', { value: form.name, onChange: e => setForm({ ...form, name: e.target.value }), style: IS }),
-              e(FieldLabel, { text: t.locLbl }), e('input', { value: form.location, onChange: e => setForm({ ...form, location: e.target.value }), style: IS }),
-              e(FieldLabel, { text: t.aboutLbl }), e('textarea', { value: form.bio, onChange: e => setForm({ ...form, bio: e.target.value }), style: { ...IS, height: 90, resize: "none" } }),
-              e(FieldLabel, { text: t.statusTitle, marginTop: 10 }),
-              e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 } },
-                STATUS_OPTIONS.map(opt => (
-                  e('div', { 
-                    key: opt.key, 
-                    onClick: () => setForm(p => ({ ...p, [opt.key]: !p[opt.key] })), 
-                    style: { 
-                      display: "flex", alignItems: "center", gap: 8,
-                      background: form[opt.key] ? "rgba(0,191,179,0.12)" : "rgba(255,255,255,0.02)", 
-                      padding: "10px 12px", borderRadius: 12, cursor: "pointer", 
-                      border: `1px solid ${form[opt.key] ? TC : 'rgba(255,255,255,0.05)'}`,
-                      boxShadow: form[opt.key] ? "0 2px 8px rgba(0,191,179,0.1)" : "none"
-                    } 
-                  }, 
-                    e('span', { style: { fontSize: 16 } }, opt.icon), 
-                    e('span', { style: { fontSize: 11, fontWeight: 500, flex: 1, color: form[opt.key] ? "#fff" : "rgba(255,255,255,0.5)" } }, lang === 'ua' ? opt.labelUa : lang === 'ru' ? opt.labelRu : opt.labelEn)
-                  )
-                ))
-              )
+              e(FieldLabel, { text: t.aboutLbl }), e('textarea', { value: form.bio, onChange: e => setForm({ ...form, bio: e.target.value }), style: { ...IS, height: 70 } })
             )
           );
         }
 
+        // ОБНОВЛЕННОЕ НИЖНЕЕ МЕНЮ: ПЛАШКИ ПРИПОДНЯТЫ И СДЕЛАНЫ ЯРЧЕ
         function BottomNavigationBar({ activeTab, onTabChange }) {
-          const navItems = [ { id: "feed", icon: "🏠" }, { id: "map", icon: "📍" }, { id: "housing", icon: "🏠" }, { id: "messages", icon: "✉" }, { id: "profile", icon: "👤" } ];
-          return e('div', { style: { position: "absolute", bottom: 0, left: 0, width: "100%", background: "#090615", display: "flex", justifyContent: "space-around", padding: "12px 0 16px", borderTop: `1px solid ${BR}`, zIndex: 10 } },
-            navItems.map(item => e('button', { key: item.id, onClick: () => onTabChange(item.id), style: { background: "transparent", border: "none", fontSize: 22, color: activeTab === item.id ? TC : "rgba(255,255,255,0.35)", cursor: "pointer", transform: activeTab === item.id ? "scale(1.15)" : "scale(1)" } }, item.icon))
+          const navItems = [ { id: "feed", icon: "🏠" }, { id: "map", icon: "📍" }, { id: "housing", icon: "🔑" }, { id: "messages", icon: "✉" }, { id: "profile", icon: "👤" } ];
+          return e('div', { style: { position: "absolute", bottom: 10, left: 0, width: "100%", display: "flex", justifyContent: "space-around", padding: "0 10px", zIndex: 10 } },
+            e('div', { style: { width: "100%", background: "rgba(10, 6, 22, 0.92)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 20, display: "flex", justifyContent: "space-around", padding: "10px 6px", boxShadow: "0 8px 24px rgba(0,0,0,0.6)", backdropFilter: "blur(15px)" } },
+              navItems.map(item => {
+                const isSel = activeTab === item.id;
+                return e('button', { 
+                  key: item.id, 
+                  onClick: () => onTabChange(item.id), 
+                  style: { 
+                    background: isSel ? `linear-gradient(135deg, ${TD}, ${TC})` : "rgba(255,255,255,0.03)", 
+                    border: `1px solid ${isSel ? TC : 'rgba(255,255,255,0.05)'}`, 
+                    fontSize: 18, 
+                    width: 44, height: 44, borderRadius: 14,
+                    color: isSel ? "#fff" : "rgba(255,255,255,0.45)", 
+                    cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+                    boxShadow: isSel ? `0 0 10px ${TC}50` : "none",
+                    transition: "all 0.2s ease"
+                  } 
+                }, item.icon);
+              })
+            )
           );
         }
 
@@ -486,7 +468,7 @@
             if (lang) {
               setUsers(getLocalizedUsers(lang));
               setMsgs({
-                1: [ { id: 101, from: "them", text: "Привет! Будешь в городе?", time: "11:00" }, { id: 102, from: "me", text: "Привет! Скоро буду.", time: "11:15" } ],
+                1: [ { id: 101, from: "them", text: "Привет! Будешь в городе?", time: "11:00" } ],
                 2: [ { id: 201, from: "them", text: "Привет! Есть свободные места в машине на пятницу.", time: "15:20" } ]
               });
               if (me) setMe(prev => ({ ...prev, location: TRANSLATIONS_DATA[lang].ukraine }));
@@ -494,30 +476,24 @@
           }, [lang]);
 
           const handleRegister = name => {
-            const myAccount = { id: 999, name: name, location: "Киев, Украина", occupation: "Traveler", bio: "New user.", tags: [], isHost: false, likes: 0, subscribers: 1, rating: 5.0, reviews: [], housingInfo: null };
-            setMe(myAccount); setCurrentScreen("mainFlow"); setActiveTab("feed");
-          };
-
-          const handleAddReview = (userId, reviewText) => {
-            const newRev = { id: Date.now(), author: me.name, text: reviewText };
-            setUsers(p => p.map(u => u.id === userId ? { ...u, reviews: [newRev, ...u.reviews] } : u));
-            if (selectedUser?.id === userId) setSelectedUser(p => ({ ...p, reviews: [newRev, ...p.reviews] }));
+            setMe({ id: 999, name, location: "Kyiv", occupation: "Traveler", bio: "Hello!", isHost: false, likes: 0, subscribers: 1, rating: 5.0, reviews: [], housingInfo: null });
+            setCurrentScreen("mainFlow"); setActiveTab("feed");
           };
 
           if (currentScreen === "langSelect") return e(LangSelectScreen, { onSelect: c => { setLang(c); setCurrentScreen("auth"); } });
-          if (currentScreen === "auth") return e(AuthScreen, { onDone: handleRegister, lang: lang });
+          if (currentScreen === "auth") return e(AuthScreen, { onDone: handleRegister, lang: lang, onBack: () => setCurrentScreen("langSelect") });
 
           const renderMainContent = () => {
-            if (currentScreen === "viewProfile" && selectedUser) return e(UserProfileView, { user: selectedUser, isSelf: selectedUser.id === me.id, onBack: () => setCurrentScreen("mainFlow"), onOpenChat: u => { setSelectedUser(u); setCurrentScreen("chatView"); }, onEdit: () => setCurrentScreen("editProfile"), lang: lang, onAddReview: handleAddReview });
+            if (currentScreen === "viewProfile" && selectedUser) return e(UserProfileView, { user: selectedUser, isSelf: selectedUser.id === me.id, onBack: () => setCurrentScreen("mainFlow"), onOpenChat: u => { setSelectedUser(u); setCurrentScreen("chatView"); }, onEdit: () => setCurrentScreen("editProfile"), lang: lang });
             if (currentScreen === "editProfile") return e(EditProfileScreen, { user: me, onSave: f => { setMe(f); setCurrentScreen("mainFlow"); setActiveTab("profile"); }, onCancel: () => setCurrentScreen("mainFlow"), lang: lang });
-            if (currentScreen === "chatView" && selectedUser) return e(SingleChatView, { user: selectedUser, messages: msgs[selectedUser.id] || [], onBack: () => setCurrentScreen("mainFlow"), onSend: t => setMsgs(p => ({ ...p, [selectedUser.id]: [...(p[selectedUser.id] || []), { id: Date.now(), from: "me", text: t, time: "12:00" }] })), lang: lang });
+            if (currentScreen === "chatView" && selectedUser) return e(SingleChatView, { user: selectedUser, messages: msgs[selectedUser.id] || [], onBack: () => setCurrentScreen("mainFlow"), onSend: t => setMsgs(p => ({ ...p, [selectedUser.id]: [...(p[selectedUser.id] || []), { id: Date.now(), from: "me", text: t, time: "12:05" }] })), lang: lang });
 
             switch (activeTab) {
-              case "feed": return e(FeedScreen, { users: users, favIds: favIds, onToggleFav: id => setFavIds(p => p.includes(id) ? p.filter(x => x !== id) : [...p, id]), onSelectUser: u => { setSelectedUser(u); setCurrentScreen("viewProfile"); }, lang: lang, onLangToggle: () => setLang(null), me: me, onSelectMyProfile: () => { setSelectedUser(me); setCurrentScreen("viewProfile"); } });
+              case "feed": return e(FeedScreen, { users: users, favIds: favIds, onToggleFav: id => setFavIds(p => p.includes(id) ? p.filter(x => x !== id) : [...p, id]), onSelectUser: u => { setSelectedUser(u); setCurrentScreen("viewProfile"); }, lang: lang, onLangToggle: () => setCurrentScreen("langSelect"), me: me, onSelectMyProfile: () => { setSelectedUser(me); setCurrentScreen("viewProfile"); } });
               case "map": return e(MapScreen, { users: users, onSelectUser: u => { setSelectedUser(u); setCurrentScreen("viewProfile"); }, lang: lang });
               case "housing": return e(HousingScreen, { users: users, onSelectUser: u => { setSelectedUser(u); setCurrentScreen("viewProfile"); }, lang: lang });
               case "messages": return e(ChatsScreen, { users: users, msgs: msgs, onOpenChat: u => { setSelectedUser(u); setCurrentScreen("chatView"); }, lang: lang });
-              case "profile": return e(UserProfileView, { user: me, isSelf: true, lang: lang, onEdit: () => setCurrentScreen("editProfile") });
+              case "profile": return e(UserProfileView, { user: me, isSelf: true, lang: lang, onEdit: () => setCurrentScreen("editProfile"), onBack: () => { setActiveTab("feed"); } });
               default: return null;
             }
           };
@@ -525,7 +501,7 @@
           const showBottomMenu = currentScreen === "mainFlow";
 
           return e('div', { style: { display: "flex", justifyContent: "center", minHeight: "100vh" } },
-            e('div', { style: { width: "100%", maxWidth: 430, height: "100vh", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", paddingBottom: showBottomMenu ? "64px" : "0", boxShadow: "0 0 30px rgba(0,0,0,0.6)" } },
+            e('div', { style: { width: "100%", maxWidth: 430, height: "100vh", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", paddingBottom: showBottomMenu ? "75px" : "0", boxShadow: "0 0 30px rgba(0,0,0,0.5)" } },
               renderMainContent(),
               showBottomMenu ? e(BottomNavigationBar, { activeTab: activeTab, onTabChange: id => setActiveTab(id) }) : null
             )
