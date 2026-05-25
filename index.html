@@ -6,13 +6,13 @@
     <title>LifeUp Network</title>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
-<body style="margin: 0; background: #060411; font-family: sans-serif;">
+<body style="margin: 0; background: #060411; font-family: sans-serif; color: #fff;">
     <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+    <script>
+        const { useState, useEffect } = React;
+        const e = React.createElement;
 
         // ═══════════════════════════════════════════════════════════════
         // СЛОВАРИ ДЛЯ ЛОКАЛИЗАЦИИ (ЯЗЫКИ)
@@ -21,31 +21,13 @@
           ua: {
             selectLang: "Виберіть мову", login: "Увійти", register: "Реєстрація", namePlh: "Ваше ім'я",
             phonePlh: "Телефон або email", passPlh: "Пароль", btnReg: "ЗАРЕЄСТРУВАТИСЯ", btnIn: "УВІЙТИ",
-            searchPlh: "🔍 Пошук людей або тегов...", aboutProj: "ℹ Про проєкт", mapDev: "🗺️ Карта в розробці",
+            searchPlh: "🔍 Пошук людей або тегів...", aboutProj: "ℹ Про проєкт", mapDev: "🗺️ Карта в розробці",
             searchEmpty: "🔍 Пошук порожній", aboutTitle: "Про проєкт", aboutDesc: "Платформа для пошуку хостів та попутників.",
             msgPlh: "Повідомлення...", send: "Відправити", editTitle: "Редагувати", done: "Готово",
             nameLbl: "Ім'я", aboutLbl: "Про себе", statusLbl: "Статуси", messagesTitle: "Повідомлення",
             mapTitle: "Карта", searchTitle: "Пошук", newUserBio: "Новий користувач", ukraine: "Україна",
             kharkiv: "Україна, Харків", kyiv: "Україна, Київ", boryspil: "Україна, Бориспіль", irpin: "Україна, Ірпінь",
-            odesa: "Україна, Одеса", dnipro: "Україна, Дніпро", designer: "Дизайнер", creativeDir: "Креативний дир.",
-            representative: "Представник", copywriter: "Копірайтер", translator: "Перекладач", model: "Модель",
-            teacher: "Вчитель", traveler: "Мандрівник", canDrive: "🚗 Можу підвезти", lookingForCompanion: "✈️ Шукаю попутника",
-            isHost: "🏠 Готовий прийняти", lookingForRelations: "❤️ В пошуку відносин", openToMeet: "😊 Відкритий до знайомств",
-            againstSmoking: "🚭 Я проти куріння", drinksAlcohol: "🍷 П'ю алкогольні напої", isVegetarian: "🥗 Я вегетаріанець",
-            doesSport: "🏃 Займаюся спортом", openToOffers: "💡 Відкритий до пропозицій",
-            bio1: "Я не прагну бути привабливою. Моя справа — змушувати людей ставати кращими.",
-            bio2: "Щодня їжджу Київ–Бровари. Шукаю попутників для спільних поїздок.",
-            bio3: "Створюю унікальні маршрути неходженими стежками України. Готовий прийняти мандрівників.",
-            bio4: "Подорожую без зайвих речей. Шукаю попутників Бориспіль–Київ та для виїздів на природу.",
-            bio5: "Веду блог про подорожі. Знаю унікальні місця України, яких немає в Google.",
-            bio6: "Розмовляю 4 мовами. Допоможу зі спілкуванням за кордоном. Шукаю компанію для подорожей.",
-            bio7: "Море, сонце і нові знайомства — моя спадщина. Готова до спонтанних пригод!",
-            bio8: "Подорожую у вільний час. Цікавлять історичні маршрути та архітектура.",
-            bio9: "Об'їздила 23 країни. Проводжу тури Україною. Можу прийняти туристів у себе.",
-            bio10: "UI/UX дизайнер. У вільний час — велоподорожі околицями Києва.",
-            chat1: "Привіт! Хочу дізнатися щодо маршруту на цьому тижні.", chat2: "Привіт! Так, я планую їхати в п'ятницю ввечері.",
-            chat3: "Чудово! Чи можу я приєднатися?", chat4: "Звичайно, давай домовимося про час.",
-            chat5: "Вітаю! Цікавить тур Карпатами."
+            odesa: "Україна, Одеса", dnipro: "Україна, Дніпро", designer: "Дизайнер"
           },
           ru: {
             selectLang: "Выберите язык", login: "Войти", register: "Регистрация", namePlh: "Ваше имя",
@@ -56,25 +38,7 @@
             nameLbl: "Имя", aboutLbl: "О себе", statusLbl: "Статусы", messagesTitle: "Сообщения",
             mapTitle: "Карта", searchTitle: "Поиск", newUserBio: "Новый пользователь", ukraine: "Украина",
             kharkiv: "Украина, Харьков", kyiv: "Украина, Киев", boryspil: "Украина, Борисполь", irpin: "Украина, Ирпень",
-            odesa: "Украина, Одесса", dnipro: "Украина, Днепр", designer: "Дизайнер", creativeDir: "Креативный дир.",
-            representative: "Представитель", copywriter: "Копирайтер", translator: "Переводчик", model: "Модель",
-            teacher: "Учитель", traveler: "Путешественник", canDrive: "🚗 Могу подвезти", lookingForCompanion: "✈️ Ищу попутчика",
-            isHost: "🏠 Готов принять", lookingForRelations: "❤️ В поиске отношений", openToMeet: "😊 Открыт к знакомству",
-            againstSmoking: "🚭 Я против курения", drinksAlcohol: "🍷 Пью спиртные напитки", isVegetarian: "🥗 Я вегетарианец",
-            doesSport: "🏃 Занимаюсь спортом", openToOffers: "💡 Открыт к предложениям",
-            bio1: "Я не стремлюсь быть привлекательной. Моё дело — заставлять людей становиться лучше.",
-            bio2: "Ежедневно езжу Киев–Бровары. Ищу попутчиков для совместных поездок.",
-            bio3: "Создаю уникальные маршруты по нехоженым тропам Украины. Готов принять путешественников.",
-            bio4: "Путешествую налегке. Ищу попутчиков Борисполь–Киев и вылазок на природу.",
-            bio5: "Веду блог о путешествиях. Знаю уникальные места Украины, которых нет в Google.",
-            bio6: "Говорю на 4 языках. Помогу с общением за рубежом. Ищу компанию для путешествий.",
-            bio7: "Море, солнце и новые знакомства — моя стихия. Готова к спонтанным приключениям!",
-            bio8: "Путешествую в свободное время. Интересуют исторические маршруты и архитектура.",
-            bio9: "Объездила 23 страны. Провожу туры по Украине. Могу принять туристов у себя.",
-            bio10: "UI/UX дизайнер. В свободное время — велопутешествия по окраинам Киева.",
-            chat1: "Привет! Хочу узнать насчёт маршрута на этой неделе.", chat2: "Привет! Да, я планирую ехать в пятницу вечером.",
-            chat3: "Отлично! Могу ли я присоединиться?", chat4: "Конечно, давай договоримся о времени.",
-            chat5: "Здравствуйте! Интересует тур по Карпатам."
+            odesa: "Украина, Одесса", dnipro: "Украина, Днепр", designer: "Дизайнер"
           },
           en: {
             selectLang: "Select Language", login: "Login", register: "Register", namePlh: "Your Name",
@@ -85,25 +49,7 @@
             nameLbl: "Name", aboutLbl: "About me", statusLbl: "Statuses", messagesTitle: "Messages",
             mapTitle: "Map", searchTitle: "Search", newUserBio: "New User", ukraine: "Ukraine",
             kharkiv: "Ukraine, Kharkiv", kyiv: "Ukraine, Kyiv", boryspil: "Ukraine, Boryspil", irpin: "Ukraine, Irpin",
-            odesa: "Ukraine, Odesa", dnipro: "Ukraine, Dnipro", designer: "Designer", creativeDir: "Creative Dir.",
-            representative: "Representative", copywriter: "Copywriter", translator: "Translator", model: "Model",
-            teacher: "Teacher", traveler: "Traveler", canDrive: "🚗 I can drive", lookingForCompanion: "✈️ Looking for companion",
-            isHost: "🏠 Ready to host", lookingForRelations: "❤️ Looking for relations", openToMeet: "😊 Open to meet",
-            againstSmoking: "🚭 Against smoking", drinksAlcohol: "🍷 Drinks alcohol", isVegetarian: "🥗 Vegetarian",
-            doesSport: "🏃 Does sports", openToOffers: "💡 Open to offers",
-            bio1: "I don't strive to be attractive. My business is to make people better.",
-            bio2: "Commuting Kyiv–Brovary daily. Looking for companions for joint rides.",
-            bio3: "I create unique routes off the beaten path in Ukraine. Ready to host travelers.",
-            bio4: "Traveling light. Looking for Boryspil–Kyiv companions and nature trips.",
-            bio5: "Blogging about travel. I know unique places in Ukraine not found on Google.",
-            bio6: "I speak 4 languages. Can help with communication abroad. Looking for travel company.",
-            bio7: "Sea, sun and new acquaintances are my element. Ready for spontaneous adventures!",
-            bio8: "Traveling in my free time. Interested in historical routes and architecture.",
-            bio9: "Traveled to 23 countries. Conducting tours around Ukraine. Can host tourists.",
-            bio10: "UI/UX designer. In my free time — cycling trips around Kyiv.",
-            chat1: "Hi! I want to know about the route this week.", chat2: "Hi! Yes, I plan to leave on Friday evening.",
-            chat3: "Great! Can I join?", chat4: "Sure, let's agree on the time.",
-            chat5: "Hello! Interested in a tour to the Carpathians."
+            odesa: "Ukraine, Odesa", dnipro: "Ukraine, Dnipro", designer: "Designer"
           },
           de: {
             selectLang: "Sprache auswählen", login: "Einloggen", register: "Registrieren", namePlh: "Ihr Name",
@@ -114,80 +60,16 @@
             nameLbl: "Name", aboutLbl: "Über mich", statusLbl: "Status", messagesTitle: "Nachrichten",
             mapTitle: "Karte", searchTitle: "Suche", newUserBio: "Neuer Benutzer", ukraine: "Ukraine",
             kharkiv: "Ukraine, Charkiw", kyiv: "Ukraine, Kiew", boryspil: "Ukraine, Boryspil", irpin: "Ukraine, Irpin",
-            odesa: "Ukraine, Odessa", dnipro: "Ukraine, Dnipro", designer: "Designer", creativeDir: "Kreativdirektor",
-            representative: "Vertreter", copywriter: "Texter", translator: "Übersetzer", model: "Modell",
-            teacher: "Lehrer", traveler: "Reisender", canDrive: "🚗 Kann mitnehmen", lookingForCompanion: "✈️ Suche Reisepartner",
-            isHost: "🏠 Kann Gäste aufnehmen", lookingForRelations: "❤️ Auf Beziehungssuche", openToMeet: "😊 Offen für Kennenlernen",
-            againstSmoking: "🚭 Nichtraucher", drinksAlcohol: "🍷 Trinke Alkohol", isVegetarian: "🥗 Vegetarianer",
-            doesSport: "🏃 Treibe Sport", openToOffers: "💡 Offen für Angebote",
-            bio1: "Ich strebe nicht danach, attraktiv zu sein. Meine Aufgabe ist es, Menschen besser zu machen.",
-            bio2: "Pendle täglich Kiew–Browary. Suche Mitfahrer für gemeinsame Fahrten.",
-            bio3: "Ich erstelle einzigartige Routen abseits der Pfade in der Ukraine. Bereit, Reisende aufzunehmen.",
-            bio4: "Reise mit leichtem Gepäck. Suche Boryspil–Kiew Begleiter und Naturausflüge.",
-            bio5: "Blogge über das Reisen. Kenne einzigartige Orte in der Ukraine, die nicht auf Google stehen.",
-            bio6: "Ich speak 4 languages. Can help with communication abroad. Looking for travel company.",
-            bio7: "Meer, Sonne und neue Bekanntschaften sind mein Element. Bereit für spontane Abenteuer!",
-            bio8: "Reise in meiner Freizeit. Interessiert an historischen Routen und Architektur.",
-            bio9: "In 23 Länder gereist. Führe Touren durch die Ukraine. Kann Touristen aufnehmen.",
-            bio10: "UI/UX-Designer. In meiner Freizeit — Radtouren in der Umgebung von Kiew.",
-            chat1: "Hallo! Ich möchte mich über die Route diese Woche informieren.", chat2: "Hallo! Ja, ich plane am Freitagabend zu fahren.",
-            chat3: "Super! Kann ich mich anschließen?", chat4: "Klar, lass uns die Zeit vereinbaren.",
-            chat5: "Hallo! Interessiert an einer Tour in die Karpaten."
+            odesa: "Ukraine, Odessa", dnipro: "Ukraine, Dnipro", designer: "Designer"
           }
         };
 
-        const getLocalizedUsers = (lang) => [
-          { id:1,  name:"Алиса Шевченко",    location:TRANSLATIONS[lang].kharkiv, occupation:TRANSLATIONS[lang].designer,         bio:TRANSLATIONS[lang].bio1, tags:["#tourism","#фото"], socialLinks:{}, isHost:true,  lookingForCompanion:true },
-          { id:2,  name:"Андрей Мотьков",    location:TRANSLATIONS[lang].kyiv,    occupation:TRANSLATIONS[lang].designer,         bio:TRANSLATIONS[lang].bio2, tags:["#road","#car"], socialLinks:{}, isHost:false, lookingForCompanion:true },
-          { id:3,  name:"Евгений Савченко",  location:TRANSLATIONS[lang].kyiv,    occupation:TRANSLATIONS[lang].creativeDir,  bio:TRANSLATIONS[lang].bio3, tags:["#tourism"], socialLinks:{}, isHost:true,  lookingForCompanion:false },
-          { id:4,  name:"Александра Коваль", location:TRANSLATIONS[lang].boryspil,occupation:TRANSLATIONS[lang].representative,  bio:TRANSLATIONS[lang].bio4, tags:["#summer"], socialLinks:{}, isHost:false, lookingForCompanion:true },
-          { id:5,  name:"Наталья Осадчук",   location:TRANSLATIONS[lang].irpin,  occupation:TRANSLATIONS[lang].copywriter,       bio:TRANSLATIONS[lang].bio5, tags:["#tourism","#music"], socialLinks:{}, isHost:true,  lookingForCompanion:true }
-        ];
-
-        const STATUS_OPTIONS = [
-          { key:"canDrive",           icon:"🚗", labelKey:"canDrive" },
-          { key:"lookingForCompanion",icon:"✈️", labelKey:"lookingForCompanion" },
-          { key:"isHost",             icon:"🏠", labelKey:"isHost" },
-          { key:"lookingForRelations",icon:"❤️", labelKey:"lookingForRelations" },
-          { key:"openToMeet",         icon:"😊", labelKey:"openToMeet" },
-          { key:"againstSmoking",     icon:"🚭", labelKey:"againstSmoking" },
-          { key:"drinksAlcohol",      icon:"🍷", labelKey:"drinksAlcohol" },
-          { key:"isVegetarian",       icon:"🥗", labelKey:"isVegetarian" },
-          { key:"doesSport",          icon:"🏃", labelKey:"doesSport" },
-          { key:"openToOffers",       icon:"💡", labelKey:"openToOffers" },
-        ];
-
-        const TC = "#00bfb3"; const PU = "#7c3aed";
+        const TC = "#00bfb3"; 
         const BG = "linear-gradient(160deg,#1a0533 0%,#0d1f3c 100%)";
-        const BR = "rgba(255,255,255,.09)";
-        const ACOLS = ["#00897b","#7c3aed","#0e9af0","#e91e8c","#f59e0b"];
-        const acol = id => ACOLS[id % ACOLS.length];
-        const ini = n => n ? n.split(" ").map(x=>x[0]).join("").slice(0,2).toUpperCase() : "U";
 
-        function Ava({ user, size=48 }) {
-          return <div style={{ width:size,height:size,borderRadius:"50%",background:acol(user?.id||0),display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:size*.33,color:"#fff",flexShrink:0,border:"2px solid rgba(255,255,255,.12)" }}>{ini(user?.name)}</div>;
-        }
-
-        function Bar({ title, onBack, right, lang, onLangClick }) {
-          return (
-            <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 16px",background:TC,flexShrink:0 }}>
-              <div style={{ width:44 }}>
-                {onBack ? <button onClick={onBack} style={{ background:"transparent",border:"none",color:"#fff",fontSize:22,cursor:"pointer" }}>←</button> : <span style={{ color:"#fff",fontSize:20 }}>☰</span>}
-              </div>
-              <span style={{ fontSize:17,fontWeight:700,color:"#fff" }}>{title}</span>
-              <div style={{ width:55,display:"flex",justifyContent:"flex-end", gap: 8, alignItems:"center" }}>
-                {onLangClick && <span onClick={onLangClick} style={{fontSize:11, fontWeight:700, background:"rgba(0,0,0,0.2)", padding:"3px 5px", borderRadius:4, cursor:"pointer", textTransform:"uppercase"}}>{lang}</span>}
-                {right||<span style={{color:"#fff",fontSize:18}}>🔍</span>}
-              </div>
-            </div>
-          );
-        }
-
-        const W = { display:"flex",flexDirection:"column",height:"100vh",background:BG,color:"#fff", boxSizing:"border-box" };
-        const SC = { overflowY:"auto",flex:1 };
-        const IS = { width:"100%",padding:"11px 14px",background:"rgba(255,255,255,.07)",border:"1px solid rgba(255,255,255,.12)",borderRadius:10,color:"#fff",fontSize:14,outline:"none",boxSizing:"border-box",marginBottom:6 };
-        const Lbl = ({ c, mt=12 }) => <div style={{ fontSize:11,color:"rgba(255,255,255,.4)",fontWeight:600,marginBottom:5,marginTop:mt }}>{c}</div>;
-
+        // ═══════════════════════════════════════════════════════════════
+        // КОМПОНЕНТ СТАРТОВОГО ВЫБОРА ЯЗЫКА
+        // ═══════════════════════════════════════════════════════════════
         function LangSelect({ onSelect }) {
           const langs = [
             {code: "ua", name: "🇺🇦 Українська"},
@@ -195,107 +77,105 @@
             {code: "en", name: "🇬🇧 English"},
             {code: "de", name: "🇩🇪 Deutsch"}
           ];
-          return (
-            <div style={{ minHeight:"100vh",background:"linear-gradient(135deg,#1a0533,#2d1060,#0f2a4a)",display:"flex",alignItems:"center",justifyContent:"center",padding:24, boxSizing:"border-box" }}>
-              <div style={{ width:"100%",maxWidth:340,background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.12)",borderRadius:40,padding:"38px 28px 30px",backdropFilter:"blur(20px)", textAlign:"center" }}>
-                <div style={{ marginBottom:26 }}>
-                  <span style={{ border:"2px solid "+TC,padding:"5px 10px",fontSize:24,fontWeight:800,color:TC,borderRadius:"6px 0 0 6px" }}>LIFE</span>
-                  <span style={{ background:TC,padding:"5px 10px",fontSize:24,fontWeight:800,color:"#fff",borderRadius:"0 6px 6px 0" }}>UP</span>
-                </div>
-                <h3 style={{color:"#fff", marginBottom:20, fontSize:16}}>Select Language / Виберіть мову</h3>
-                <div style={{display:"flex", flexDirection:"column", gap:12}}>
-                  {langs.map(l => (
-                    <button key={l.code} onClick={() => onSelect(l.code)} style={{ width:"100%",padding:"13px 0",background:"rgba(255,255,255,.08)", border:"1px solid rgba(255,255,255,0.15)", borderRadius:12,color:"#fff",fontSize:16,fontWeight:600, cursor:"pointer" }}>
-                      {l.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+
+          return e('div', { style: { minHeight: "100vh", background: "linear-gradient(135deg,#1a0533,#2d1060,#0f2a4a)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, boxSizing: "border-box" } },
+            e('div', { style: { width: "100%", maxWidth: 340, background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 40, padding: "38px 28px 30px", backdropFilter: "blur(20px)", textAlign: "center" } },
+              e('div', { style: { marginBottom: 26 } },
+                e('span', { style: { border: "2px solid " + TC, padding: "5px 10px", fontSize: 24, fontWeight: 800, color: TC, borderRadius: "6px 0 0 6px" } }, "LIFE"),
+                e('span', { style: { background: TC, padding: "5px 10px", fontSize: 24, fontWeight: 800, color: "#fff", borderRadius: "0 6px 6px 0" } }, "UP")
+              ),
+              e('h3', { style: { color: "#fff", marginBottom: 20, fontSize: 16 } }, "Select Language / Виберіть мову"),
+              e('div', { style: { display: "flex", flexDirection: "column", gap: 12 } },
+                langs.map(l => e('button', {
+                  key: l.code,
+                  onClick: () => onSelect(l.code),
+                  style: { width: "100%", padding: "13px 0", background: "rgba(255,255,255,.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 12, color: "#fff", fontSize: 16, fontWeight: 600, cursor: "pointer" }
+                }, l.name))
+              )
+            )
           );
         }
 
+        // ═══════════════════════════════════════════════════════════════
+        // КОМПОНЕНТ РЕГИСТРАЦИИ
+        // ═══════════════════════════════════════════════════════════════
         function Register({ onDone, lang }) {
           const t = TRANSLATIONS[lang];
-          const [mode,setMode] = useState("login");
-          const [name,setName] = useState("");
-          const [phone,setPhone] = useState("");
-          const [pass,setPass] = useState("");
-          return (
-            <div style={{ minHeight:"100vh",background:"linear-gradient(135deg,#1a0533,#2d1060,#0f2a4a)",display:"flex",alignItems:"center",justifyContent:"center",padding:24, boxSizing:"border-box" }}>
-              <div style={{ width:"100%",maxWidth:340,background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.12)",borderRadius:40,padding:"38px 28px 30px",backdropFilter:"blur(20px)" }}>
-                <div style={{ textAlign:"center",marginBottom:26 }}>
-                  <span style={{ border:"2px solid "+TC,padding:"5px 10px",fontSize:24,fontWeight:800,color:TC,borderRadius:"6px 0 0 6px" }}>LIFE</span>
-                  <span style={{ background:TC,padding:"5px 10px",fontSize:24,fontWeight:800,color:"#fff",borderRadius:"0 6px 6px 0" }}>UP</span>
-                </div>
-                <div style={{ display:"flex",marginBottom:18,background:"rgba(255,255,255,.07)",borderRadius:10,padding:3 }}>
-                  {[["login",t.login],["register",t.register]].map(([m,l])=><button key={m} onClick={()=>setMode(m)} style={{ flex:1,padding:"8px 0",borderRadius:8,border:"none",background:mode===m?TC:"transparent",color:"#fff",fontWeight:600, cursor:"pointer" }}>{l}</button>)}
-                </div>
-                {mode==="register" && <input placeholder={t.namePlh} value={name} onChange={e=>setName(e.target.value)} style={IS} />}
-                <input placeholder={t.phonePlh} value={phone} onChange={e=>setPhone(e.target.value)} style={IS} />
-                <input type="password" placeholder={t.passPlh} value={pass} onChange={e=>setPass(e.target.value)} style={IS} />
-                <button onClick={()=>onDone(name||"User")} style={{ width:"100%",padding:"13px 0",background:`linear-gradient(90deg,${TC},${PU})`,border:"none",borderRadius:12,color:"#fff",fontSize:15,fontWeight:700, cursor:"pointer" }}>
-                  {mode==="login"?t.btnIn:t.btnReg}
-                </button>
-              </div>
-            </div>
+          const [name, setName] = useState("");
+
+          return e('div', { style: { minHeight: "100vh", background: "linear-gradient(135deg,#1a0533,#2d1060,#0f2a4a)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, boxSizing: "border-box" } },
+            e('div', { style: { width: "100%", maxWidth: 340, background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 40, padding: "38px 28px 30px", backdropFilter: "blur(20px)" } },
+              e('div', { style: { textAlign: "center", marginBottom: 26 } },
+                e('span', { style: { border: "2px solid " + TC, padding: "5px 10px", fontSize: 24, fontWeight: 800, color: TC, borderRadius: "6px 0 0 6px" } }, "LIFE"),
+                e('span', { style: { background: TC, padding: "5px 10px", fontSize: 24, fontWeight: 800, color: "#fff", borderRadius: "0 6px 6px 0" } }, "UP")
+              ),
+              e('div', { style: { marginBottom: 15, fontSize: 18, textAlign: 'center', fontWeight: 'bold' } }, t.register),
+              e('input', {
+                placeholder: t.namePlh,
+                value: name,
+                onChange: e => setName(e.target.value),
+                style: { width: "100%", padding: "11px 14px", background: "rgba(255,255,255,.07)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 10, color: "#fff", fontSize: 14, outline: "none", marginBottom: 15, boxSizing: "border-box" }
+              }),
+              e('button', {
+                onClick: () => onDone(name || "User"),
+                style: { width: "100%", padding: "13px 0", background: TC, border: "none", borderRadius: 12, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer" }
+              }, t.btnReg)
+            )
           );
         }
 
-        function Feed({ users, me, favIds, onToggleFav, onProfile, onMyProfile, onAbout, onMsg, isFavScreen = false, lang, changeLang }) {
+        // ═══════════════════════════════════════════════════════════════
+        // ГЛАВНЫЙ ЭКРАН ПРИЛОЖЕНИЯ
+        // ═══════════════════════════════════════════════════════════════
+        function MainFeed({ me, lang, onLogout }) {
           const t = TRANSLATIONS[lang];
-          const [q,setQ] = useState("");
-          const list = users.filter(u => {
-            if (isFavScreen && !favIds.includes(u.id)) return false;
-            return !q || u.name.toLowerCase().includes(q.toLowerCase()) || u.location.toLowerCase().includes(q.toLowerCase());
-          });
-          return (
-            <div style={W}>
-              <div style={{ background:TC,padding:"12px 16px 10px",flexShrink:0 }}>
-                <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:9 }}>
-                  <button onClick={onAbout} style={{ background:"rgba(255,255,255,.18)",border:"none",borderRadius:8,padding:"3px 8px",color:"#fff", cursor:"pointer" }}>{t.aboutProj}</button>
-                  <button onClick={onMyProfile} style={{ background:"rgba(255,255,255,.18)",border:"none",borderRadius:20,padding:"5px 10px",color:"#fff",display:"flex",alignItems:"center",gap:6, cursor:"pointer" }}>
-                    <Ava user={me} size={22} /><span>{me?.name}</span>
-                  </button>
-                </div>
-                <div style={{display:"flex", gap:8, alignItems:"center"}}>
-                  <input value={q} onChange={e=>setQ(e.target.value)} placeholder={t.searchPlh} style={{...IS, margin:0}} />
-                  <span onClick={changeLang} style={{fontSize:12, fontWeight:700, background:"rgba(0,0,0,0.2)", padding:"6px 8px", borderRadius:8, cursor:"pointer", textTransform:"uppercase"}}>{lang}</span>
-                </div>
-              </div>
-              <div style={SC}>
-                {list.map(u=>(
-                  <div key={u.id} onClick={()=>onProfile(u)} style={{ display:"flex",gap:12,padding:"13px 16px",borderBottom:"1px solid rgba(255,255,255,.06)", cursor:"pointer" }}>
-                    <Ava user={u} size={54} />
-                    <div style={{ flex:1 }}>
-                      <div style={{ fontWeight:700 }}>{u.name}</div>
-                      <div style={{ fontSize:12,color:"rgba(255,255,255,.4)" }}>{u.location}</div>
-                      <div style={{ fontSize:13,color:"rgba(255,255,255,.6)" }}>{u.bio}</div>
-                    </div>
-                    <div style={{ display:"flex", flexDirection:"column", gap:10, justifyContent:"center" }}>
-                      <button onClick={e=>{e.stopPropagation();onMsg(u);}} style={{ background:"transparent",border:"none",fontSize:18, cursor:"pointer" }}>💬</button>
-                      <button onClick={e=>{e.stopPropagation();onToggleFav(u.id);}} style={{ background:"transparent", border:"none", fontSize:20, color:favIds.includes(u.id)?"#f59e0b":"#fff", cursor:"pointer" }}>{favIds.includes(u.id)?"★":"☆"}</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          return e('div', { style: { display: "flex", flexDirection: "column", height: "100vh", background: BG, padding: 20, boxSizing: "border-box" } },
+            e('div', { style: { display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: 15 } },
+              e('div', null,
+                e('span', { style: { fontSize: 20, fontWeight: 'bold', color: TC } }, "LIFE"),
+                e('span', { style: { fontSize: 20, fontWeight: 'bold', color: "#fff" } }, "UP")
+              ),
+              e('button', { onClick: onLogout, style: { background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", padding: "6px 12px", borderRadius: 8, cursor: "pointer" } }, "🌐 Мова/Язык")
+            ),
+            e('div', { style: { marginTop: 30, textAlign: 'center' } },
+              e('div', { style: { width: 80, height: 80, borderRadius: "50%", background: TC, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, margin: "0 auto 15px", fontWeight: 'bold' } }, me.name[0].toUpperCase()),
+              e('h2', { style: { margin: 0 } }, me.name),
+              e('p', { style: { color: "rgba(255,255,255,0.5)", fontSize: 14 } }, me.location),
+              e('div', { style: { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: 20, borderRadius: 16, marginTop: 20, textAlign: 'left' } },
+                e('h4', { style: { margin: "0 0 10px 0", color: TC } }, t.aboutTitle),
+                e('p', { style: { margin: 0, fontSize: 14, color: "rgba(255,255,255,0.8)", lineHeight: 1.5 } }, t.aboutDesc)
+              )
+            )
           );
         }
 
-        function Profile({ user, isSelf, onEdit, onBack, lang, changeLang }) {
-          const t = TRANSLATIONS[lang];
-          return (
-            <div style={W}>
-              <Bar title={user?.name || ""} onBack={onBack} lang={lang} onLangClick={changeLang} right={isSelf && <button onClick={onEdit} style={{color:"#fff",background:"none",border:"none", fontSize:16, cursor:"pointer"}}>✎</button>} />
-              <div style={{...SC, padding:20}}>
-                <div style={{display:"flex", alignItems:"center", gap:16, marginBottom:16}}>
-                   <Ava user={user} size={78} />
-                   <div>
-                     <h2 style={{margin:0}}>{user?.name}</h2>
-                     <div style={{fontSize:14, color:"rgba(255,255,255,0.4)"}}>{user?.location}</div>
-                   </div>
-                </div>
-                <p style={{background:"rgba(255,255,255,0.04)", padding:14, borderRadius:12, border:`1px solid ${BR}`}}>{user?.bio}</p>
-                <Lbl c={t.statusLbl} />
-                <div style={{display
+        // ═══════════════════════════════════════════════════════════════
+        // КОРНЕВОЙ КОМПОНЕНТ ПРИЛОЖЕНИЯ
+        // ═══════════════════════════════════════════════════════════════
+        function App() {
+          const [lang, setLang] = useState(null);
+          const [me, setMe] = useState(null);
+
+          const doRegister = (name) => {
+            const loc = lang ? TRANSLATIONS[lang].ukraine : "Ukraine";
+            setMe({ name: name, location: loc });
+          };
+
+          if (!lang) {
+            return e(LangSelect, { onSelect: (code) => setLang(code) });
+          }
+
+          if (!me) {
+            return e(Register, { onDone: doRegister, lang: lang });
+          }
+
+          return e(MainFeed, { me: me, lang: lang, onLogout: () => { setLang(null); setMe(null); } });
+        }
+
+        // Чистый запуск React 18 без багов
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(e(App));
+    </script>
+</body>
+</html>
