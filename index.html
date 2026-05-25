@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LifeUp Network - MVP Final</title>
+    <title>LifeUp Network - MVP v2</title>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;900&display=swap');
-        body { margin: 0; background: #060411; color: #fff; font-family: 'DM Sans', sans-serif; overflow: hidden; }
-        .app-container { width: 100%; max-width: 430px; height: 100vh; margin: 0 auto; position: relative; background: #0b0816; display: flex; flex-direction: column; }
-        button { cursor: pointer; transition: 0.2s; }
+        body { margin: 0; background: #060411; color: #fff; font-family: 'DM Sans', sans-serif; }
+        .app-shell { width: 100%; max-width: 430px; height: 100vh; margin: 0 auto; display: flex; flex-direction: column; background: #0b0816; position: relative; }
+        .nav-btn { background: #1a0533; border: none; padding: 15px; border-radius: 15px; color: #fff; font-size: 20px; cursor: pointer; transition: 0.3s; }
+        .input-field { width: 100%; padding: 15px; background: #1a0533; border: 1px solid #333; border-radius: 10px; color: #fff; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -28,68 +29,75 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const { useState, useEffect } = React;
         const e = React.createElement;
-        const TC = "#00bfb3";
-        const Logo = () => e('div', {style:{display:'flex', alignItems:'center', gap:8, padding:20}},
-            e('span', {style:{background:`linear-gradient(90deg, #007a75, ${TC})`, padding:'5px 12px', borderRadius:8, fontWeight:900}}, "LIFEUP"),
-            e('div', {style:{width:6, height:6, borderRadius:'50%', background:'#10b981', boxShadow:'0 0 8px #10b981'}})
-        );
 
-        const BottomNav = ({active, setActive}) => e('div', {style:{position:'absolute', bottom:20, width:'100%', padding:'0 20px', display:'flex', justifyContent:'space-between'}},
-            [{id:'map', i:'📍'}, {id:'housing', i:'🔑'}, {id:'feed', i:'🏠'}, {id:'msg', i:'✉'}, {id:'prof', i:'👤'}].map(nav => 
-                e('button', {key:nav.id, onClick:()=>setActive(nav.id), style:{background: active===nav.id ? TC : '#1a0533', border:'none', padding:15, borderRadius:15, color:'#fff'}}, nav.i)
+        const MOCK_DATA = Array.from({length: 30}, (_,i) => ({
+            id: String(i),
+            name: ["Алиса", "Андрей", "Евгений", "Александра", "Дмитрий"][i%5] + " " + i,
+            location: ["Печерск", "Подол", "Оболонь", "Голосеево"][i%4],
+            isHost: i % 2 === 0,
+            bio: "Привет! Ищу компанию для путешествий по Украине.",
+            socialLinks: { insta: "user"+i, tg: "user"+i }
+        }));
+        const Logo = () => e('div', {style:{padding:20, fontSize:20, fontWeight:900}}, "LIFEUP");
+        const Avatar = ({name}) => e('div', {style:{width:50, height:50, borderRadius:25, background:'#00bfb3', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:'bold'}}, name[0]);
+        const Nav = ({view, setView}) => e('div', {style:{position:'absolute', bottom:20, left:0, right:0, display:'flex', justifyContent:'space-around', padding:'0 10px'}},
+            [{id:'map', i:'📍'}, {id:'housing', i:'🔑'}, {id:'feed', i:'🏠'}, {id:'chat', i:'✉'}, {id:'prof', i:'👤'}].map(n => 
+                e('button', {key:n.id, className:'nav-btn', onClick:()=>setView(n.id), style:{background: view===n.id ? '#00bfb3' : '#1a0533'}}, n.i)
             )
         );
+        const AuthScreen = ({onLogin}) => e('div', {className:'app-shell', style:{padding:40, justifyContent:'center'}},
+            e('h2', null, "Вход в LifeUP"),
+            e('input', {className:'input-field', placeholder:'Email / Телефон'}),
+            e('input', {className:'input-field', type:'password', placeholder:'Пароль'}),
+            e('button', {className:'nav-btn', style:{background:'#00bfb3', width:'100%'}, onClick:onLogin}, "Войти")
+        );
+
+        const FeedScreen = ({users, onSelect}) => e('div', {className:'app-shell', style:{paddingBottom:100}},
+            e(Logo),
+            e('div', {style:{overflowY:'auto'}},
+                users.map(u => e('div', {key:u.id, style:{padding:15, margin:10, background:'#1a0533', borderRadius:10, display:'flex', gap:15}, onClick:()=>onSelect(u)},
+                    e(Avatar, {name:u.name}),
+                    e('div', null, e('h3', {style:{margin:0}}, u.name), e('p', {style:{margin:0, fontSize:12, color:'#888'}}, u.location))
+                ))
+            )
+        );
+        const MapScreen = ({users}) => e('div', {className:'app-shell', style:{background:'#050714'}},
+            e('div', {style:{padding:20, fontWeight:700}}, "КАРТА КИЕВА"),
+            e('div', {style:{flex:1, position:'relative', borderTop:'1px solid #333'}},
+                users.map((u, i) => e('div', {key:i, style:{position:'absolute', top:50+i*20+'px', left:50+i*15+'px', background:'#00bfb3', padding:5, borderRadius:8, fontSize:10}}, u.name.split(" ")[0]))
+            )
+        );
+
+        const HousingScreen = ({users}) => e('div', {className:'app-shell', style:{padding:20}},
+            e('h2', null, "Жилье"),
+            users.filter(u=>u.isHost).map(u => e('div', {key:u.id, style:{padding:15, background:'#1a0533', borderRadius:10, marginBottom:10}}, 
+                e('h3', null, u.name), e('p', null, "Бесплатно в: " + u.location)
+            ))
+        );
         function App() {
-            const [users, setUsers] = useState([]);
-            const [view, setView] = useState("feed");
-            const [selected, setSelected] = useState(null);
+            const [view, setView] = useState('auth');
+            const [users, setUsers] = useState(MOCK_DATA);
+            const [sel, setSel] = useState(null);
 
             useEffect(() => {
                 db.collection("users").onSnapshot(snap => {
                     const l = []; snap.forEach(d => l.push(d.data()));
-                    // Если пусто - грузим "боевые" демо-данные, чтобы приложение не было пустым
-                    setUsers(l.length > 0 ? l : Array.from({length:20}, (_,i)=>({
-                        id: String(i), name: ["Алиса", "Андрей", "Евгений"][i%3] + " " + i,
-                        location: "Киев, Печерск", isHost: i%2===0, bio: "Ищу попутчиков!"
-                    })));
+                    if(l.length > 0) setUsers(l);
                 });
             }, []);
 
-            if (view === "feed") return e('div', {className:'app-container'}, 
-                e(Logo),
-                users.map(u => e('div', {key:u.id, style:{margin:10, padding:15, background:'#1a0533', borderRadius:10}, onClick:()=>setView("prof")}, 
-                    e('h3', null, u.name), e('p', null, u.location)
-                )),
-                e(BottomNav, {active:'feed', setActive:setView})
+            if (view === 'auth') return e(AuthScreen, {onLogin:()=>setView('feed')});
+            
+            return e('div', {className:'app-shell'},
+                view === 'feed' ? e(FeedScreen, {users, onSelect:(u)=>{setSel(u); setView('prof')}}) : null,
+                view === 'map' ? e(MapScreen, {users}) : null,
+                view === 'housing' ? e(HousingScreen, {users}) : null,
+                view === 'prof' ? e('div', {style:{padding:20}}, e('h1', null, sel?.name), e('button', {className:'nav-btn', onClick:()=>setView('feed')}, "Назад")) : null,
+                e(Nav, {active:view, setActive:setView})
             );
-            if (view === "map") return e('div', {className:'app-container', style:{background:'#050714'}},
-                e('div', {style:{padding:20, color:TC, fontWeight:900}}, "КАРТА КИЕВА"),
-                e('div', {style:{flex:1, position:'relative'}},
-                    users.map((u, i) => e('div', {key:i, style:{position:'absolute', top:i*30+'px', left:i*20+'px', background:'#00bfb3', padding:5, borderRadius:5}}, u.name.split(" ")[0])),
-                    e('div', {style:{position:'absolute', bottom:100, right:20, display:'flex', flexDirection:'column', gap:10}},
-                        e('button', {onClick:()=>alert("Zoom In"), style:{padding:15}}, "+"),
-                        e('button', {onClick:()=>alert("Zoom Out"), style:{padding:15}}, "-")
-                    )
-                ),
-                e(BottomNav, {active:'map', setActive:setView})
-            );
-            if (view === "prof") return e('div', {className:'app-container', style:{padding:20}},
-                e('h1', null, "Профиль"),
-                e('div', {style:{display:'flex', gap:10}}, 
-                    e('button', {className:'btn'}, "📸 Insta"),
-                    e('button', {className:'btn'}, "🟢 WA"),
-                    e('button', {className:'btn'}, "✈️ TG")
-                ),
-                e('button', {style:{marginTop:20}, onClick:()=>setView("feed")}, "Назад")
-            );
-
-            return e('div', null, "Загрузка...");
         }
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(e(App));
+        ReactDOM.createRoot(document.getElementById('root')).render(e(App));
     </script>
 </body>
 </html>
