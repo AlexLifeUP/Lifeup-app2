@@ -62,7 +62,7 @@
             editTitle: "Редагувати профіль", done: "Зберегти", cancel: "Скасувати", nameLbl: "Ім'я", aboutLbl: "Про себе", locLbl: "Місто/Локація", occLbl: "Професія/Діяльність",
             housingTitle: "Каталог житла (Couchsurfing)", housingDesc: "Знайди безкоштовне або дружнє житло у мандрівників",
             mapDesc: "Інтерактивний радар мандрівників навколо тебе", mapSearch: "Шукати в цьому районі",
-            emptyMsgs: "У вас ще немає active діалогів. Напишіть кому-небудь!", msgPlh: "Введіть повідомлення...", send: "Відправити",
+            emptyMsgs: "У вас ще немає активних діалогів. Напишіть кому-небудь!", msgPlh: "Введіть повідомлення...", send: "Відправити",
             revTitle: "Відгуки користувачів", addRev: "Залишити відгук", revPlh: "Опишіть ваш досвід спілкування або проживання...",
             priceFree: "Безкоштовно / За відгук", rating: "Рейтинг", filterAll: "Усі локації", logout: "Вийти",
             kharkiv: "Україна, Харків", kyiv: "Україна, Київ", boryspil: "Україна, Бориспіль", irpin: "Україна, Ірпінь", odesa: "Україна, Одеса", dnipro: "Україна, Дніпро", львов: "Україна, Львів",
@@ -75,13 +75,13 @@
             aboutProj: "ℹ О проекте", login: "Войти", register: "Регистрация", namePlh: "Ваше имя", phonePlh: "Телефон или email", passPlh: "Пароль",
             btnIn: "ВОЙТИ", btnReg: "ЗАРЕГИСТРИРОВАТЬСЯ", hostBadge: "HOST", companionBadge: "ПОПУТЧИК", driverBadge: "ДРАЙВ",
             btnMsg: "Написать", btnCall: "Звонок", btnRent: "Забронировать", tabsFeed: "Все", tabsFav: "Избранное",
-            statsLikes: "Лайки", statsSubs: "Подписчики", statsRev: "Отзывы", statusTitle: "Особенности & Status",
+            statsLikes: "Лайки", statsSubs: "Подписчики", statsRev: "Отзывы", statusTitle: "Особенности & Статус",
             editTitle: "Редактировать профиль", done: "Сохранить", cancel: "Отмена", nameLbl: "Имя", aboutLbl: "О себе", locLbl: "Город/Локация", occLbl: "Профессия/Деятельность",
             housingTitle: "Каталог жилья (Couchsurfing)", housingDesc: "Найди бесплатное или дружественное жилье у путешественников",
             mapDesc: "Интерактивный радар путешественников вокруг тебя", mapSearch: "Искать в этом районе",
             emptyMsgs: "У вас еще нет активных диалогов. Напишите кому-нибудь!", msgPlh: "Введите сообщение...", send: "Отправить",
             revTitle: "Отзывы пользователей", addRev: "Оставить отзыв", revPlh: "Опишите ваш опыт общения или проживания...",
-            priceFree: "Бесплатно / За отзыв", rating: "Rating", filterAll: "Все локации", logout: "Выйти",
+            priceFree: "Бесплатно / За отзыв", rating: "Рейтинг", filterAll: "Все локации", logout: "Выйти",
             kharkiv: "Украина, Харьков", kyiv: "Украина, Киев", boryspil: "Украина, Борисполь", irpin: "Украина, Ирпень", odesa: "Украина, Одесса", dnipro: "Украина, Днепр", львов: "Украина, Львов",
             designer: "Дизайнер", creativeDir: "Креативный дир.", representative: "Представитель", copywriter: "Копирайтер", translator: "Переводчик", model: "Модель", teacher: "Учитель", traveler: "Путешественник",
             bio1: "Я не стремлюсь быть привлекательной. Моё дело — заставлять людей становиться лучше.", bio2: "Ежедневно езжу Киев-Бровары.", bio3: "Создаю маршруты по Украине.", newUserBio: "Новый пользователь", ukraine: "Украина"
@@ -93,7 +93,7 @@
             btnIn: "LOG IN", btnReg: "SIGN UP", hostBadge: "HOST", companionBadge: "COMPANION", driverBadge: "DRIVER",
             btnMsg: "Message", btnCall: "Call", btnRent: "Book Stay", tabsFeed: "All", tabsFav: "Favorites",
             statsLikes: "Likes", statsSubs: "Followers", statsRev: "Reviews", statusTitle: "Features & Status",
-            editTitle: "Edit Profile", done: "Save", cancel: "Cancel", nameLbl: "Name", aboutLbl: "About me", locLbl: "City/Location", occLbl: "Occupation",
+            editTitle: "Edit Profile", done: "Save", cancel: "Cancel", nameLbl: "Name", aboutLbl: "About me", locLbl: "City/Location", occupation: "Occupation",
             housingTitle: "Housing Directory (Couchsurfing)", housingDesc: "Find free or friendly hosting from fellow travelers",
             mapDesc: "Interactive radar of travelers near you", mapSearch: "Search this area",
             emptyMsgs: "No active dialogs yet. Drop a line to someone!", msgPlh: "Type a message...", send: "Send",
@@ -149,6 +149,17 @@
           }, getInitials(user?.name));
         }
 
+        // КРАСИВЫЙ СТИЛЬНЫЙ ЛОГОТИП С ИНДИКАТОРОМ СЕТИ
+        function LogoComponent() {
+          return e('div', { style: { display: "flex", alignItems: "center", gap: 5, userSelect: "none" } },
+            e('div', { style: { display: "flex", alignItems: "center", position: "relative" } },
+              e('span', { style: { border: `2px solid ${TC}`, padding: "4px 8px", fontSize: 18, fontWeight: 800, color: TC, borderRadius: "8px 0 0 8px", letterSpacing: "1px" } }, "LIFE"),
+              e('span', { style: { background: TC, padding: "4px 8px", fontSize: 18, fontWeight: 800, color: "#fff", borderRadius: "0 8px 8px 0", letterSpacing: "1px", boxShadow: `0 0 10px ${TC}80` } }, "UP")
+            ),
+            e('div', { style: { width: 8, height: 8, borderRadius: "50%", background: "#10b981", marginLeft: 4, animation: "pulse 2s infinite", boxShadow: "0 0 8px #10b981" }, title: "Network Active" })
+          );
+        }
+
         function HeaderBar({ title, onBack, rightElement, lang, onLangToggle }) {
           return e('div', {
             style: {
@@ -159,7 +170,7 @@
             e('div', { style: { width: 44, display: "flex", alignItems: "center" } },
               onBack ? e('button', { onClick: onBack, style: { background: "transparent", border: "none", color: "#fff", fontSize: 22, cursor: "pointer", padding: 0 } }, "←") : e('span', { style: { fontSize: 20, opacity: 0.8 } }, "⚡")
             ),
-            e('span', { style: { fontSize: 18, fontWeight: 700, color: "#fff", letterSpacing: "0.5px" } }, title),
+            typeof title === 'string' ? e('span', { style: { fontSize: 17, fontWeight: 700, color: "#fff", letterSpacing: "0.5px" } }, title) : title,
             e('div', { style: { display: "flex", alignItems: "center", gap: 10 } },
               onLangToggle && e('button', { onClick: onLangToggle, style: { background: "rgba(0,0,0,0.2)", border: "none", color: "#fff", padding: "4px 8px", borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: "pointer", textTransform: "uppercase" } }, lang),
               rightElement || e('div', { style: { width: 30 } })
@@ -168,15 +179,12 @@
         }
 
         function FieldLabel({ text, marginTop = 0 }) {
-          return e('label', { style: { display: "block", fontSize: 12, fontWeight: 600, color: TC, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 6, marginTop: marginTop } }, text);
+          return e('label', { style: { display: "block", fontSize: 12, fontWeight: 600, color: TC, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 8, marginTop: marginTop } }, text);
         }
         function LangSelectScreen({ onSelect }) {
           return e('div', { style: { minHeight: "100vh", background: "linear-gradient(135deg, #120326, #091326)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 } },
             e('div', { style: { width: "100%", maxWidth: 340, background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 32, padding: "40px 24px", backdropFilter: "blur(20px)", textAlign: "center", boxShadow: "0 15px 35px rgba(0,0,0,0.5)" } },
-              e('div', { style: { marginBottom: 30 } },
-                e('span', { style: { border: `2px solid ${TC}`, padding: "6px 12px", fontSize: 26, fontWeight: 800, color: TC, borderRadius: "8px 0 0 8px" } }, "LIFE"),
-                e('span', { style: { background: TC, padding: "6px 12px", fontSize: 26, fontWeight: 800, color: "#fff", borderRadius: "0 8px 8px 0" } }, "UP")
-              ),
+              e('div', { style: { marginBottom: 30, display: "flex", justifyContent: "center" } }, e(LogoComponent)),
               e('h3', { style: { color: "#fff", marginBottom: 24, fontSize: 16, fontWeight: 500, opacity: 0.9 } }, "Select Language / Выберите язык"),
               e('div', { style: { display: "flex", flexDirection: "column", gap: 12 } },
                 [ { code: "ua", name: "🇺🇦 Українська" }, { code: "ru", name: "🇷🇺 Русский" }, { code: "en", name: "🇬🇧 English" } ].map(l => e('button', { key: l.code, onClick: () => onSelect(l.code), style: { width: "100%", padding: "14px 0", background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 14, color: "#fff", fontSize: 16, fontWeight: 600, cursor: "pointer" } }, l.name))
@@ -194,10 +202,7 @@
 
           return e('div', { style: { minHeight: "100vh", background: "linear-gradient(135deg, #120326, #091326)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 } },
             e('div', { style: { width: "100%", maxWidth: 350, background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.1)", borderRadius: 32, padding: "35px 24px", backdropFilter: "blur(20px)", boxShadow: "0 15px 35px rgba(0,0,0,0.5)" } },
-              e('div', { style: { textAlign: "center", marginBottom: 24 } },
-                e('span', { style: { border: `2px solid ${TC}`, padding: "5px 10px", fontSize: 24, fontWeight: 800, color: TC, borderRadius: "6px 0 0 6px" } }, "LIFE"),
-                e('span', { style: { background: TC, padding: "5px 10px", fontSize: 24, fontWeight: 800, color: "#fff", borderRadius: "0 6px 6px 0" } }, "UP")
-              ),
+              e('div', { style: { display: "flex", justifyContent: "center", marginBottom: 24 } }, e(LogoComponent)),
               e('div', { style: { display: "flex", marginBottom: 20, background: "rgba(255,255,255,.06)", borderRadius: 12, padding: 3 } },
                 e('button', { onClick: () => setMode("login"), style: { flex: 1, padding: "10px 0", borderRadius: 10, border: "none", background: mode === "login" ? TC : "transparent", color: "#fff", fontWeight: 600, cursor: "pointer" } }, t.login),
                 e('button', { onClick: () => setMode("register"), style: { flex: 1, padding: "10px 0", borderRadius: 10, border: "none", background: mode === "register" ? TC : "transparent", color: "#fff", fontWeight: 600, cursor: "pointer" } }, t.register)
@@ -225,7 +230,7 @@
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
             e('div', { style: { background: `linear-gradient(135deg, ${TD}, #0d1f3c)`, padding: "14px 16px 12px", flexShrink: 0 } },
               e('div', { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } },
-                e('div', { style: { display: "flex", alignItems: "center", gap: 6 } }, e('span', { style: { fontSize: 20, fontWeight: 800, color: TC } }, "LIFEUP")),
+                e(LogoComponent),
                 e('div', { style: { display: "flex", alignItems: "center", gap: 10 } },
                   e('button', { onClick: onLangToggle, style: { background: "rgba(255,255,255,0.12)", border: "none", color: "#fff", padding: "4px 8px", borderRadius: 6, fontSize: 12, fontWeight: 700, cursor: "pointer" } }, lang),
                   e('div', { onClick: onSelectMyProfile, style: { display: "flex", alignItems: "center", gap: 6, cursor: "pointer", background: "rgba(0,0,0,0.2)", padding: "4px 10px", borderRadius: 20 } }, e(Avatar, { user: me, size: 24 }), e('span', { style: { fontSize: 12, fontWeight: 600 } }, me?.name?.split(" ")[0]))
@@ -261,7 +266,7 @@
         function MapScreen({ users, onSelectUser, lang }) {
           const t = TRANSLATIONS_DATA[lang];
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%", background: "#0a1128" } },
-            e(HeaderBar, { title: t.map, lang: lang }),
+            e(HeaderBar, { title: e(LogoComponent), lang: lang }),
             e('div', { style: { padding: "10px 16px", background: "rgba(255,255,255,0.04)", fontSize: 13, color: "rgba(255,255,255,0.6)", textAlign: "center" } }, t.mapDesc),
             e('div', { style: { flex: 1, position: "relative", overflow: "hidden", background: "radial-gradient(circle, #102a45 0%, #050b14 100%)", display: "flex", alignItems: "center", justifyContent: "center" } },
               e('div', { style: { position: "absolute", width: 280, height: 280, border: "1px solid rgba(0,191,179,0.15)", borderRadius: "50%" } }),
@@ -284,7 +289,7 @@
           const hosts = users.filter(u => u.isHost && u.housingInfo);
 
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
-            e(HeaderBar, { title: t.housing, lang: lang }),
+            e(HeaderBar, { title: e(LogoComponent), lang: lang }),
             e('div', { style: { padding: "14px 16px", background: "rgba(255,255,255,0.02)", borderBottom: `1px solid ${BR}`, flexShrink: 0 } },
               e('h3', { style: { margin: "0 0 4px 0", fontSize: 16, color: TC } }, t.housingTitle),
               e('p', { style: { margin: 0, fontSize: 12, color: "rgba(255,255,255,0.5)" } }, t.housingDesc)
@@ -360,7 +365,15 @@
           const [newReviewText, setNewReviewText] = useState("");
 
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
-            e(HeaderBar, { title: user?.name || "", onBack: onBack, lang: lang, rightElement: isSelf ? e('button', { onClick: onEdit, style: { color: TC, background: "none", border: "none", fontSize: 15, fontWeight: 700, cursor: "pointer" } }, "✎ Edit") : null }),
+            e(HeaderBar, { 
+              title: user?.name || "", 
+              onBack: onBack, 
+              lang: lang, 
+              rightElement: isSelf ? e('button', { 
+                onClick: onEdit, 
+                style: { color: "#fff", background: "rgba(255,255,255,0.15)", border: `1px solid ${TC}`, fontSize: 12, fontWeight: 700, cursor: "pointer", padding: "6px 14px", borderRadius: 8, textTransform: "uppercase", letterSpacing: "0.5px", boxShadow: `0 0 8px ${TC}30` } 
+              }, "✎ Edit") : null 
+            }),
             e('div', { style: { overflowY: "auto", flex: 1, padding: "20px 16px", paddingBottom: 60 } },
               e('div', { style: { display: "flex", alignItems: "center", gap: 16, marginBottom: 20 } },
                 e(Avatar, { user: user, size: 74 }),
@@ -385,10 +398,26 @@
                 [ { label: t.statsLikes, val: `👍 ${user?.likes || 0}` }, { label: t.statsSubs, val: `👥 ${user?.subscribers || 0}` }, { label: t.rating, val: `⭐ ${user?.rating || 5.0}` } ].map((s, idx) => e('div', { key: idx, style: { background: "rgba(255,255,255,0.03)", padding: "10px 6px", borderRadius: 10, textAlign: "center", border: `1px solid ${BR}` } }, e('div', { style: { fontSize: 11, color: "rgba(255,255,255,0.4)" } }, s.label), e('div', { style: { fontSize: 14, fontWeight: 700 } }, s.val)))
               ),
               e(FieldLabel, { text: t.statusTitle }),
-              e('div', { style: { display: "flex", flexDirection: "column", gap: 6, marginBottom: 24 } },
+              
+              // КРАСИВЫЕ ПЛАШКИ СТАТУСОВ С НЕОНОВЫМ КОНТУРОМ
+              e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 24 } },
                 STATUS_OPTIONS.map(opt => {
                   const hasOpt = user && user[opt.key];
-                  return e('div', { key: opt.key, style: { display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.03)", padding: "8px 12px", borderRadius: 8, opacity: hasOpt ? 1 : 0.25 } }, e('span', { style: { fontSize: 13 } }, `${opt.icon}  ${lang === 'ua' ? opt.labelUa : lang === 'ru' ? opt.labelRu : opt.labelEn}`), e('span', null, hasOpt ? "✓" : "✕"));
+                  return e('div', { 
+                    key: opt.key, 
+                    style: { 
+                      display: "flex", alignItems: "center", gap: 8, 
+                      background: hasOpt ? "rgba(0, 191, 179, 0.08)" : "rgba(255,255,255,0.02)", 
+                      padding: "10px 12px", borderRadius: 12, 
+                      border: `1px solid ${hasOpt ? 'rgba(0,191,179,0.4)' : 'rgba(255,255,255,0.05)'}`,
+                      opacity: hasOpt ? 1 : 0.35,
+                      boxShadow: hasOpt ? "0 2px 8px rgba(0,191,179,0.1)" : "none",
+                      transition: "all 0.2s ease"
+                    } 
+                  }, 
+                    e('span', { style: { fontSize: 16 } }, opt.icon), 
+                    e('span', { style: { fontSize: 11, fontWeight: 500, lineHeight: 1.2, color: hasOpt ? "#fff" : "rgba(255,255,255,0.7)" } }, lang === 'ua' ? opt.labelUa : lang === 'ru' ? opt.labelRu : opt.labelEn)
+                  );
                 })
               ),
               e('div', { style: { borderTop: `1px solid ${BR}`, paddingTop: 16 } },
@@ -414,9 +443,22 @@
               e(FieldLabel, { text: t.locLbl }), e('input', { value: form.location, onChange: e => setForm({ ...form, location: e.target.value }), style: IS }),
               e(FieldLabel, { text: t.aboutLbl }), e('textarea', { value: form.bio, onChange: e => setForm({ ...form, bio: e.target.value }), style: { ...IS, height: 90, resize: "none" } }),
               e(FieldLabel, { text: t.statusTitle, marginTop: 10 }),
-              e('div', { style: { display: "flex", flexDirection: "column", gap: 6 } },
+              e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 } },
                 STATUS_OPTIONS.map(opt => (
-                  e('div', { key: opt.key, onClick: () => setForm(p => ({ ...p, [opt.key]: !p[opt.key] })), style: { display: "flex", alignItems: "center", background: form[opt.key] ? "rgba(0,191,179,0.12)" : "rgba(255,255,255,0.02)", padding: "10px 12px", borderRadius: 8, cursor: "pointer", border: `1px solid ${form[opt.key] ? TC : 'transparent'}` } }, e('span', { style: { fontSize: 13 } }, `${opt.icon}  ${lang === 'ua' ? opt.labelUa : lang === 'ru' ? opt.labelRu : opt.labelEn}`), e('span', { style: { color: form[opt.key] ? TC : "rgba(255,255,255,0.2)" } }, form[opt.key] ? "✓" : "➕"))
+                  e('div', { 
+                    key: opt.key, 
+                    onClick: () => setForm(p => ({ ...p, [opt.key]: !p[opt.key] })), 
+                    style: { 
+                      display: "flex", alignItems: "center", gap: 8,
+                      background: form[opt.key] ? "rgba(0,191,179,0.12)" : "rgba(255,255,255,0.02)", 
+                      padding: "10px 12px", borderRadius: 12, cursor: "pointer", 
+                      border: `1px solid ${form[opt.key] ? TC : 'rgba(255,255,255,0.05)'}`,
+                      boxShadow: form[opt.key] ? "0 2px 8px rgba(0,191,179,0.1)" : "none"
+                    } 
+                  }, 
+                    e('span', { style: { fontSize: 16 } }, opt.icon), 
+                    e('span', { style: { fontSize: 11, fontWeight: 500, flex: 1, color: form[opt.key] ? "#fff" : "rgba(255,255,255,0.5)" } }, lang === 'ua' ? opt.labelUa : lang === 'ru' ? opt.labelRu : opt.labelEn)
+                  )
                 ))
               )
             )
