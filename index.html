@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LifeUp Network</title>
+    <title>LifeUp Network - Startup Edition</title>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;900&display=swap');
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; padding: 0; background: #060411; font-family: 'DM Sans', sans-serif; color: #fff; overflow-x: hidden; }
         input::placeholder, textarea::placeholder { color: rgba(255, 255, 255, 0.35); }
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 191, 179, 0.4); border-radius: 10px; }
+        @keyframes pulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.15); } }
     </style>
 </head>
 <body>
@@ -23,9 +24,7 @@
         const { useState, useEffect, useRef } = React;
         const e = React.createElement;
 
-        // ═══════════════════════════════════════════════════════════════
-        // ГЛОБАЛЬНЫЕ КОНСТАНТЫ СТИЛЕЙ И ОФОРМЛЕНИЯ
-        // ═══════════════════════════════════════════════════════════════
+        // Константы дизайна
         const TC = "#00bfb3"; 
         const TD = "#007a75"; 
         const PU = "#7c3aed";
@@ -50,114 +49,109 @@
 
         const TRANSLATIONS_DATA = {
           ua: {
-            appTitle: "LifeUp", feed: "Стрічка", map: "Карта", housing: "Житло", messages: "Чати", profile: "Профіль",
-            searchPlh: "🔍 Пошук людей, міст, тегів...", emptyList: "🌍 Нікого не знайдено",
+            appTitle: "LifeUp", feed: "Стрічка", map: "Карта Киева", housing: "Каталог житла", messages: "Чати", profile: "Мій Профіль",
+            searchPlh: "🔍 Пошук мандрівників чи тегів...", emptyList: "🌍 Нікого не знайдено",
             login: "Увійти", register: "Реєстрація", namePlh: "Ваше ім'я", phonePlh: "Телефон або email", passPlh: "Пароль",
-            btnIn: "УВІЙТИ", btnReg: "ЗАРЕЄСТРУВАТИСЯ", hostBadge: "HOST", companionBadge: "ПОПУТНИК",
-            btnMsg: "Написати", btnCall: "Дзвінок", btnRent: "Забронювати", tabsFeed: "Усі", tabsFav: "Обране",
-            statsLikes: "Лайки", statsSubs: "Підписники", statsRev: "Відгуки", statusTitle: "Особливості & Статус",
-            editTitle: "Редагувати профіль", done: "Зберегти", cancel: "Скасувати", nameLbl: "Ім'я", aboutLbl: "Про себе", locLbl: "Місто/Локація",
-            housingTitle: "Каталог житла (Couchsurfing)", housingDesc: "Знайди безкоштовне або дружнє житло у мандрівників",
-            mapDesc: "Інтерактивний радар мандрівників навколо тебе", mapSearch: "Шукати в цьому районі",
-            emptyMsgs: "У вас ще немає активних діалогів.", msgPlh: "Введіть повідомлення...", send: "Відправити",
-            revTitle: "Відгуки користувачів", addRev: "Залишити відгук", revPlh: "Опишіть ваш досвід...",
-            priceFree: "Безкоштовно / За відгук", rating: "Рейтинг", filterAll: "Усі локації", logout: "Вийти", translateBtn: "🌐 Перекласти",
-            kharkiv: "Україна, Харків", kyiv: "Україна, Київ", odesa: "Україна, Одеса", designer: "Дизайнер", traveler: "Мандрівник",
-            bio1: "Я не прагну бути привабливою. Моя справа — заставлять людей ставать кращими.", bio2: "Щодня їжджу Київ-Бровари.", bio3: "Створюю маршрути по Україні.", ukraine: "Україна"
+            btnIn: "УВІЙТИ", btnReg: "ЗАРЕЄСТРУВАТИСЯ", hostBadge: "HOST", companionBadge: "ПОПУТНИК", backBtn: "← Назад",
+            btnMsg: "Написати", btnCall: "Дзвінок", btnRent: "Забронювати", tabsFeed: "Усі користувачі", tabsFav: "Обране контент",
+            statsLikes: "Лайки", statsSubs: "Підписники", statsRev: "Відгуки", statusTitle: "Особливості & Статус користувача",
+            editTitle: "Редагувати профіль стартапу", done: "Зберегти", cancel: "Скасувати", nameLbl: "Повне ім'я", aboutLbl: "Про себе / Біографія", locLbl: "Місто / Локація", occLbl: "Сфера діяльності",
+            housingTitle: "Couchsurfing & Дружнє житло", housingDesc: "20 активних пропозицій безкоштовного проживання від спільноти",
+            mapDesc: "Радар мандрівників: Попутники на сусідніх вулицях Києва", mapSearch: "Сканувати район",
+            emptyMsgs: "Немає активних чатів.", msgPlh: "Введіть текст повідомлення...", send: "Відправити",
+            revTitle: "Відгуки", addRev: "Додати відгук", revPlh: "Опишіть ваш досвід...",
+            priceFree: "Безкоштовно за відгук", rating: "Рейтинг", translateBtn: "🌐 Перекласти текст", socialTitle: "Прив'язка соціальних мереж"
           },
           ru: {
-            appTitle: "LifeUp", feed: "Лента", map: "Карта", housing: "Жилье", messages: "Чаты", profile: "Профиль",
-            searchPlh: "🔍 Поиск людей, городов, тегов...", emptyList: "🌍 Никого не найдено",
+            appTitle: "LifeUp", feed: "Лента", map: "Карта Киева", housing: "Каталог жилья", messages: "Чаты", profile: "Мой Профиль",
+            searchPlh: "🔍 Поиск путешественников или тегов...", emptyList: "🌍 Никого не найдено",
             login: "Войти", register: "Регистрация", namePlh: "Ваше имя", phonePlh: "Телефон или email", passPlh: "Пароль",
-            btnIn: "ВОЙТИ", btnReg: "ЗАРЕГИСТРИРОВАТЬСЯ", hostBadge: "HOST", companionBadge: "ПОПУТЧИК",
-            btnMsg: "Написать", btnCall: "Звонок", btnRent: "Забронировать", tabsFeed: "Все", tabsFav: "Избранное",
-            statsLikes: "Лайки", statsSubs: "Подписчики", statsRev: "Отзывы", statusTitle: "Особенности & Статус",
-            editTitle: "Редактировать профиль", done: "Сохранить", cancel: "Отмена", nameLbl: "Имя", aboutLbl: "О себе", locLbl: "Город/Локация",
-            housingTitle: "Каталог жилья (Couchsurfing)", housingDesc: "Найди бесплатное или дружественное жилье у путешественников",
-            mapDesc: "Интерактивный радар путешественников вокруг тебя", mapSearch: "Искать в этом районе",
-            emptyMsgs: "У вас еще нет активных диалогов.", msgPlh: "Введите сообщение...", send: "Отправить",
-            revTitle: "Отзывы пользователей", addRev: "Оставить отзыв", revPlh: "Опишите ваш опыт...",
-            priceFree: "Бесплатно / За отзыв", rating: "Рейтинг", filterAll: "Все локации", logout: "Выйти", translateBtn: "🌐 Перевести",
-            kharkiv: "Украина, Харьков", kyiv: "Украина, Киев", odesa: "Украина, Одесса", designer: "Дизайнер", traveler: "Путешественник",
-            bio1: "Я не стремлюсь быть привлекательной. Моё дело — заставлять людей становиться лучше.", bio2: "Ежедневно езжу Киев-Бровары.", bio3: "Создаю маршруты по Украине.", ukraine: "Украина"
+            btnIn: "ВОЙТИ", btnReg: "ЗАРЕГИСТРИРОВАТЬСЯ", hostBadge: "HOST", companionBadge: "ПОПУТЧИК", backBtn: "← Назад",
+            btnMsg: "Написать", btnCall: "Звонок", btnRent: "Забронировать", tabsFeed: "Все пользователи", tabsFav: "Избранный контент",
+            statsLikes: "Лайки", statsSubs: "Подписчики", statsRev: "Отзывы", statusTitle: "Особенности & Статус пользователя",
+            editTitle: "Редактировать профиль стартапа", done: "Сохранить", cancel: "Отмена", nameLbl: "Полное имя", aboutLbl: "О себе / Биография", locLbl: "Город / Локация", occLbl: "Сфера деятельности",
+            housingTitle: "Couchsurfing & Дружественное жилье", housingDesc: "20 активных предложений бесплатного проживания от сообщества",
+            mapDesc: "Радар путешественников: Попутчики на соседних улицах Киева", mapSearch: "Сканировать район",
+            emptyMsgs: "Нет активных чатов.", msgPlh: "Введите текст сообщения...", send: "Отправить",
+            revTitle: "Отзывы", addRev: "Добавить отзыв", revPlh: "Опишите ваш опыт...",
+            priceFree: "Бесплатно за отзыв", rating: "Рейтинг", translateBtn: "🌐 Перевести текст", socialTitle: "Привязка социальных сетей"
           },
           en: {
-            appTitle: "LifeUp", feed: "Feed", map: "Map", housing: "Housing", messages: "Chats", profile: "Profile",
-            searchPlh: "🔍 Search users...", emptyList: "🌍 No users found",
+            appTitle: "LifeUp", feed: "Feed", map: "Kyiv Map", housing: "Housing", messages: "Chats", profile: "My Profile",
+            searchPlh: "🔍 Search travelers...", emptyList: "🌍 No users found",
             login: "Login", register: "Register", namePlh: "Your name", phonePlh: "Phone/Email", passPlh: "Password",
-            btnIn: "LOG IN", btnReg: "SIGN UP", hostBadge: "HOST", companionBadge: "COMPANION",
-            btnMsg: "Message", btnCall: "Call", btnRent: "Book", tabsFeed: "All", tabsFav: "Favorites",
+            btnIn: "LOG IN", btnReg: "SIGN UP", hostBadge: "HOST", companionBadge: "COMPANION", backBtn: "← Back",
+            btnMsg: "Message", btnCall: "Call", btnRent: "Book Stay", tabsFeed: "All users", tabsFav: "Favorites",
             statsLikes: "Likes", statsSubs: "Followers", statsRev: "Reviews", statusTitle: "Features & Status",
-            editTitle: "Edit Profile", done: "Save", cancel: "Cancel", nameLbl: "Name", aboutLbl: "About me", locLbl: "Location",
-            housingTitle: "Housing Directory", housingDesc: "Find free or friendly hosting from fellow travelers",
-            mapDesc: "Interactive radar of travelers near you", mapSearch: "Search this area",
-            emptyMsgs: "No active dialogs yet.", msgPlh: "Type a message...", send: "Send",
-            revTitle: "User Reviews", addRev: "Leave Review", revPlh: "Describe your experience...",
-            priceFree: "Free / For Review", rating: "Rating", filterAll: "All locations", logout: "Log Out", translateBtn: "🌐 Translate",
-            kharkiv: "Kharkiv, Ukraine", kyiv: "Kyiv, Ukraine", odesa: "Odesa, Ukraine", designer: "Designer", traveler: "Traveler",
-            bio1: "I don't strive to be attractive. My goal is to make people better.", bio2: "Commuting Kyiv-Brovary daily.", bio3: "Creating travel routes in Ukraine.", ukraine: "Ukraine"
+            editTitle: "Edit Startup Profile", done: "Save", cancel: "Cancel", nameLbl: "Full Name", aboutLbl: "About / Bio", locLbl: "City / Location", occLbl: "Occupation",
+            housingTitle: "Couchsurfing Directory", housingDesc: "20 active free hosting offers from the community",
+            mapDesc: "Traveler Radar: Companions on neighboring streets of Kyiv", mapSearch: "Scan District",
+            emptyMsgs: "No active chats.", msgPlh: "Type a message...", send: "Send",
+            revTitle: "Reviews", addRev: "Add Review", revPlh: "Describe your experience...",
+            priceFree: "Free / For Review", rating: "Rating", translateBtn: "🌐 Translate Text", socialTitle: "Social Media Links"
           },
           fr: {
-            appTitle: "LifeUp", feed: "Flux", map: "Carte", housing: "Logement", messages: "Chats", profile: "Profil",
-            searchPlh: "🔍 Rechercher...", emptyList: "🌍 Aucun utilisateur trouvé",
-            login: "Connexion", register: "Inscription", namePlh: "Votre nom", phonePlh: "Téléphone / Email", passPlh: "Mot de passe",
-            btnIn: "SE CONNECTER", btnReg: "S'INSCRIRE", hostBadge: "HÔTE", companionBadge: "COMPAGNON",
-            btnMsg: "Message", btnCall: "Appeler", btnRent: "Réserver", tabsFeed: "Tout", tabsFav: "Favoris",
+            appTitle: "LifeUp", feed: "Flux", map: "Carte de Kiev", housing: "Logement", messages: "Chats", profile: "Mon Profil",
+            searchPlh: "🔍 Rechercher...", emptyList: "🌍 Aucun utilisateur",
+            login: "Connexion", register: "Inscription", namePlh: "Nom", phonePlh: "Email", passPlh: "Mot de passe",
+            btnIn: "CONNEXION", btnReg: "S'INSCRIRE", hostBadge: "HÔTE", companionBadge: "COMPAGNON", backBtn: "← Retour",
+            btnMsg: "Message", btnCall: "Appeler", btnRent: "Réserver", tabsFeed: "Tous", tabsFav: "Favoris",
             statsLikes: "J'aime", statsSubs: "Abonnés", statsRev: "Avis", statusTitle: "Caractéristiques & Statut",
-            editTitle: "Modifier le profil", done: "Enregistrer", cancel: "Annuler", nameLbl: "Nom", aboutLbl: "À propos", locLbl: "Emplacement",
-            housingTitle: "Répertoire des logements", housingDesc: "Trouvez un hébergement gratuit chez des voyageurs",
-            mapDesc: "Radar interactif des voyageurs autour de vous", mapSearch: "Chercher dans cette zone",
-            emptyMsgs: "Pas encore de dialogues actifs.", msgPlh: "Tapez un message...", send: "Envoyer",
-            revTitle: "Avis des utilisateurs", addRev: "Laisser un avis", revPlh: "Décrivez votre expérience...",
-            priceFree: "Gratuit / Pour avis", rating: "Note", filterAll: "Tous les lieux", logout: "Se déconnecter", translateBtn: "🌐 Traduire",
-            kharkiv: "Kharkiv, Ukraine", kyiv: "Kyiv, Ukraine", odesa: "Odesa, Ukraine", designer: "Designeur", traveler: "Voyageur",
-            bio1: "Je ne cherche pas à être attrayante. Mon but est d'inspirer les gens à devenir meilleurs.", bio2: "Déplacement quotidien Kiev-Brovary.", bio3: "Création d'itinéraires de voyage en Ukraine.", ukraine: "Ukraine"
+            editTitle: "Modifier le profil", done: "Enregistrer", cancel: "Annuler", nameLbl: "Nom complet", aboutLbl: "À propos / Bio", locLbl: "Ville", occLbl: "Profession",
+            housingTitle: "Hébergement Couchsurfing", housingDesc: "20 offres actives de séjour gratuit",
+            mapDesc: "Radar: Compagnons dans les rues voisines de Kiev", mapSearch: "Scanner la zone",
+            emptyMsgs: "Pas de chats.", msgPlh: "Message...", send: "Envoyer",
+            revTitle: "Avis", addRev: "Ajouter", revPlh: "Expérience...",
+            priceFree: "Gratuit / Pour avis", rating: "Note", translateBtn: "🌐 Traduire", socialTitle: "Réseaux Sociaux"
           },
           de: {
-            appTitle: "LifeUp", feed: "Feed", map: "Karte", housing: "Unterkunft", messages: "Chats", profile: "Profil",
-            searchPlh: "🔍 Suchen...", emptyList: "🌍 Keine Benutzer gefunden",
-            login: "Einloggen", register: "Registrieren", namePlh: "Ihr Name", phonePlh: "Telefon / E-Mail", passPlh: "Passwort",
-            btnIn: "EINLOGGEN", btnReg: "REGISTRIEREN", hostBadge: "HOST", companionBadge: "BEGLEITER",
+            appTitle: "LifeUp", feed: "Feed", map: "Kiew Karte", housing: "Unterkunft", messages: "Chats", profile: "Mein Profil",
+            searchPlh: "🔍 Suchen...", emptyList: "🌍 Keine Benutzer",
+            login: "Einloggen", register: "Registrieren", namePlh: "Name", phonePlh: "E-Mail", passPlh: "Passwort",
+            btnIn: "EINLOGGEN", btnReg: "REGISTRIEREN", hostBadge: "HOST", companionBadge: "BEGLEITER", backBtn: "← Zurück",
             btnMsg: "Nachricht", btnCall: "Anrufen", btnRent: "Buchen", tabsFeed: "Alle", tabsFav: "Favoriten",
             statsLikes: "Likes", statsSubs: "Follower", statsRev: "Bewertungen", statusTitle: "Merkmale & Status",
-            editTitle: "Profil bearbeiten", done: "Speichern", cancel: "Abbrechen", nameLbl: "Name", aboutLbl: "Über mich", locLbl: "Standort",
-            housingTitle: "Unterkunftsverzeichnis", housingDesc: "Finden Sie eine kostenlose Unterkunft bei Reisenden",
-            mapDesc: "Interaktives Radar von Reisenden in Ihrer Nähe", mapSearch: "In dieser Zone suchen",
-            emptyMsgs: "Noch keine aktiven Dialoge.", msgPlh: "Nachricht schreiben...", send: "Senden",
-            revTitle: "Benutzerbewertungen", addRev: "Bewertung abgeben", revPlh: "Beschreiben Sie Ihre Erfahrung...",
-            priceFree: "Kostenlos / Für Bewertung", rating: "Bewertung", filterAll: "Alle Standorte", logout: "Ausloggen", translateBtn: "🌐 Übersetzen",
-            kharkiv: "Charkiw, Ukraine", kyiv: "Kiew, Ukraine", odesa: "Odesa, Ukraine", designer: "Designer", traveler: "Reisender",
-            bio1: "Ich strebe nicht danach, attraktiv zu sein. Mein Ziel ist es, Menschen besser zu machen.", bio2: "Pendle täglich zwischen Kiew und Browary.", bio3: "Ich erstelle Reiserouten in der Ukraine.", ukraine: "Ukraine"
+            editTitle: "Profil bearbeiten", done: "Speichern", cancel: "Abbrechen", nameLbl: "Name", aboutLbl: "Über mich", locLbl: "Stadt", occLbl: "Beruf",
+            housingTitle: "Couchsurfing-Verzeichnis", housingDesc: "20 aktive kostenlose Unterkünfte",
+            mapDesc: "Radar: Begleiter in den Nachbarstraßen von Kiew", mapSearch: "Bereich scannen",
+            emptyMsgs: "Keine Chats.", msgPlh: "Nachricht...", send: "Senden",
+            revTitle: "Bewertungen", addRev: "Hinzufügen", revPlh: "Erfahrung...",
+            priceFree: "Kostenlos / Für Bewertung", rating: "Bewertung", translateBtn: "🌐 Übersetzen", socialTitle: "Soziale Netzwerke"
           }
         };
 
-        // Тексты для демонстрации функции перевода в чатах
         const CHAT_TRANSLATIONS = {
-          ua: { "Привет! Будешь в городе?": "Привіт! Будеш у місті?", "Привет! Есть свободные места в машине на пятницу.": "Привіт! Є вільні місця в машині на п'ятницю." },
-          en: { "Привет! Будешь в городе?": "Hi! Will you be in town?", "Привет! Есть свободные места в машине на пятницу.": "Hi! There are free spots in the car for Friday." },
-          fr: { "Привет! Будешь в городе?": "Salut! Tu seras en ville?", "Привет! Есть свободные места в машине на пятницу.": "Salut! Il y a des places disponibles dans la voiture pour vendredi." },
-          de: { "Привет! Будешь в городе?": "Hallo! Wirst du в der Stadt sein?", "Привет! Есть свободные места в машине на пятницу.": "Hallo! Es gibt noch freie Plätze im Auto für Freitag." }
+          ua: { "Привет! Ты сейчас в Киеве?": "Привіт! Ти зараз у Києві?", "Да, на Печерске, ищу попутчика на вечер!": "Так, на Печерську, шукаю попутника на вечір!" },
+          en: { "Привет! Ты сейчас в Киеве?": "Hi! Are you in Kyiv right now?", "Да, на Печерске, ищу попутчика на evening!": "Yes, on Pechersk, looking for a companion for tonight!" },
+          fr: { "Привет! Ты сейчас в Киеве?": "Salut! Tu es à Kiev en ce moment?", "Да, на Печерске, ищу попутчика на вечер!": "Oui, sur Pechersk, je cherche un compagnon pour ce soir!" },
+          de: { "Привет! Ты сейчас в Киеве?": "Hallo! Bist du gerade in Kiew?", "Да, на Печерске, ищу попутчика на вечер!": "Ja, auf Petschersk, suche einen Begleiter für heute Abend!" }
         };
 
+        // БАЗА ДАННЫХ ИЗ 20 УНИКАЛЬНЫХ ПОЛЬЗОВАТЕЛЕЙ ДЛЯ ЭФФЕКТА ЖИВОГО ПРИЛОЖЕНИЯ
         const getLocalizedUsers = (lang) => [
-          {
-            id: 1, name: "Алиса Шевченко", location: TRANSLATIONS_DATA[lang].kharkiv, occupation: TRANSLATIONS_DATA[lang].designer,
-            bio: TRANSLATIONS_DATA[lang].bio1, tags: ["#tourism", "#фото", "#friends"],
-            isHost: true, lookingForCompanion: true, canDrive: true, againstSmoking: true, drinksAlcohol: false, isVegetarian: true, doesSport: true, openToOffers: true, lookingForRelations: false, openToMeet: true,
-            likes: 142, subscribers: 320, reviewsCount: 12, rating: 4.9, lat: 49.9935, lng: 36.2304,
-            reviews: [{ id: 1, author: "Андрей М.", text: "Отличный хост! Квартира очень чистая и уютная." }],
-            housingInfo: { title: "Уютная комната в центре возле парка", sleepPlaces: 2, rules: "Без шумных вечеринок." }
-          },
-          {
-            id: 2, name: "Андрей Мотьков", location: TRANSLATIONS_DATA[lang].kyiv, occupation: TRANSLATIONS_DATA[lang].traveler,
-            bio: TRANSLATIONS_DATA[lang].bio2, tags: ["#road", "#car", "#music"],
-            isHost: false, lookingForCompanion: true, canDrive: true, againstSmoking: true, drinksAlcohol: true, isVegetarian: false, doesSport: true, openToOffers: true, lookingForRelations: false, openToMeet: true,
-            likes: 98, subscribers: 154, reviewsCount: 8, rating: 4.7, lat: 50.4501, lng: 30.5234,
-            reviews: [], housingInfo: null
-          }
+          { id: 1, name: "Алиса Шевченко", location: "Киев, Печерск", occupation: "UI/UX Дизайнер", bio: "Обожаю автостоп и ночные прогулки по Киеву. Готова принять путешественников в своей студии на пару дней!", tags: ["#tourism", "#фото", "#kyiv"], isHost: true, lookingForCompanion: true, canDrive: false, againstSmoking: true, drinksAlcohol: false, isVegetarian: true, doesSport: true, openToOffers: true, lookingForRelations: false, openToMeet: true, likes: 142, subscribers: 310, rating: 4.9, reviews: [{id:1, author:"Олег", text:"Супер хост!"}], housingInfo: { title: "Светлая студия с видом на Печерскую Лавру", sleepPlaces: 2, rules: "Без вечеринок" }, socialLinks:{instagram:"alice_ux",twitter:"alice_net",telegram:"alice_travel",facebook:""} },
+          { id: 2, name: "Андрей Мотьков", location: "Киев, Подол", occupation: "Водитель / Логист", bio: "Часто езжу по маршруту Киев-Львов. Возьму попутчиков, есть вместительный багажник для рюкзаков.", tags: ["#road", "#car", "#podol"], isHost: false, lookingForCompanion: true, canDrive: true, againstSmoking: true, drinksAlcohol: true, isVegetarian: false, doesSport: false, openToOffers: true, lookingForRelations: false, openToMeet: true, likes: 88, subscribers: 120, rating: 4.7, reviews: [], housingInfo: null, socialLinks:{instagram:"motkov_drive",twitter:"",telegram:"motkov_kyiv",facebook:""} },
+          { id: 3, name: "Евгений Савченко", location: "Киев, Шевченковский", occupation: "Фотограф-документалист", bio: "Знаю все секретные крыши и дворики Золотых Ворот. Рад общению и новым людям.", tags: ["#photo", "#history"], isHost: true, lookingForCompanion: false, canDrive: false, againstSmoking: false, drinksAlcohol: true, isVegetarian: false, doesSport: true, likes: 215, subscribers: 450, rating: 5.0, reviews: [], housingInfo: { title: "Комната в сталинке на Золотых Воротах", sleepPlaces: 1, rules: "Уважать тишину" }, socialLinks:{instagram:"savchenko_ph",twitter:"",telegram:"",facebook:""} },
+          { id: 4, name: "Александра Коваль", location: "Киев, Оболонь", occupation: "Инструктор по йоге", bio: "Утренние практики на Оболонской набережной. Ищу компанию для поездки в Карпаты.", tags: ["#yoga", "#nature"], isHost: false, lookingForCompanion: true, canDrive: false, againstSmoking: true, drinksAlcohol: false, isVegetarian: true, likes: 64, subscribers: 95, rating: 4.8, reviews: [], housingInfo: null, socialLinks:{instagram:"sasha_yoga",twitter:"",telegram:"sasha_kov",facebook:""} },
+          { id: 5, name: "Дмитрий Петренко", location: "Киев, Голосеево", occupation: "Разработчик", bio: "Катаю на велике в Голосеевском лесу. Могу подвезти на машине в сторону Одессы.", tags: ["#bike", "#code"], isHost: false, lookingForCompanion: true, canDrive: true, againstSmoking: true, likes: 43, subscribers: 72, rating: 4.6, reviews: [], housingInfo: null, socialLinks:{instagram:"",twitter:"",telegram:"dima_dev",facebook:""} },
+          { id: 6, name: "Мария Кравченко", location: "Киев, Подол", occupation: "Гид", bio: "Показываю неформальный Киев. Бесплатный ночлег для бэкпэкеров за интересные истории.", tags: ["#guide", "#couch"], isHost: true, lookingForCompanion: false, canDrive: false, likes: 110, subscribers: 190, rating: 4.9, reviews: [], housingInfo: { title: "Место под палатку или диван на Подоле", sleepPlaces: 2, rules: "Быть позитивным" }, socialLinks:{instagram:"mashaguide",twitter:"",telegram:"",facebook:""} },
+          { id: 7, name: "Сергей Бойко", location: "Киев, Печерск", occupation: "Предприниматель", bio: "Путешествую на авто по всей Украине. Всегда рад новым знакомствам.", tags: ["#business", "#trip"], isHost: false, lookingForCompanion: true, canDrive: true, likes: 50, subscribers: 80, rating: 4.5, reviews: [], housingInfo: null, socialLinks:{instagram:"",twitter:"",telegram:"serg_trip",facebook:""} },
+          { id: 8, name: "Елена Василенко", location: "Киев, Шевченковский", occupation: "Переводчик", bio: "Говорю на французском и немецком. Помогу адаптироваться иностранным туристам.", tags: ["#languages"], isHost: false, lookingForCompanion: false, canDrive: false, likes: 32, subscribers: 55, rating: 4.7, reviews: [], housingInfo: null, socialLinks:{instagram:"elena_lang",twitter:"",telegram:"",facebook:""} },
+          { id: 9, name: "Игорь Ткаченко", location: "Киев, Оболонь", occupation: "Музыкант", bio: "Играю на гитаре, знаю лучшие локации для кемпинга у Киевского моря.", tags: ["#music", "#sea"], isHost: true, lookingForCompanion: true, canDrive: true, likes: 89, subscribers: 140, rating: 4.8, reviews: [], housingInfo: { title: "Апартаменты для творческих людей", sleepPlaces: 2, rules: "Можно шуметь до 22:00" }, socialLinks:{instagram:"",twitter:"",telegram:"igor_rock",facebook:""} },
+          { id: 10, name: "Анна Мельник", location: "Киев, Голосеево", occupation: "Блогер", bio: "Пишу об эко-туризме. Ищу попутку до Карпат в эти выходные.", tags: ["#blog", "#eco"], isHost: false, lookingForCompanion: true, canDrive: false, likes: 156, subscribers: 420, rating: 4.9, reviews: [], housingInfo: null, socialLinks:{instagram:"anna_eco",twitter:"",telegram:"",facebook:""} },
+          { id: 11, name: "Владимир Лысенко", location: "Киев, Печерск", occupation: "Инженер", bio: "Люблю горы и экстремальный спорт. Готов подвезти до Буковеля.", tags: ["#extreme", "#mountains"], isHost: false, lookingForCompanion: true, canDrive: true, likes: 71, subscribers: 112, rating: 4.6, reviews: [], housingInfo: null, socialLinks:{instagram:"",twitter:"",telegram:"vlad_extreme",facebook:""} },
+          { id: 12, name: "Ольга Бондаренко", location: "Киев, Подол", occupation: "Художник", bio: "Рисую пейзажи Подола. Рада принять творческих гостей со всего мира.", tags: ["#art", "#podol"], isHost: true, lookingForCompanion: false, canDrive: false, likes: 93, subscribers: 165, rating: 4.8, reviews: [], housingInfo: { title: "Творческая мастерская с мансардой", sleepPlaces: 1, rules: "Не портить картины" }, socialLinks:{instagram:"olga_art",twitter:"",telegram:"",facebook:""} },
+          { id: 13, name: "Артем Коваленко", location: "Киев, Шевченковский", occupation: "Маркетолог", bio: "Обожаю велопрогулки по выходным. Ищу компанию для поездки в Чернигов.", tags: ["#bike", "#marketing"], isHost: false, lookingForCompanion: true, canDrive: false, likes: 38, subscribers: 60, rating: 4.4, reviews: [], housingInfo: null, socialLinks:{instagram:"",twitter:"",telegram:"artem_bike",facebook:""} },
+          { id: 14, name: "Ирина Романенко", location: "Киев, Оболонь", occupation: "Журналист", bio: "Собираю истории путешественников. Бесплатный чай и диван гарантированы.", tags: ["#stories", "#couch"], isHost: true, lookingForCompanion: false, canDrive: false, likes: 55, subscribers: 89, rating: 4.7, reviews: [], housingInfo: { title: "Уютный диван в тихой квартире на Оболони", sleepPlaces: 1, rules: "Без животных" }, socialLinks:{instagram:"ira_stories",twitter:"",telegram:"",facebook:""} },
+          { id: 15, name: "Максим Шевчук", location: "Киев, Голосеево", occupation: "Спортсмен", bio: "Бегаю марафоны. Могу подвезти попутчиков до Житомира.", tags: ["#sport", "#marathon"], isHost: false, lookingForCompanion: true, canDrive: true, likes: 47, subscribers: 73, rating: 4.5, reviews: [], housingInfo: null, socialLinks:{instagram:"",twitter:"",telegram:"max_run",facebook:""} },
+          { id: 16, name: "Татьяна Мороз", location: "Киев, Печерск", occupation: "Студент", bio: "Архитектура Киева прекрасна. Открыта к новым знакомствам и прогулкам.", tags: ["#arch", "#meet"], isHost: false, lookingForCompanion: false, canDrive: false, likes: 29, subscribers: 50, rating: 4.3, reviews: [], housingInfo: null, socialLinks:{instagram:"tanya_arch",twitter:"",telegram:"",facebook:""} },
+          { id: 17, name: "Николай Ткач", location: "Киев, Подол", occupation: "Повар", bio: "Угощу вкусным украинским борщом. Есть свободная комната для путешественников.", tags: ["#food", "#cooking"], isHost: true, lookingForCompanion: false, canDrive: true, likes: 118, subscribers: 210, rating: 4.9, reviews: [], housingInfo: { title: "Гостевая комната с гастрономической программой", sleepPlaces: 2, rules: "Курить на балконе" }, socialLinks:{instagram:"nik_cook",twitter:"",telegram:"",facebook:""} },
+          { id: 18, name: "Елена Клименко", location: "Киев, Шевченковский", occupation: "Психолог", bio: "Люблю тишину, книги и походы. Ищу попутчиков для поездки к каньонам.", tags: ["#nature", "#hiking"], isHost: false, lookingForCompanion: true, canDrive: false, likes: 40, subscribers: 68, rating: 4.6, reviews: [], housingInfo: null, socialLinks:{instagram:"",twitter:"",telegram:"elena_psy",facebook:""} },
+          { id: 19, name: "Алексей Руденко", location: "Киев, Оболонь", occupation: "Бизнес-аналитик", bio: "Катаюсь на вейкборде. Могу принять хостов-иностранцев для языковой практики.", tags: ["#wake", "#english"], isHost: true, lookingForCompanion: false, canDrive: true, likes: 85, subscribers: 130, rating: 4.8, reviews: [], housingInfo: { title: "Комната евроремонт возле метро Минская", sleepPlaces: 1, rules: "Чистоплотность" }, socialLinks:{instagram:"",twitter:"",telegram:"alex_wake",facebook:""} },
+          { id: 20, name: "Яна Кузнецова", location: "Киев, Голосеево", occupation: "Дизайнер одежды", bio: "Ищу вдохновение в путешествиях. Рада составить компанию в автотрипе.", tags: ["#fashion", "#travel"], isHost: false, lookingForCompanion: true, canDrive: false, likes: 62, subscribers: 105, rating: 4.7, reviews: [], housingInfo: null, socialLinks:{instagram:"yana_fashion",twitter:"",telegram:"",facebook:""} }
         ];
 
-        const ACOLS = ["#00897b", "#7c3aed", "#0e9af0", "#e91e8c"];
+        const ACOLS = ["#00897b", "#7c3aed", "#0e9af0", "#e91e8c", "#f59e0b", "#059669"];
         const getAvatarColor = id => ACOLS[id % ACOLS.length];
         const getInitials = name => name ? name.split(" ").map(x => x[0]).join("").slice(0, 2).toUpperCase() : "U";
 
@@ -166,34 +160,32 @@
             style: {
               width: size, height: size, borderRadius: "50%", background: getAvatarColor(user?.id || 0),
               display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: size * 0.36, color: "#fff",
-              flexShrink: 0, border: "2px solid rgba(255,255,255,.15)"
+              flexShrink: 0, border: "2px solid rgba(255,255,255,.15)", boxShadow: "0 2px 6px rgba(0,0,0,0.2)"
             }
           }, getInitials(user?.name));
         }
 
-        // ОБНОВЛЕННЫЙ СТИЛЬНЫЙ МИНИМАЛИСТИЧНЫЙ ЛОГОТИП БЕЗ ЛИШНЕГО ТЕКСТА
+        // ОБНОВЛЕННЫЙ ЧИСТЫЙ ЛОГОТИП СТАРТАПА (БЕЗ ЛИШНЕГО ТЕКСТА)
         function LogoComponent() {
           return e('div', { style: { display: "flex", alignItems: "center", gap: 6, userSelect: "none" } },
-            e('div', { style: { display: "flex", alignItems: "center" } },
-              e('span', { style: { background: `linear-gradient(90deg, ${TD}, ${TC})`, padding: "5px 12px", fontSize: 16, fontWeight: 900, color: "#fff", borderRadius: 8, letterSpacing: "1.5px", boxShadow: `0 0 12px ${TC}60`, border: "1px solid rgba(255,255,255,0.1)" } }, "LIFEUP")
-            ),
-            e('div', { style: { width: 7, height: 7, borderRadius: "50%", background: "#10b981", boxShadow: "0 0 8px #10b981" } })
+            e('span', { style: { background: `linear-gradient(90deg, ${TD}, ${TC})`, padding: "5px 14px", fontSize: 15, fontWeight: 900, color: "#fff", borderRadius: 10, letterSpacing: "1.5px", boxShadow: `0 0 12px ${TC}60`, border: "1px solid rgba(255,255,255,0.15)" } }, "LIFEUP"),
+            e('div', { style: { width: 6, height: 6, borderRadius: "50%", background: "#10b981", boxShadow: "0 0 8px #10b981", animation: "pulse 1.5s infinite" } })
           );
         }
 
         function HeaderBar({ title, onBack, rightElement, lang, onLangToggle }) {
           return e('div', {
             style: {
-              display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 14px", background: "rgba(15, 10, 30, 0.85)",
-              borderBottom: `1px solid ${BR}`, flexShrink: 0, zIndex: 5, backdropFilter: "blur(10px)"
+              display: "flex", alignItems: "center", justifyBetween: "space-between", padding: "12px 14px", background: "rgba(12, 8, 28, 0.9)",
+              borderBottom: `1px solid ${BR}`, flexShrink: 0, zIndex: 5, backdropFilter: "blur(12px)", justifyContent: "space-between"
             }
           },
             e('div', { style: { width: 50, display: "flex", alignItems: "center" } },
-              onBack && e('button', { onClick: onBack, style: { background: "rgba(255,255,255,0.06)", border: `1px solid ${BR}`, color: "#fff", fontSize: 16, cursor: "pointer", padding: "5px 10px", borderRadius: 8 } }, "←")
+              onBack && e('button', { onClick: onBack, style: { background: "rgba(255,255,255,0.06)", border: `1px solid ${BR}`, color: "#fff", fontSize: 13, cursor: "pointer", padding: "6px 12px", borderRadius: 8, fontWeight: 600 } }, "←")
             ),
-            typeof title === 'string' ? e('span', { style: { fontSize: 16, fontWeight: 700, color: "#fff" } }, title) : title,
+            typeof title === 'string' ? e('span', { style: { fontSize: 15, fontWeight: 700, color: "#fff" } }, title) : title,
             e('div', { style: { display: "flex", alignItems: "center", gap: 8 } },
-              onLangToggle && e('button', { onClick: onLangToggle, style: { background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", padding: "4px 8px", borderRadius: 6, fontSize: 11, fontWeight: 700, cursor: "pointer", textTransform: "uppercase" } }, lang),
+              onLangToggle && e('button', { onClick: onLangToggle, style: { background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", padding: "5px 10px", borderRadius: 6, fontSize: 11, fontWeight: 700, cursor: "pointer" } }, lang),
               rightElement || e('div', { style: { width: 20 } })
             )
           );
@@ -247,7 +239,7 @@
             if (activeSubTab === "fav" && !favIds.includes(u.id)) return false;
             if (!search.trim()) return true;
             const q = search.toLowerCase();
-            return u.name.toLowerCase().includes(q) || u.location.toLowerCase().includes(q);
+            return u.name.toLowerCase().includes(q) || u.location.toLowerCase().includes(q) || u.occupation.toLowerCase().includes(q);
           });
 
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
@@ -261,11 +253,11 @@
               ),
               e('input', { value: search, onChange: e => setSearch(e.target.value), placeholder: t.searchPlh, style: IS }),
               e('div', { style: { display: "flex", gap: 8, marginTop: 8 } },
-                e('button', { onClick: () => setActiveSubTab("all"), style: { flex: 1, padding: "6px 0", background: activeSubTab === "all" ? TC : "rgba(255,255,255,0.04)", border: "none", borderRadius: 8, color: "#fff", fontSize: 12, fontWeight: 600 } }, t.tabsFeed),
-                e('button', { onClick: () => setActiveSubTab("fav"), style: { flex: 1, padding: "6px 0", background: activeSubTab === "fav" ? PU : "rgba(255,255,255,0.04)", border: "none", borderRadius: 8, color: "#fff", fontSize: 12, fontWeight: 600 } }, `${t.tabsFav} (${favIds.length})`)
+                e('button', { onClick: () => setActiveSubTab("all"), style: { flex: 1, padding: "7px 0", background: activeSubTab === "all" ? TC : "rgba(255,255,255,0.04)", border: "none", borderRadius: 8, color: "#fff", fontSize: 12, fontWeight: 600 } }, t.tabsFeed),
+                e('button', { onClick: () => setActiveSubTab("fav"), style: { flex: 1, padding: "7px 0", background: activeSubTab === "fav" ? PU : "rgba(255,255,255,0.04)", border: "none", borderRadius: 8, color: "#fff", fontSize: 12, fontWeight: 600 } }, `${t.tabsFav} (${favIds.length})`)
               )
             ),
-            e('div', { style: { overflowY: "auto", flex: 1, paddingBottom: 20 } },
+            e('div', { style: { overflowY: "auto", flex: 1, paddingBottom: 90 } },
               filteredUsers.length === 0 ? e('div', { style: { textAlign: "center", color: "rgba(255,255,255,0.3)", marginTop: 30 } }, t.emptyList) : null,
               filteredUsers.map(u => (
                 e('div', { key: u.id, onClick: () => onSelectUser(u), style: { display: "flex", gap: 12, padding: "14px", borderBottom: `1px solid ${BR}`, cursor: "pointer", alignItems: "flex-start" } },
@@ -273,7 +265,8 @@
                   e('div', { style: { flex: 1, minWidth: 0 } },
                     e('div', { style: { fontWeight: 700, fontSize: 14, display: "flex", alignItems: "center", gap: 6 } }, u.name, u.isHost && e('span', { style: { fontSize: 9, background: "#f59e0b", color: "#fff", padding: "1px 4px", borderRadius: 4 } }, t.hostBadge)),
                     e('div', { style: { fontSize: 11, color: TC, margin: "2px 0" } }, u.location),
-                    e('div', { style: { fontSize: 13, color: "rgba(255,255,255,.6)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, u.bio)
+                    e('div', { style: { fontSize: 12, color: "rgba(255,255,255,0.4)" } }, u.occupation),
+                    e('div', { style: { fontSize: 13, color: "rgba(255,255,255,.6)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginTop: 4 } }, u.bio)
                   ),
                   e('div', { style: { display: "flex", flexDirection: "column", gap: 10, alignItems: "center" } },
                     e('button', { onClick: e => { e.stopPropagation(); onToggleFav(u.id); }, style: { background: "transparent", border: "none", fontSize: 18, color: favIds.includes(u.id) ? "#f59e0b" : "rgba(255,255,255,0.15)" } }, "★"),
@@ -285,18 +278,50 @@
           );
         }
 
+        // РЕАЛИСТИЧНАЯ КАРТА РАЙОНОВ ГОРОДА КИЕВА С ПОПУТЧИКАМИ И ХОСТАМИ НА СОСЕДНИХ УЛИЦАХ
         function MapScreen({ users, onSelectUser, lang }) {
           const t = TRANSLATIONS_DATA[lang];
+          // Симуляция гео-позиций на карте Киева
+          const mockPositions = [
+            { id: 1, name: "Алиса Ш.", district: "Печерск (ул. Крещатик)", top: "35%", left: "55%", icon: "🏠" },
+            { id: 2, name: "Андрей М.", district: "Подол (Контрактовая площадь)", top: "22%", left: "45%", icon: "🚗" },
+            { id: 3, name: "Евгений С.", district: "Золотые Ворота (ул. Владимирская)", top: "32%", left: "38%", icon: "🏠" },
+            { id: 4, name: "Александра К.", district: "Оболонь (проспект Полякова)", top: "12%", left: "48%", icon: "✈️" },
+            { id: 5, name: "Дмитрий П.", district: "Голосеево (Голосеевский просп.)", top: "72%", left: "52%", icon: "🚗" }
+          ];
+
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
-            e(HeaderBar, { title: e(LogoComponent), lang: lang }),
-            e('div', { style: { flex: 1, position: "relative", overflow: "hidden", background: "radial-gradient(circle, #111a33 0%, #050714 100%)", display: "flex", alignItems: "center", justifyContent: "center" } },
-              e('div', { style: { position: "absolute", width: 240, height: 240, border: "1px solid rgba(0,191,179,0.1)", borderRadius: "50%" } }),
-              users.map((u, index) => {
-                const positions = [ { top: "30%", left: "25%" }, { top: "50%", left: "65%" } ];
-                const pos = positions[index % positions.length];
-                return e('div', { key: u.id, onClick: () => onSelectUser(u), style: { position: "absolute", top: pos.top, left: pos.left, display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer" } },
-                  e('div', { style: { width: 34, height: 34, borderRadius: "50%", background: getAvatarColor(u.id), border: "2px solid #fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700 } }, getInitials(u.name)),
-                  e('div', { style: { background: "rgba(0,0,0,0.7)", padding: "2px 5px", borderRadius: 4, fontSize: 10, marginTop: 3 } }, u.name.split(" ")[0])
+            e(HeaderBar, { title: t.map, lang: lang }),
+            e('div', { style: { padding: "10px 14px", background: "rgba(255,255,255,0.04)", fontSize: 12, color: "rgba(255,255,255,0.6)", textAlign: "center" } }, t.mapDesc),
+            e('div', { style: { flex: 1, position: "relative", overflow: "hidden", background: "#0c0d21", display: "flex", alignItems: "center", justifyContent: "center" } },
+              // Отрисовка сетки улиц Киева
+              e('div', { style: { position: "absolute", width: "100%", height: "100%", opacity: 0.1, border: "2px solid #00bfb3", pointerEvents: "none" } }),
+              // Районы Киева в виде текстовых слоев на карте
+              e('div', { style: { position: "absolute", top: "15%", left: "15%", fontSize: 11, color: "rgba(255,255,255,0.25)", fontWeight: 700, letterSpacing: "1px" } }, "ОБОЛОНСКИЙ РАЙОН"),
+              e('div', { style: { position: "absolute", top: "30%", left: "42%", fontSize: 11, color: "rgba(255,255,255,0.25)", fontWeight: 700, letterSpacing: "1px" } }, "ПОДОЛЬСКИЙ РАЙОН"),
+              e('div', { style: { position: "absolute", top: "42%", left: "58%", fontSize: 11, color: "rgba(255,255,255,0.25)", fontWeight: 700, letterSpacing: "1px" } }, "ПЕЧЕРСКИЙ РАЙОН"),
+              e('div', { style: { position: "absolute", top: "75%", left: "35%", fontSize: 11, color: "rgba(255,255,255,0.25)", fontWeight: 700, letterSpacing: "1px" } }, "ГОЛОСЕЕВСКИЙ РАЙОН"),
+              
+              // Векторные дороги для реалистичности
+              e('div', { style: { position: "absolute", width: "100%", height: "2px", background: "rgba(0,191,179,0.15)", top: "38%" } }),
+              e('div', { style: { position: "absolute", width: "100%", height: "2px", background: "rgba(0,191,179,0.15)", top: "55%" } }),
+              e('div', { style: { position: "absolute", width: "2px", height: "100%", background: "rgba(0,191,179,0.15)", left: "50%" } }),
+              
+              e('button', { style: { position: "absolute", top: 12, background: "rgba(0,191,179,0.2)", border: `1px solid ${TC}`, color: "#fff", padding: "6px 14px", borderRadius: 20, fontSize: 12, cursor: "pointer", fontWeight: 600 } }, t.mapSearch),
+              
+              // Метки реальных попутчиков из базы на карте Киева
+              mockPositions.map(pos => {
+                const fullUser = users.find(u => u.id === pos.id);
+                return e('div', { 
+                  key: pos.id, 
+                  onClick: () => fullUser && onSelectUser(fullUser), 
+                  style: { position: "absolute", top: pos.top, left: pos.left, display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer", zIndex: 10 } 
+                },
+                  e('div', { style: { background: getAvatarColor(pos.id), padding: "4px 8px", borderRadius: 12, border: `2px solid ${TC}`, display: "flex", alignItems: "center", gap: 4, boxShadow: "0 4px 12px rgba(0,0,0,0.5)" } },
+                    e('span', { style: { fontSize: 12 } }, pos.icon),
+                    e('span', { style: { fontSize: 11, fontWeight: 700 } }, pos.name)
+                  ),
+                  e('div', { style: { background: "rgba(0,0,0,0.8)", padding: "2px 6px", borderRadius: 4, fontSize: 9, marginTop: 4, color: "rgba(255,255,255,0.6)" } }, pos.district)
                 );
               })
             )
@@ -308,11 +333,19 @@
 
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
             e(HeaderBar, { title: e(LogoComponent), lang: lang }),
-            e('div', { style: { overflowY: "auto", flex: 1, padding: 12 } },
+            e('div', { style: { padding: "12px 14px", background: "rgba(255,255,255,0.02)", borderBottom: `1px solid ${BR}` } },
+              e('h3', { style: { margin: "0 0 2px 0", fontSize: 15, color: TC } }, t.housingTitle),
+              e('p', { style: { margin: 0, fontSize: 11, color: "rgba(255,255,255,0.5)" } }, t.housingDesc)
+            ),
+            e('div', { style: { overflowY: "auto", flex: 1, padding: 12, paddingBottom: 90 } },
               hosts.map(u => (
-                e('div', { key: u.id, onClick: () => onSelectUser(u), style: { background: "rgba(255,255,255,0.02)", border: `1px solid ${BR}`, borderRadius: 14, padding: 12, marginBottom: 12, cursor: "pointer" } },
+                e('div', { key: u.id, onClick: () => onSelectUser(u), style: { background: "rgba(255,255,255,0.02)", border: `1px solid ${BR}`, borderRadius: 16, padding: 14, marginBottom: 12, cursor: "pointer" } },
+                  e('div', { style: { display: "flex", justifyContent: "space-between", marginBottom: 8 } },
+                    e('span', { style: { background: "rgba(245,158,11,0.15)", color: "#f59e0b", fontSize: 10, fontWeight: 700, padding: "2px 6px", borderRadius: 4 } }, t.hostBadge),
+                    e('span', { style: { fontSize: 12, color: TC, fontWeight: 600 } }, t.priceFree)
+                  ),
                   e('div', { style: { fontSize: 14, fontWeight: 700, marginBottom: 4 } }, u.housingInfo.title),
-                  e('div', { style: { fontSize: 11, color: "rgba(255,255,255,0.4)" } }, u.location)
+                  e('div', { style: { fontSize: 12, color: "rgba(255,255,255,0.5)" } }, `📍 ${u.location}`)
                 )
               ))
             )
@@ -325,14 +358,14 @@
 
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
             e(HeaderBar, { title: t.messages, lang: lang }),
-            e('div', { style: { overflowY: "auto", flex: 1 } },
+            e('div', { style: { overflowY: "auto", flex: 1, paddingBottom: 90 } },
               activeChats.length === 0 ? e('div', { style: { textAlign: "center", color: "rgba(255,255,255,0.2)", marginTop: 40 } }, t.emptyMsgs) : null,
               activeChats.map(({ user, lastMsg }) => (
                 e('div', { key: user.id, onClick: () => onOpenChat(user), style: { display: "flex", padding: "12px 14px", borderBottom: `1px solid ${BR}`, cursor: "pointer", alignItems: "center" } },
                   e(Avatar, { user: user, size: 42 }),
                   e('div', { style: { marginLeft: 10, flex: 1, minWidth: 0 } },
                     e('div', { style: { fontWeight: 700, fontSize: 14 } }, user.name),
-                    e('div', { style: { fontSize: 12, color: "rgba(255,255,255,0.5)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, lastMsg?.text)
+                    e('div', { style: { fontSize: 12, color: "rgba(255,255,255,0.4)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, lastMsg?.text)
                   )
                 )
               ))
@@ -340,21 +373,10 @@
           );
         }
 
-        // ЭКРАН ЧАТА С КНОПКОЙ МГНОВЕННОГО ПЕРЕВОДА СООБЩЕНИЙ
         function SingleChatView({ user, messages, onBack, onSend, lang }) {
           const t = TRANSLATIONS_DATA[lang];
           const [text, setText] = useState("");
           const [translatedMsgs, setTranslatedMsgs] = useState({});
-
-          const handleTranslate = (msgId, originalText) => {
-            if (translatedMsgs[msgId]) {
-              setTranslatedMsgs(prev => ({ ...prev, [msgId]: null }));
-            } else {
-              const transDB = CHAT_TRANSLATIONS[lang];
-              const result = (transDB && transDB[originalText]) || `[Translated to ${lang.toUpperCase()}]: ${originalText}`;
-              setTranslatedMsgs(prev => ({ ...prev, [msgId]: result }));
-            }
-          };
 
           return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
             e(HeaderBar, { title: user.name, onBack: onBack, lang: lang }),
@@ -368,15 +390,15 @@
                     e('div', { style: { fontSize: 9, color: "rgba(255,255,255,0.4)", textAlign: "right", marginTop: 4 } }, m.time)
                   ),
                   !isMe && e('button', { 
-                    onClick: () => handleTranslate(m.id, m.text), 
-                    style: { background: "transparent", border: "none", color: TC, fontSize: 11, cursor: "pointer", marginTop: 2, padding: "2px 4px" } 
-                  }, isTrans ? "↩ Оригинал" : t.translateBtn)
+                    onClick: () => setTranslatedMsgs(prev => ({ ...prev, [m.id]: CHAT_TRANSLATIONS[lang]?.[m.text] || `[Trans]: ${m.text}` })), 
+                    style: { background: "transparent", border: "none", color: TC, fontSize: 11, cursor: "pointer", marginTop: 2 } 
+                  }, t.translateBtn)
                 );
               })
             ),
             e('div', { style: { padding: "10px", background: "#0b0816", borderTop: `1px solid ${BR}`, display: "flex", gap: 8, marginBottom: 8 } },
               e('input', { value: text, onChange: e => setText(e.target.value), placeholder: t.msgPlh, style: { flex: 1, padding: "10px 12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10, color: "#fff" } }),
-              e('button', { onClick: () => { if (text.trim()) { onSend(text.trim()); setText(""); } }, style: { background: TC, border: "none", width: 40, height: 40, borderRadius: 10, color: "#fff", fontWeight: 700 } }, "➔")
+              e('button', { onClick: () => { if (text.trim()) { onSend(text.trim()); setText(""); } }, style: { background: TC, border: "none", width: 40, height: 40, borderRadius: 10, color: "#fff" } }, "➔")
             )
           );
         }
@@ -391,18 +413,28 @@
               lang: lang, 
               rightElement: isSelf && e('button', { 
                 onClick: onEdit, 
-                style: { color: "#fff", background: "rgba(255,255,255,0.1)", border: `1px solid ${TC}`, fontSize: 11, fontWeight: 700, padding: "5px 12px", borderRadius: 8 } 
+                style: { color: "#fff", background: "rgba(0,191,179,0.2)", border: `1px solid ${TC}`, fontSize: 11, fontWeight: 700, padding: "6px 14px", borderRadius: 8, textTransform: "uppercase", boxShadow: `0 0 10px ${TC}40` } 
               }, "✎ Edit") 
             }),
-            e('div', { style: { overflowY: "auto", flex: 1, padding: "16px", paddingBottom: 70 } },
+            e('div', { style: { overflowY: "auto", flex: 1, padding: "16px", paddingBottom: 100 } },
               e('div', { style: { display: "flex", alignItems: "center", gap: 14, marginBottom: 16 } },
                 e(Avatar, { user: user, size: 68 }),
-                e('div', null, e('h2', { style: { margin: 0, fontSize: 18 } }, user?.name), e('div', { style: { fontSize: 12, color: TC } }, user?.location))
+                e('div', null, e('h2', { style: { margin: 0, fontSize: 18 } }, user?.name), e('div', { style: { fontSize: 12, color: TC, fontWeight: 600 } }, user?.location), e('div', { style: { fontSize: 11, color: "rgba(255,255,255,0.4)" } }, user?.occupation))
               ),
-              !isSelf && e('button', { onClick: () => onOpenChat(user), style: { width: "100%", padding: "10px 0", background: TC, border: "none", borderRadius: 10, color: "#fff", fontWeight: 700, marginBottom: 14 } }, t.btnMsg),
-              e('p', { style: { background: "rgba(255,255,255,0.02)", border: `1px solid ${BR}`, padding: 12, borderRadius: 12, fontSize: 13 } }, user?.bio),
+              !isSelf && e('button', { onClick: () => onOpenChat(user), style: { width: "100%", padding: "11px 0", background: TC, border: "none", borderRadius: 10, color: "#fff", fontWeight: 700, marginBottom: 14 } }, t.btnMsg),
+              e('p', { style: { background: "rgba(255,255,255,0.02)", border: `1px solid ${BR}`, padding: 12, borderRadius: 12, fontSize: 13, lineHeight: 1.5 } }, user?.bio),
               
-              e(FieldLabel, { text: t.statusTitle, marginTop: 14 }),
+              // Отображение соцсетей в профиле
+              user?.socialLinks && Object.values(user.socialLinks).some(v=>v) && e('div', { style: { marginBottom: 16 } },
+                e(FieldLabel, { text: t.socialTitle }),
+                e('div', { style: { display: "flex", flexWrap: "wrap", gap: 6 } },
+                  Object.entries(user.socialLinks).filter(([,v])=>v).map(([net, val]) => (
+                    e('span', { key: net, style: { fontSize: 12, background: "rgba(255,255,255,0.05)", padding: "4px 10px", borderRadius: 8, border: `1px solid ${BR}`, color: TC } }, `${net}: @${val}`)
+                  ))
+                )
+              ),
+
+              e(FieldLabel, { text: t.statusTitle }),
               e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 } },
                 STATUS_OPTIONS.map(opt => {
                   const hasOpt = user && user[opt.key];
@@ -416,37 +448,62 @@
           );
         }
 
+        // ВОССТАНОВЛЕННЫЕ ВСЕ ПОЛЯ РЕДАКТИРОВАНИЯ И ПРИВЯЗКА СОЦСЕТЕЙ
         function EditProfileScreen({ user, onSave, onCancel, lang }) {
           const t = TRANSLATIONS_DATA[lang];
-          const [form, setForm] = useState({ ...user });
+          const [form, setForm] = useState({ ...user, socialLinks: user.socialLinks || { instagram: "", twitter: "", telegram: "", facebook: "" } });
+
           return e('div', { style: W },
-            e(HeaderBar, { title: t.editTitle, onBack: onCancel, lang: lang, rightElement: e('button', { onClick: () => onSave(form), style: { color: TC, background: "none", border: "none", fontWeight: 700 } }, t.done) }),
-            e('div', { style: { overflowY: "auto", flex: 1, padding: "14px" } },
+            e(HeaderBar, { title: t.editTitle, onBack: onCancel, lang: lang, rightElement: e('button', { onClick: () => onSave(form), style: { color: TC, background: "none", border: "none", fontWeight: 700, fontSize: 14, cursor: "pointer" } }, t.done) }),
+            e('div', { style: { overflowY: "auto", flex: 1, padding: "16px", paddingBottom: 100 } },
               e(FieldLabel, { text: t.nameLbl }), e('input', { value: form.name, onChange: e => setForm({ ...form, name: e.target.value }), style: IS }),
-              e(FieldLabel, { text: t.aboutLbl }), e('textarea', { value: form.bio, onChange: e => setForm({ ...form, bio: e.target.value }), style: { ...IS, height: 70 } })
+              e(FieldLabel, { text: t.locLbl }), e('input', { value: form.location, onChange: e => setForm({ ...form, location: e.target.value }), style: IS }),
+              e(FieldLabel, { text: t.occLbl }), e('input', { value: form.occupation, onChange: e => setForm({ ...form, occupation: e.target.value }), style: IS }),
+              e(FieldLabel, { text: t.aboutLbl }), e('textarea', { value: form.bio, onChange: e => setForm({ ...form, bio: e.target.value }), style: { ...IS, height: 80, resize: "none" } }),
+              
+              e(FieldLabel, { text: t.socialTitle, marginTop: 10 }),
+              e('input', { placeholder: "Instagram username", value: form.socialLinks.instagram, onChange: e => setForm({ ...form, socialLinks: { ...form.socialLinks, instagram: e.target.value } }), style: IS }),
+              e('input', { placeholder: "Telegram username", value: form.socialLinks.telegram, onChange: e => setForm({ ...form, socialLinks: { ...form.socialLinks, telegram: e.target.value } }), style: IS }),
+              e('input', { placeholder: "Twitter username", value: form.socialLinks.twitter, onChange: e => setForm({ ...form, socialLinks: { ...form.socialLinks, twitter: e.target.value } }), style: IS }),
+
+              e(FieldLabel, { text: t.statusTitle, marginTop: 10 }),
+              e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 } },
+                STATUS_OPTIONS.map(opt => (
+                  e('div', { key: opt.key, onClick: () => setForm({ ...form, [opt.key]: !form[opt.key] }), style: { display: "flex", alignItems: "center", gap: 6, background: form[opt.key] ? "rgba(0,191,179,0.12)" : "rgba(255,255,255,0.02)", padding: "10px 12px", borderRadius: 12, cursor: "pointer", border: `1px solid ${form[opt.key] ? TC : 'transparent'}` } },
+                    e('span', null, opt.icon), e('span', { style: { fontSize: 10, flex: 1, color: form[opt.key] ? "#fff" : "rgba(255,255,255,0.4)" } }, lang === 'ua' ? opt.labelUa : opt.labelRu)
+                  )
+                ))
+              )
             )
           );
         }
 
-        // ОБНОВЛЕННОЕ НИЖНЕЕ МЕНЮ: ПЛАШКИ ПРИПОДНЯТЫ И СДЕЛАНЫ ЯРЧЕ
+        // ОБНОВЛЕННОЕ НИЖНЕЕ МЕНЮ: ЦЕНТРАЛЬНЫЙ ДОМИК НА 1.5 РАЗА БОЛЬШЕ И ЯРЧЕ, УПАКОВАН В ПЛАШКИ
         function BottomNavigationBar({ activeTab, onTabChange }) {
-          const navItems = [ { id: "feed", icon: "🏠" }, { id: "map", icon: "📍" }, { id: "housing", icon: "🔑" }, { id: "messages", icon: "✉" }, { id: "profile", icon: "👤" } ];
-          return e('div', { style: { position: "absolute", bottom: 10, left: 0, width: "100%", display: "flex", justifyContent: "space-around", padding: "0 10px", zIndex: 10 } },
-            e('div', { style: { width: "100%", background: "rgba(10, 6, 22, 0.92)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 20, display: "flex", justifyContent: "space-around", padding: "10px 6px", boxShadow: "0 8px 24px rgba(0,0,0,0.6)", backdropFilter: "blur(15px)" } },
+          const navItems = [ 
+            { id: "map", icon: "📍" }, 
+            { id: "housing", icon: "🔑" }, 
+            { id: "feed", icon: "🏠", isMain: true }, // Центральный домик
+            { id: "messages", icon: "✉" }, 
+            { id: "profile", icon: "👤" } 
+          ];
+          return e('div', { style: { position: "absolute", bottom: 12, left: 0, width: "100%", display: "flex", justifyContent: "space-around", padding: "0 12px", zIndex: 100 } },
+            e('div', { style: { width: "100%", background: "rgba(10, 6, 22, 0.94)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 24, display: "flex", justifyContent: "space-around", padding: "8px 6px", alignItems: "center", boxShadow: "0 10px 30px rgba(0,0,0,0.7)", backdropFilter: "blur(20px)" } },
               navItems.map(item => {
                 const isSel = activeTab === item.id;
+                const size = item.isMain ? 56 : 42; // Домик в 1.5 раза больше
                 return e('button', { 
                   key: item.id, 
                   onClick: () => onTabChange(item.id), 
                   style: { 
-                    background: isSel ? `linear-gradient(135deg, ${TD}, ${TC})` : "rgba(255,255,255,0.03)", 
-                    border: `1px solid ${isSel ? TC : 'rgba(255,255,255,0.05)'}`, 
-                    fontSize: 18, 
-                    width: 44, height: 44, borderRadius: 14,
-                    color: isSel ? "#fff" : "rgba(255,255,255,0.45)", 
+                    background: isSel ? `linear-gradient(135deg, ${TD}, ${TC})` : "rgba(255,255,255,0.04)", 
+                    border: `1px solid ${isSel ? TC : 'rgba(255,255,255,0.06)'}`, 
+                    fontSize: item.isMain ? 24 : 18, 
+                    width: size, height: size, borderRadius: item.isMain ? 18 : 12,
+                    color: isSel ? "#fff" : "rgba(255,255,255,0.5)", 
                     cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-                    boxShadow: isSel ? `0 0 10px ${TC}50` : "none",
-                    transition: "all 0.2s ease"
+                    boxShadow: isSel ? `0 0 15px ${TC}70` : "none",
+                    transform: isSel ? "scale(1.05)" : "scale(1)"
                   } 
                 }, item.icon);
               })
@@ -468,16 +525,15 @@
             if (lang) {
               setUsers(getLocalizedUsers(lang));
               setMsgs({
-                1: [ { id: 101, from: "them", text: "Привет! Будешь в городе?", time: "11:00" } ],
-                2: [ { id: 201, from: "them", text: "Привет! Есть свободные места в машине на пятницу.", time: "15:20" } ]
+                1: [ { id: 101, from: "them", text: "Привет! Ты сейчас в Киеве?", time: "11:00" }, { id: 102, from: "me", text: "Да, на Печерске, ищу попутчика на вечер!", time: "11:15" } ]
               });
-              if (me) setMe(prev => ({ ...prev, location: TRANSLATIONS_DATA[lang].ukraine }));
+              if (me) setMe(prev => ({ ...prev, location: "Киев, Украина" }));
             }
           }, [lang]);
 
           const handleRegister = name => {
-            setMe({ id: 999, name, location: "Kyiv", occupation: "Traveler", bio: "Hello!", isHost: false, likes: 0, subscribers: 1, rating: 5.0, reviews: [], housingInfo: null });
-            setCurrentScreen("mainFlow"); setActiveTab("feed");
+            const myAcc = { id: 999, name, location: "Киев, Украина", occupation: "Founder", bio: "Мой первый крутой стартап!", tags: ["#startup"], isHost: false, likes: 5, subscribers: 10, rating: 5.0, reviews: [], housingInfo: null, socialLinks:{instagram:"",twitter:"",telegram:"",facebook:""} };
+            setMe(myAcc); setCurrentScreen("mainFlow"); setActiveTab("feed");
           };
 
           if (currentScreen === "langSelect") return e(LangSelectScreen, { onSelect: c => { setLang(c); setCurrentScreen("auth"); } });
@@ -493,7 +549,7 @@
               case "map": return e(MapScreen, { users: users, onSelectUser: u => { setSelectedUser(u); setCurrentScreen("viewProfile"); }, lang: lang });
               case "housing": return e(HousingScreen, { users: users, onSelectUser: u => { setSelectedUser(u); setCurrentScreen("viewProfile"); }, lang: lang });
               case "messages": return e(ChatsScreen, { users: users, msgs: msgs, onOpenChat: u => { setSelectedUser(u); setCurrentScreen("chatView"); }, lang: lang });
-              case "profile": return e(UserProfileView, { user: me, isSelf: true, lang: lang, onEdit: () => setCurrentScreen("editProfile"), onBack: () => { setActiveTab("feed"); } });
+              case "profile": return e(UserProfileView, { user: me, isSelf: true, lang: lang, onEdit: () => setCurrentScreen("editProfile"), onBack: () => setActiveTab("feed") });
               default: return null;
             }
           };
@@ -501,7 +557,7 @@
           const showBottomMenu = currentScreen === "mainFlow";
 
           return e('div', { style: { display: "flex", justifyContent: "center", minHeight: "100vh" } },
-            e('div', { style: { width: "100%", maxWidth: 430, height: "100vh", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", paddingBottom: showBottomMenu ? "75px" : "0", boxShadow: "0 0 30px rgba(0,0,0,0.5)" } },
+            e('div', { style: { width: "100%", maxWidth: 430, height: "100vh", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", paddingBottom: showBottomMenu ? "80px" : "0", boxShadow: "0 0 30px rgba(0,0,0,0.5)" } },
               renderMainContent(),
               showBottomMenu ? e(BottomNavigationBar, { activeTab: activeTab, onTabChange: id => setActiveTab(id) }) : null
             )
