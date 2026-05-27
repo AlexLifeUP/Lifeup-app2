@@ -3,101 +3,764 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LifeUp Network - MVP v2</title>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <title>LifeUp Network - MVP Complete Build</title>
+    
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;900&display=swap');
-        body { margin: 0; background: #060411; color: #fff; font-family: 'DM Sans', sans-serif; }
-        .app-shell { width: 100%; max-width: 430px; height: 100vh; margin: 0 auto; display: flex; flex-direction: column; background: #0b0816; position: relative; }
-        .nav-btn { background: #1a0533; border: none; padding: 15px; border-radius: 15px; color: #fff; font-size: 20px; cursor: pointer; transition: 0.3s; }
-        .input-field { width: 100%; padding: 15px; background: #1a0533; border: 1px solid #333; border-radius: 10px; color: #fff; margin-bottom: 10px; }
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap');
+
+        :root {
+            --bg-dark: #060411;
+            --bg-shell: #0b0816;
+            --accent: #00bfb3;
+            --accent-dark: #007a75;
+            --purple: #7c3aed;
+            --card-bg: #1a0533;
+            --text-white: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --border-color: rgba(255, 255, 255, 0.09);
+        }
+
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            margin: 0; 
+            padding: 0;
+        }
+
+        body { 
+            background-color: var(--bg-dark); 
+            color: var(--text-white); 
+            font-family: 'DM Sans', sans-serif; 
+            overflow-x: hidden; 
+        }
+
+        /* Оболочка под размер мобильного экрана (Safe Area & Layout Control) */
+        .app-shell { 
+            width: 100%; 
+            max-width: 430px; 
+            height: 100vh; 
+            margin: 0 auto; 
+            display: flex; 
+            flex-direction: column; 
+            background: var(--bg-shell); 
+            position: relative; 
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+        
+        /* Глобальные стили для скроллбаров внутри списков */
+        ::-webkit-scrollbar { 
+            width: 4px; 
+            height: 4px; 
+        }
+        ::-webkit-scrollbar-track { 
+            background: rgba(0, 0, 0, 0.2); 
+        }
+        ::-webkit-scrollbar-thumb { 
+            background: var(--accent); 
+            border-radius: 10px; 
+        }
+
+        /* Заставка загрузки (Splash) */
+        .splash-screen {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(160deg, #1a0533 0%, #0d1f3c 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* Стили компонентов навигации */
+        .bottom-nav { 
+            position: absolute; 
+            bottom: 30px; 
+            left: 0; 
+            width: 100%; 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 0 16px; 
+            z-index: 200; 
+        }
+        
+        .nav-container { 
+            width: 100%; 
+            background: rgba(10, 6, 22, 0.96); 
+            border: 1px solid rgba(0, 191, 179, 0.25); 
+            border-radius: 24px; 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 8px 6px; 
+            align-items: center; 
+            box-shadow: 0 12px 35px rgba(0, 191, 179, 0.15); 
+            backdrop-filter: blur(20px); 
+        }
+        
+        .nav-item-btn { 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid transparent; 
+            font-size: 18px; 
+            width: 44px; 
+            height: 44px; 
+            border-radius: 12px; 
+            color: var(--text-muted); 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: all 0.25s ease;
+        }
+        
+        .nav-item-btn.active { 
+            background: linear-gradient(135deg, var(--accent-dark), var(--accent)); 
+            border-color: var(--accent); 
+            color: #fff; 
+            box-shadow: 0 4px 10px rgba(0, 191, 179, 0.3);
+        }
+
+        .nav-item-btn.main-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            font-size: 24px;
+        }
+
+        /* Стили окон списков и скролла */
+        .content-view {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 110px;
+        }
+
+        /* Инпуты форм */
+        .custom-input { 
+            width: 100%; 
+            padding: 14px 16px; 
+            background: rgba(255, 255, 255, .05); 
+            border: 1px solid rgba(255, 255, 255, .12); 
+            border-radius: 12px; 
+            color: #fff; 
+            font-size: 14px; 
+            outline: none; 
+            margin-bottom: 10px;
+            transition: border 0.2s;
+        }
+        .custom-input:focus {
+            border-color: var(--accent);
+        }
+
+        /* Кнопки действий */
+        .action-button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, var(--accent), var(--purple));
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .action-button:active {
+            opacity: 0.85;
+        }
+
+        /* Стилизация карточек в ленте */
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .user-card:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Стилизация интерактивной карты */
+        .map-canvas {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background-color: #050714;
+        }
+
+        .map-river {
+            position: absolute;
+            width: 140px;
+            height: 100%;
+            background: linear-gradient(90deg, #0d2c63, #154694);
+            left: 52%;
+            opacity: 0.3;
+            border-left: 2px dashed rgba(0, 191, 179, 0.2);
+            border-right: 2px dashed rgba(0, 191, 179, 0.2);
+        }
+
+        .map-label {
+            position: absolute;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.15);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .map-marker {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .marker-bubble {
+            background: rgba(10, 6, 22, 0.94);
+            padding: 5px 10px;
+            border-radius: 14px;
+            border: 2px solid var(--accent);
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.15); }
+        }
     </style>
 </head>
 <body>
     <div id="root"></div>
+
     <script>
-        const firebaseConfig = {
+// const firebaseConfig = {
             apiKey: "AIzaSyA2Nik3YtyAgYcsww6qxKFHtNDzSESj5CA",
             authDomain: "lifeup-app-30174.firebaseapp.com",
             projectId: "lifeup-app-30174",
             storageBucket: "lifeup-app-30174.firebasestorage.app",
             messagingSenderId: "190784130204",
-            appId: "1:190784130204:web:9d524aab073673146cb159"
+            appId: "1:190784130204:web:9d524aab073673146cb159",
+            measurementId: "G-Z9SW21S1QZ"
         };
-        firebase.initializeApp(firebaseConfig);
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const db = firebase.firestore();
+
+        const { useState, useEffect, useRef } = React;
         const e = React.createElement;
 
-        const MOCK_DATA = Array.from({length: 30}, (_,i) => ({
-            id: String(i),
-            name: ["Алиса", "Андрей", "Евгений", "Александра", "Дмитрий"][i%5] + " " + i,
-            location: ["Печерск", "Подол", "Оболонь", "Голосеево"][i%4],
-            isHost: i % 2 === 0,
-            bio: "Привет! Ищу компанию для путешествий по Украине.",
-            socialLinks: { insta: "user"+i, tg: "user"+i }
-        }));
-        const Logo = () => e('div', {style:{padding:20, fontSize:20, fontWeight:900}}, "LIFEUP");
-        const Avatar = ({name}) => e('div', {style:{width:50, height:50, borderRadius:25, background:'#00bfb3', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:'bold'}}, name[0]);
-        const Nav = ({view, setView}) => e('div', {style:{position:'absolute', bottom:20, left:0, right:0, display:'flex', justifyContent:'space-around', padding:'0 10px'}},
-            [{id:'map', i:'📍'}, {id:'housing', i:'🔑'}, {id:'feed', i:'🏠'}, {id:'chat', i:'✉'}, {id:'prof', i:'👤'}].map(n => 
-                e('button', {key:n.id, className:'nav-btn', onClick:()=>setView(n.id), style:{background: view===n.id ? '#00bfb3' : '#1a0533'}}, n.i)
-            )
-        );
-        const AuthScreen = ({onLogin}) => e('div', {className:'app-shell', style:{padding:40, justifyContent:'center'}},
-            e('h2', null, "Вход в LifeUP"),
-            e('input', {className:'input-field', placeholder:'Email / Телефон'}),
-            e('input', {className:'input-field', type:'password', placeholder:'Пароль'}),
-            e('button', {className:'nav-btn', style:{background:'#00bfb3', width:'100%'}, onClick:onLogin}, "Войти")
-        );
+        const TRANSLATIONS = {
+            ua: {
+                feed: "Стрічка", map: "Карта Києва", housing: "Житло", messages: "Чати", profile: "Профіль",
+                searchPlh: "🔍 Пошук мандрівників за ім'ям або тегом...", emptyList: "🌍 Сетева база пуста. Станьте першим!",
+                namePlh: "Ваше повне ім'я", phonePlh: "Номер телефону або WhatsApp", passPlh: "Створіть пароль",
+                btnReg: "ЗАРЕЄСТРУВАТИСЯ В МЕРЕЖІ", hostBadge: "HOST", backBtn: "← Назад",
+                btnMsg: "Надіслати повідомлення", statusTitle: "Статус & Особливості", editTitle: "Редагувати МVP профіль", 
+                done: "Зберегти зміни", cancel: "Скасувати", nameLbl: "Повне ім'я", aboutLbl: "Про себе / Біографія", 
+                locLbl: "Місто / Район розташування", occLbl: "Сфера діяльності / Професія",
+                housingTitle: "Couchsurfing & Безкоштовне житло", housingDesc: "Активні пропозиції дружнього проживання від користувачів",
+                mapDesc: "Радар мандрівників: Використовуй джойстик та зум для переміщення по Києву",
+                msgPlh: "Введіть текст повідомлення...", send: "Відправити", socialTitle: "Контакти прив'язаних соцмереж"
+            },
+            ru: {
+                feed: "Лента", map: "Карта Киева", housing: "Жилье", messages: "Чаты", profile: "Профиль",
+                searchPlh: "🔍 Поиск путешественников по имени или тегу...", emptyList: "🌍 Сетевая база пуста. Станьте первым!",
+                namePlh: "Ваше полное имя", phonePlh: "Номер телефона или WhatsApp", passPlh: "Создайте пароль",
+                btnReg: "ЗАРЕГИСТРИРОВАТЬСЯ В СЕТИ", hostBadge: "HOST", backBtn: "← Назад",
+                btnMsg: "Написать сообщение", statusTitle: "Статус & Особенности", editTitle: "Редактировать MVP профиль", 
+                done: "Сохранить изменения", cancel: "Отмена", nameLbl: "Полное имя", aboutLbl: "О себе / Биография", 
+                locLbl: "Город / Район локации", occLbl: "Сфера деятельности / Профессия",
+                housingTitle: "Couchsurfing & Бесплатное жилье", housingDesc: "Активные предложения дружественного проживания от пользователей",
+                mapDesc: "Радар путешественников: Используй джойстик и зум для перемещения по районам Киева",
+                msgPlh: "Введите текст сообщения...", send: "Отправить", socialTitle: "Контакты привязанных соцсетей"
+            }
+        };
 
-        const FeedScreen = ({users, onSelect}) => e('div', {className:'app-shell', style:{paddingBottom:100}},
-            e(Logo),
-            e('div', {style:{overflowY:'auto'}},
-                users.map(u => e('div', {key:u.id, style:{padding:15, margin:10, background:'#1a0533', borderRadius:10, display:'flex', gap:15}, onClick:()=>onSelect(u)},
-                    e(Avatar, {name:u.name}),
-                    e('div', null, e('h3', {style:{margin:0}}, u.name), e('p', {style:{margin:0, fontSize:12, color:'#888'}}, u.location))
-                ))
-            )
-        );
-        const MapScreen = ({users}) => e('div', {className:'app-shell', style:{background:'#050714'}},
-            e('div', {style:{padding:20, fontWeight:700}}, "КАРТА КИЕВА"),
-            e('div', {style:{flex:1, position:'relative', borderTop:'1px solid #333'}},
-                users.map((u, i) => e('div', {key:i, style:{position:'absolute', top:50+i*20+'px', left:50+i*15+'px', background:'#00bfb3', padding:5, borderRadius:8, fontSize:10}}, u.name.split(" ")[0]))
-            )
-        );
+        const STATUS_OPTIONS = [
+            { key: "canDrive", icon: "🚗", labelUa: "Можу підвезти", labelRu: "Могу подвезти" },
+            { key: "lookingForCompanion", icon: "✈️", labelUa: "Шукаю попутника", labelRu: "Ищу попутчика" },
+            { key: "isHost", icon: "🏠", labelUa: "Готовий прийняти (Житло)", labelRu: "Готов принять (Жилье)" },
+            { key: "lookingForRelations", icon: "❤️", labelUa: "В пошуку відносин", labelRu: "В поиске отношений" },
+            { key: "openToMeet", icon: "😊", labelUa: "Відкритий до знайомств", labelRu: "Открыт к знакомствам" },
+            { key: "isVegetarian", icon: "🥗", labelUa: "Вегетаріанець", labelRu: "Вегетарианец" },
+            { key: "doesSport", icon: "🏃", labelUa: "Займаюся спортом", labelRu: "Занимаюсь спортом" }
+        ];
 
-        const HousingScreen = ({users}) => e('div', {className:'app-shell', style:{padding:20}},
-            e('h2', null, "Жилье"),
-            users.filter(u=>u.isHost).map(u => e('div', {key:u.id, style:{padding:15, background:'#1a0533', borderRadius:10, marginBottom:10}}, 
-                e('h3', null, u.name), e('p', null, "Бесплатно в: " + u.location)
-            ))
-        );
-        function App() {
-            const [view, setView] = useState('auth');
-            const [users, setUsers] = useState(MOCK_DATA);
-            const [sel, setSel] = useState(null);
+        const MASTER_SEED_DATA = [
+            { id: "seed_1", name: "Алиса Шевченко", location: "Киев, Подол", occupation: "UI/UX Designer", bio: "Обожаю исследовать старый Подол, знаю крутые кофейни. Готова принять путешественников на пару дней!", isHost: true, canDrive: false, lookingForCompanion: true, openToMeet: true, housingTitle: "Уютная арт-комната у метро Контрактовая", instagram: "alice_travel", telegram: "alice_design", whatsapp: "+380501111111" },
+            { id: "seed_2", name: "Андрей Мотьков", location: "Киев, Печерск", occupation: "iOS Developer / Founder", bio: "Часто катаюсь по трассе Киев - Львов на авто. Рад взять интересных попутчиков для общения.", isHost: false, canDrive: true, lookingForCompanion: true, openToMeet: true, housingTitle: "", instagram: "motkov_dev", telegram: "motkov_founder", whatsapp: "+380632222222" },
+            { id: "seed_3", name: "Евгений Савченко", location: "Киев, Оболонь", occupation: "Фотограф-документалист", bio: "Делаю крутые стрит-фото. Готов провести экскурсию по заброшкам и крышам столицы.", isHost: true, canDrive: false, lookingForCompanion: false, openToMeet: true, housingTitle: "Лофт с видом на Днепр (Оболонская Набережная)", instagram: "savchenko_ph", telegram: "sav_photo", whatsapp: "" },
+            { id: "seed_4", name: "Александра Коваль", location: "Киев, Центр", occupation: "Инструктор по хатха-йоге", bio: "Организую ретриты. Люблю горы и автостоп. Ищу водителя или попутчиков на весенний трип.", isHost: false, canDrive: false, lookingForCompanion: true, openToMeet: true, housingTitle: "", instagram: "sasha_yoga", telegram: "alex_yoga", whatsapp: "+380933333333" },
+            { id: "seed_5", name: "Дмитрий Petrenko", location: "Киев, Голосеево", occupation: "Бэкенд Инженер", bio: "Катаю на байке по Голосеевскому лесу. Рад новым лицам в IT-комьюнити.", isHost: false, canDrive: true, lookingForCompanion: false, openToMeet: true, housingTitle: "", instagram: "dima_backend", telegram: "dima_code", whatsapp: "" },
+            { id: "seed_6", name: "Мария Бойко", location: "Киев, Подол", occupation: "Гид / Переводчик", bio: "Знаю Киев наизусть. Разговариваю на английском и испанском. Готова приютить каучсерферов.", isHost: true, canDrive: false, lookingForCompanion: true, openToMeet: true, housingTitle: "Просторная сталинка на Воздвиженке", instagram: "mary_guide", telegram: "mary_kyiv", whatsapp: "" },
+            { id: "seed_7", name: "Сергей Кравченко", location: "Киев, Осокорки", occupation: "Маркетолог", bio: "Катаюсь на вейкборде. Ищу компанию для поездки на море или водохранилище.", isHost: false, canDrive: true, lookingForCompanion: true, openToMeet: false, housingTitle: "", instagram: "serg_mark", telegram: "serg_digital", whatsapp: "" },
+            { id: "seed_8", name: "Елена Ткаченко", location: "Киев, Троещина", occupation: "Копирайтер", bio: "Пишу книги, люблю тишину и вегетарианскую еду. Могу принять позитивных людей.", isHost: true, canDrive: false, lookingForCompanion: false, openToMeet: true, housingTitle: "Гостевая комната с кучей книг", instagram: "elena_words", telegram: "elena_write", whatsapp: "" },
+            { id: "seed_9", name: "Игорь Мельник", location: "Киев, Святошино", occupation: "Автомеханик", bio: "Починю все, что имеет колеса. Люблю путешествовать на своем кастомном минивэне.", isHost: false, canDrive: true, lookingForCompanion: true, openToMeet: true, housingTitle: "", instagram: "igor_vanlife", telegram: "igor_wheels", whatsapp: "" },
+            { id: "seed_10", name: "Анна Василенко", location: "Киев, Печерск", occupation: "Арт-директор", bio: "Организую выставки современного искусства. Рада встретить творческих людей со всего мира.", isHost: false, canDrive: false, lookingForCompanion: true, openToMeet: true, housingTitle: "", instagram: "anya_art", telegram: "anya_pechersk", whatsapp: "" }
+        ];
 
-            useEffect(() => {
-                db.collection("users").onSnapshot(snap => {
-                    const l = []; snap.forEach(d => l.push(d.data()));
-                    if(l.length > 0) setUsers(l);
-                });
-            }, []);
-
-            if (view === 'auth') return e(AuthScreen, {onLogin:()=>setView('feed')});
+        for (let i = 11; i <= 50; i++) {
+            const locations = ["Киев, Подол", "Киев, Печерск", "Киев, Оболонь", "Киев, Голосеево", "Киев, Центр"];
+            const occupations = ["Бизнес-аналитик", "Учитель английского", "Музыкант", "IT-специалист", "Журналист"];
+            const names = ["Владимир", "Наталья", "Виталий", "Ольга", "Артем", "Светлана", "Денис", "Ирина", "Максим", "Юлия"];
+            const surnames = ["Коваленко", "Бондаренко", "Ткачук", "Лысенко", "Романенко", "Павленко", "Швец", "Попович", "Козак"];
             
-            return e('div', {className:'app-shell'},
-                view === 'feed' ? e(FeedScreen, {users, onSelect:(u)=>{setSel(u); setView('prof')}}) : null,
-                view === 'map' ? e(MapScreen, {users}) : null,
-                view === 'housing' ? e(HousingScreen, {users}) : null,
-                view === 'prof' ? e('div', {style:{padding:20}}, e('h1', null, sel?.name), e('button', {className:'nav-btn', onClick:()=>setView('feed')}, "Назад")) : null,
-                e(Nav, {active:view, setActive:setView})
+            MASTER_SEED_DATA.push({
+                id: `seed_${i}`,
+                name: names[i % names.length] + " " + surnames[i % surnames.length],
+                location: locations[i % locations.length],
+                occupation: occupations[i % occupations.length],
+                bio: "Участник масштабного тестирования всемирной сети LifeUp Network. Открыт к диалогу, совместным путешествиям и взаимовыручке.",
+                isHost: i % 4 === 0,
+                canDrive: i % 3 === 0,
+                lookingForCompanion: i % 2 === 0,
+                openToMeet: true,
+                housingTitle: i % 4 === 0 ? "Свободный диван для хорошего человека" : "",
+                instagram: `user_insta_${i}`,
+                telegram: `user_tg_${i}`,
+                whatsapp: `+3809300000${i}`
+            });
+        }
+// const AVATAR_POOL = [
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80",
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80",
+            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&q=80",
+            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&q=80",
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80"
+        ];
+
+        function AvatarComponent({ user, size = 48 }) {
+            const charSum = user?.name ? user.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 0;
+            const imgUrl = AVATAR_POOL[charSum % AVATAR_POOL.length];
+            return e('img', { 
+                src: imgUrl, 
+                style: { width: size, height: size, borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "2px solid rgba(255,255,255,.15)" } 
+            });
+        }
+
+        function AppLogo() {
+            return e('div', { style: { display: "flex", alignItems: "center", gap: 6, userSelect: "none" } },
+                e('span', { style: { background: `linear-gradient(90deg, var(--accent-dark), var(--accent))`, padding: "5px 12px", fontSize: 15, fontWeight: 900, color: "#fff", borderRadius: 10, letterSpacing: "1px", border: "1px solid rgba(255,255,255,0.1)" } }, "LIFEUP"),
+                e('div', { style: { width: 6, height: 6, borderRadius: "50%", background: "#10b981", boxShadow: "0 0 8px #10b981", animation: "pulseGlow 1.5s infinite" } })
             );
         }
-        ReactDOM.createRoot(document.getElementById('root')).render(e(App));
+
+        function MainHeaderBar({ title, onBack, rightElement, lang, onLangToggle }) {
+            return e('div', { className: 'header-section' },
+                e('div', { style: { width: 45 } }, onBack && e('button', { onClick: onBack, style: { background: "rgba(255,255,255,0.06)", border: "none", color: "#fff", padding: "6px 12px", borderRadius: 8, cursor: "pointer", fontWeight: "700" } }, "←")),
+                typeof title === 'string' ? e('span', { style: { fontSize: 16, fontWeight: 700 } }, title) : title,
+                e('div', { style: { display: "flex", alignItems: "center", gap: 8 } },
+                    onLangToggle && e('button', { onClick: onLangToggle, style: { background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", padding: "5px 10px", borderRadius: 6, fontSize: 11, fontWeight: 700, cursor: "pointer" } }, lang.toUpperCase()),
+                    rightElement || e('div', { style: { width: 15 } })
+                )
+            );
+        }
+
+        function LanguageSelectionPage({ onSelect }) {
+            return e('div', { className: 'splash-screen' },
+                e('div', { style: { width: "100%", maxWidth: 320, background: "rgba(255,255,255,.02)", border: "1px solid rgba(255,255,255,.08)", borderRadius: 24, padding: "35px 20px", textAlign: "center", backdropFilter: "blur(10px)" } },
+                    e('div', { style: { marginBottom: 30, display: "flex", justifyContent: "center" } }, e(AppLogo)),
+                    e('div', { style: { display: "flex", flexDirection: "column", gap: 12 } },
+                        e('button', { onClick: () => onSelect('ua'), style: { width: "100%", padding: "14px 0", background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer" } }, "🇺🇦 Українська"),
+                        e('button', { onClick: () => onSelect('ru'), style: { width: "100%", padding: "14px 0", background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer" } }, "🇷🇺 Русский")
+                    )
+                )
+            );
+        }
+
+        function NetworkRegistrationPage({ onDone, lang, onBack }) {
+            const t = TRANSLATIONS[lang];
+            const [name, setName] = useState("");
+            const [phone, setPhone] = useState("");
+
+            return e('div', { className: 'app-shell' },
+                e(MainHeaderBar, { title: "", onBack: onBack, lang: lang }),
+                e('div', { style: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 } },
+                    e('div', { style: { width: "100%", maxWidth: 340, background: "rgba(255,255,255,.02)", border: "1px solid rgba(255,255,255,.08)", borderRadius: 24, padding: "30px 20px" } },
+                        e('div', { style: { display: "flex", justifyContent: "center", marginBottom: 25 } }, e(AppLogo)),
+                        e('input', { placeholder: t.namePlh, value: name, onChange: ev => setName(ev.target.value), className: 'custom-input' }),
+                        e('input', { placeholder: t.phonePlh, value: phone, onChange: ev => setPhone(ev.target.value), className: 'custom-input' }),
+                        e('input', { placeholder: t.passPlh, type: "password", className: 'custom-input' }),
+                        e('button', { onClick: () => onDone(name || "Alex Star", phone || "+380507777777"), className: 'action-button', style: { marginTop: 10 } }, t.btnReg)
+                    )
+                )
+            );
+        }
+
+        function MainFeedScreen({ users, onSelectUser, lang, onLangToggle, me, onSelectMyProfile }) {
+            const t = TRANSLATIONS[lang];
+            const [searchQuery, setSearchQuery] = useState("");
+
+            const filteredUsers = users.filter(u => 
+                u.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                u.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                u.occupation?.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+
+            return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
+                e('div', { style: { background: "rgba(15, 10, 30, 0.9)", padding: "12px 14px", flexShrink: 0, borderBottom: "1px solid var(--border-color)" } },
+                    e('div', { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 } },
+                        e(AppLogo),
+                        e('div', { style: { display: "flex", alignItems: "center", gap: 10 } },
+                            e('button', { onClick: onLangToggle, style: { background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", padding: "5px 10px", borderRadius: 6, fontSize: 11, fontWeight: 700 } }, lang.toUpperCase()),
+                            e('div', { onClick: onSelectMyProfile, style: { display: "flex", alignItems: "center", gap: 6, cursor: "pointer", background: "rgba(255,255,255,0.06)", padding: "4px 10px", borderRadius: 16 } }, 
+                                e(AvatarComponent, { user: me, size: 22 }), 
+                                e('span', { style: { fontSize: 12, fontWeight: 500 } }, me?.name?.split(" ")[0])
+                            )
+                        )
+                    ),
+                    e('input', { value: searchQuery, onChange: ev => setSearchQuery(ev.target.value), placeholder: t.searchPlh, className: 'custom-input', style: { margin: 0 } })
+                ),
+                e('div', { className: 'content-view' },
+                    filteredUsers.map((user, index) => (
+                        e('div', { key: user.id || index, onClick: () => onSelectUser(user), className: 'user-card' },
+                            e(AvatarComponent, { user: user, size: 48 }),
+                            e('div', { style: { flex: 1, minWidth: 0 } },
+                                e('div', { style: { fontWeight: 700, fontSize: 14, display: "flex", alignItems: "center", gap: 6 } }, 
+                                    user.name, 
+                                    user.isHost && e('span', { style: { fontSize: 9, background: "#f59e0b", color: "#fff", padding: "1px 5px", borderRadius: 4, fontWeight: 900 } }, t.hostBadge)
+                                ),
+                                e('div', { style: { fontSize: 12, color: "var(--accent)", margin: "2px 0", fontWeight: 500 } }, user.location),
+                                e('div', { style: { fontSize: 12, color: "rgba(255,255,255,0.4)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, user.occupation)
+                            )
+                        )
+                    ))
+                )
+            );
+        }
+// function InteractiveMapScreen({ users, onSelectUser, lang }) {
+            const t = TRANSLATIONS[lang];
+            const [zoomLevel, setZoomLevel] = useState(1);
+            const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
+
+            return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
+                e(MainHeaderBar, { title: e(AppLogo), lang: lang }),
+                e('div', { style: { padding: "10px 14px", background: "rgba(15,10,30,0.9)", fontSize: 12, color: "rgba(255,255,255,0.5)", textAlign: "center", borderBottom: "1px solid rgba(0,191,179,0.15)" } }, t.mapDesc),
+                e('div', { style: { flex: 1, position: "relative", overflow: "hidden" } },
+                    
+                    e('div', { style: { position: "absolute", bottom: 130, left: 16, display: "grid", gridTemplateColumns: "repeat(3, 36px)", gap: 4, zIndex: 150 } },
+                        e('div'), e('button', { onClick: () => setCoordinates(c => ({ ...c, y: c.y + 60 })), style: { background: "rgba(10,6,22,0.85)", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", borderRadius: 8, height: 32 } }, "↑"), e('div'),
+                        e('button', { onClick: () => setCoordinates(c => ({ ...c, x: c.x + 60 })), style: { background: "rgba(10,6,22,0.85)", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", borderRadius: 8, height: 32 } }, "←"), e('div'), e('button', { onClick: () => setCoordinates(c => ({ ...c, x: c.x - 60 })), style: { background: "rgba(10,6,22,0.85)", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", borderRadius: 8, height: 32 } }, "→"),
+                        e('div'), e('button', { onClick: () => setCoordinates(c => ({ ...c, y: c.y - 60 })), style: { background: "rgba(10,6,22,0.85)", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", borderRadius: 8, height: 32 } }, "↓")
+                    ),
+
+                    e('div', { style: { position: "absolute", bottom: 130, right: 16, display: "flex", flexDirection: "column", gap: 6, zIndex: 150 } },
+                        e('button', { onClick: () => setZoomLevel(z => Math.min(z + 0.25, 2.3)), style: { width: 44, height: 44, background: "rgba(255,255,255,0.07)", border: "1px solid var(--accent)", color: "#fff", fontSize: 20, borderRadius: 14, cursor: "pointer", backdropFilter: "blur(10px)", fontWeight: "900" } }, "+"),
+                        e('button', { onClick: () => setZoomLevel(z => Math.max(z - 0.25, 0.75)), style: { width: 44, height: 44, background: "rgba(255,255,255,0.07)", border: "1px solid var(--accent)", color: "#fff", fontSize: 20, borderRadius: 14, cursor: "pointer", backdropFilter: "blur(10px)", fontWeight: "900" } }, "−"),
+                        e('button', { onClick: () => { setZoomLevel(1); setCoordinates({ x: 0, y: 0 }); }, style: { width: 44, height: 44, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.2)", color: "#fff", fontSize: 14, borderRadius: 14, cursor: "pointer", backdropFilter: "blur(10px)" } }, "🎯")
+                    ),
+
+                    e('div', { className: 'map-canvas', style: { transform: `translate(${coordinates.x}px, ${coordinates.y}px) scale(${zoomLevel})`, transition: "transform 0.15s ease-out" } },
+                        e('div', { className: 'map-river' }),
+                        e('div', { className: 'map-label', style: { top: "22%", left: "15%" } }, "ОБОЛОНЬ"),
+                        e('div', { className: 'map-label', style: { top: "38%", left: "28%" } }, "ПОДОЛ"),
+                        e('div', { className: 'map-label', style: { top: "52%", left: "45%" } }, "ПЕЧЕРСК"),
+                        e('div', { className: 'map-label', style: { top: "78%", left: "32%" } }, "ГОЛОСЕЕВО"),
+                        
+                        users.map((user, i) => {
+                            const topPosition = 20 + ((i * 13) % 65);
+                            const leftPosition = 12 + ((i * 17) % 55);
+                            return e('div', { key: user.id || i, onClick: () => onSelectUser(user), className: 'map-marker', style: { top: `${topPosition}%`, left: `${leftPosition}%` } },
+                                e('div', { className: 'marker-bubble' },
+                                    e('span', null, user.isHost ? "🏠" : "🚗"),
+                                    e('span', null, user.name?.split(" ")[0])
+                                )
+                            );
+                        })
+                    )
+                )
+            );
+        }
+
+        function CouchsurfingHousingScreen({ users, onSelectUser, lang }) {
+            const t = TRANSLATIONS[lang];
+            const hostUsers = users.filter(u => u.isHost);
+
+            return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
+                e(MainHeaderBar, { title: e(AppLogo), lang: lang }),
+                e('div', { style: { padding: "14px", background: "rgba(255,255,255,0.02)", borderBottom: "1px solid var(--border-color)" } },
+                    e('h3', { style: { margin: 0, fontSize: 15, color: var(--accent) } }, t.housingTitle),
+                    e('p', { style: { margin: "2px 0 0 0", fontSize: 11, color: "rgba(255,255,255,0.4)" } }, t.housingDesc)
+                ),
+                e('div', { className: 'content-view', style: { padding: 12 } },
+                    hostUsers.map((user, i) => (
+                        e('div', { key: user.id || i, onClick: () => onSelectUser(user), style: { background: "rgba(255,255,255,0.02)", border: "1px solid var(--border-color)", borderRadius: 16, padding: 16, marginBottom: 12, cursor: "pointer" } },
+                            e('div', { style: { fontSize: 14, fontWeight: 700, color: "#fff" } }, user.housingTitle || "Уютная локация открытого путешественника"),
+                            e('div', { style: { display: "flex", alignItems: "center", gap: 8, marginTop: 8 } },
+                                e(AvatarComponent, { user: user, size: 24 }),
+                                e('div', null,
+                                    e('div', { style: { fontSize: 12, fontWeight: 700 } }, user.name),
+                                    e('div', { style: { fontSize: 11, color: var(--accent) } }, `📍 ${user.location} | Безвозмездно`)
+                                )
+                            )
+                        )
+                    ))
+                )
+            );
+        }
+
+        function ActiveDialogsListScreen({ users, onOpenChat, lang }) {
+            const t = TRANSLATIONS[lang];
+            const structuralDialogs = [];
+            const dataPool = users.length > 0 ? users : [{ name: "Traveler Pro", id: "0" }];
+            for (let i = 0; i < 30; i++) {
+                const person = dataPool[i % dataPool.length];
+                structuralDialogs.push({
+                    user: { ...person, name: `${person.name} (${i + 1})` },
+                    lastMessage: i % 2 === 0 ? "Привет! Посмотрел твой маршрут на карте, готов присоединиться." : "Отличный стартап! Твой профиль отображается у меня в радаре Киева."
+                });
+            }
+
+            return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
+                e(MainHeaderBar, { title: t.messages, lang: lang }),
+                e('div', { className: 'content-view' },
+                    structuralDialogs.map((chat, idx) => (
+                        e('div', { key: idx, onClick: () => onOpenChat(chat.user), style: { display: "flex", padding: "14px", borderBottom: "1px solid var(--border-color)", cursor: "pointer", alignItems: "center", background: "rgba(255,255,255,0.01)" } },
+                            e(AvatarComponent, { user: chat.user, size: 44 }),
+                            e('div', { style: { marginLeft: 12, flex: 1, minWidth: 0 } },
+                                e('div', { style: { fontWeight: 700, fontSize: 14 } }, chat.user.name),
+                                e('div', { style: { fontSize: 12, color: "rgba(255,255,255,0.4)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginTop: 2 } }, chat.lastMessage)
+                            )
+                        )
+                    ))
+                )
+            );
+        }
+// function PrivateChatWindowView({ user, onBack, lang }) {
+            const t = TRANSLATIONS[lang];
+            const [messageText, setMessageText] = useState("");
+            const [messagesList, setMessagesList] = useState([
+                { id: 1, from: "them", text: "Привет! Увидел твой статус на карте Киева. Готов познакомиться!" }
+            ]);
+
+            const triggerSendMessage = () => {
+                if (messageText.trim()) {
+                    setMessagesList([...messagesList, { id: Date.now(), from: "me", text: messageText }]);
+                    setMessageText("");
+                }
+            };
+
+            return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
+                e(MainHeaderBar, { title: user.name, onBack: onBack, lang: lang }),
+                e('div', { style: { flex: 1, overflowY: "auto", padding: 14, paddingBottom: 100 } },
+                    messagesList.map(msg => {
+                        const sideMe = msg.from === "me";
+                        return e('div', { key: msg.id, style: { display: "flex", justifyContent: sideMe ? "flex-end" : "flex-start", marginBottom: 12 } },
+                            e('div', { style: { background: sideMe ? `linear-gradient(135deg, var(--accent-dark), var(--accent))` : "rgba(255,255,255,0.06)", padding: "10px 14px", borderRadius: 14, maxWidth: "80%" } },
+                                e('div', { style: { fontSize: 14, color: "#fff", lineHeight: "1.4" } }, msg.text)
+                            )
+                        );
+                    })
+                ),
+                e('div', { style: { padding: "10px 12px", background: "#0a0715", display: "flex", gap: 8, position: "absolute", bottom: 0, width: "100%", borderTop: "1px solid var(--border-color)" } },
+                    e('input', { value: messageText, onChange: ev => setMessageText(ev.target.value), onKeyDown: ev => ev.key === 'Enter' && triggerSendMessage(), placeholder: t.msgPlh, style: { flex: 1, padding: "12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, color: "#fff", fontSize: 14, outline: "none" } }),
+                    e('button', { onClick: triggerSendMessage, style: { background: var(--accent), border: "none", width: 44, height: 44, borderRadius: 12, color: "#fff", cursor: "pointer", fontSize: 16, fontWeight: "bold" } }, "➔")
+                )
+            );
+        }
+
+        function CompleteUserProfileView({ user, isSelf, onBack, onOpenChat, onEdit, lang }) {
+            const t = TRANSLATIONS[lang];
+
+            return e('div', { style: { display: "flex", flexDirection: "column", height: "100%" } },
+                e(MainHeaderBar, { title: user?.name || "Профиль", onBack: onBack, lang: lang, rightElement: isSelf && e('button', { onClick: onEdit, style: { color: "#fff", background: "rgba(0,191,179,0.15)", border: "1px solid var(--accent)", fontSize: 11, fontWeight: 700, padding: "6px 14px", borderRadius: 8, cursor: "pointer" } }, "✎ Edit") }),
+                e('div', { className: 'content-view', style: { padding: 16 } },
+                    e('div', { style: { display: "flex", alignItems: "center", gap: 16, marginBottom: 20 } },
+                        e(AvatarComponent, { user: user, size: 70 }),
+                        e('div', null, 
+                            e('h2', { style: { margin: 0, fontSize: 18 } }, user?.name), 
+                            e('div', { style: { fontSize: 13, color: var(--accent), fontWeight: 600, marginTop: 2 } }, user?.location || "Киев, Украина"), 
+                            e('div', { style: { fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 1 } }, user?.occupation || "Travel Founder")
+                        )
+                    ),
+                    !isSelf && e('button', { onClick: () => onOpenChat(user), className: 'action-button', style: { marginBottom: 18 } }, t.btnMsg),
+                    e('p', { style: { background: "rgba(255,255,255,0.02)", border: "1px solid var(--border-color)", padding: 14, borderRadius: 14, fontSize: 13, lineHeight: 1.6, marginBottom: 18 } }, user?.bio || "Біографія мандрівника ще не заповнена."),
+                    
+                    e('div', { style: { marginBottom: 18 } },
+                        e('label', { style: { display: "block", fontSize: 11, fontWeight: 700, color: var(--accent), textTransform: "uppercase", marginBottom: 6 } }, t.socialTitle),
+                        e('div', { style: { display: "flex", flexDirection: "column", gap: 6 } },
+                            e('span', { style: { fontSize: 13, color: "#fff", background: "rgba(255,255,255,0.01)", padding: "8px 12px", borderRadius: 10, border: "1px solid var(--border-color)" } }, `📸 Instagram: @${user?.instagram || "not_linked"}`),
+                            e('span', { style: { fontSize: 13, color: "#fff", background: "rgba(255,255,255,0.01)", padding: "8px 12px", borderRadius: 10, border: "1px solid var(--border-color)" } }, `✈️ Telegram: @${user?.telegram || "not_linked"}`),
+                            e('span', { style: { fontSize: 13, color: "#fff", background: "rgba(255,255,255,0.01)", padding: "8px 12px", borderRadius: 10, border: "1px solid var(--border-color)" } }, `🟢 WhatsApp: ${user?.whatsapp || "не привязан"}`)
+                        )
+                    ),
+
+                    e('label', { style: { display: "block", fontSize: 11, fontWeight: 700, color: var(--accent), textTransform: "uppercase", marginBottom: 6 } }, t.statusTitle),
+                    e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 } },
+                        STATUS_OPTIONS.map(opt => {
+                            const activeInProfile = user && user[opt.key];
+                            return e('div', { key: opt.key, style: { display: "flex", alignItems: "center", gap: 6, background: activeInProfile ? "rgba(0, 191, 179, 0.08)" : "rgba(255,255,255,0.02)", padding: "8px 10px", borderRadius: 10, border: `1px solid ${activeInProfile ? 'rgba(0,191,179,0.3)' : 'transparent'}`, opacity: activeInProfile ? 1 : 0.25 } },
+                                e('span', null, opt.icon), e('span', { style: { fontSize: 11 } }, lang === 'ua' ? opt.labelUa : opt.labelRu)
+                            );
+                        })
+                    )
+                )
+            );
+        }
+
+        function EditUserProfileScreen({ user, onSave, onCancel, lang }) {
+            const t = TRANSLATIONS[lang];
+            const [formData, setFormData] = useState({ 
+                ...user, 
+                instagram: user.instagram || "", 
+                telegram: user.telegram || "", 
+                whatsapp: user.whatsapp || "" 
+            });
+
+            return e('div', { className: 'app-shell' },
+                e(MainHeaderBar, { title: t.editTitle, onBack: onCancel, lang: lang, rightElement: e('button', { onClick: () => onSave(formData), style: { color: var(--accent), background: "none", border: "none", fontWeight: 700, fontSize: 14, cursor: "pointer" } }, t.done) }),
+                e('div', { className: 'content-view', style: { padding: 16 } },
+                    e('label', { style: { display: "block", fontSize: 11, fontWeight: 700, color: var(--accent), textTransform: "uppercase", marginBottom: 6 } }, t.nameLbl),
+                    e('input', { value: formData.name, onChange: ev => setFormData({ ...formData, name: ev.target.value }), className: 'custom-input' }),
+                    
+                    e('label', { style: { display: "block", fontSize: 11, fontWeight: 700, color: var(--accent), textTransform: "uppercase", marginBottom: 6, marginTop: 6 } }, t.locLbl),
+                    e('input', { value: formData.location, onChange: ev => setFormData({ ...formData, location: ev.target.value }), className: 'custom-input' }),
+                    
+                    e('label', { style: { display: "block", fontSize: 11, fontWeight: 700, color: var(--accent), textTransform: "uppercase", marginBottom: 6, marginTop: 6 } }, t.occLbl),
+                    e('input', { value: formData.occupation, onChange: ev => setFormData({ ...formData, occupation: ev.target.value }), className: 'custom-input' }),
+                    
+                    e('label', { style: { display: "block", fontSize: 11, fontWeight: 700, color: var(--accent), textTransform: "uppercase", marginBottom: 6, marginTop: 6 } }, t.aboutLbl),
+                    e('textarea', { value: formData.bio, onChange: ev => setFormData({ ...formData, bio: ev.target.value }), className: 'custom-input', style: { height: 75, resize: "none" } }),
+                    
+                    e('label', { style: { display: "block", fontSize: 11, fontWeight: 700, color: var(--accent), textTransform: "uppercase", marginBottom: 6, marginTop: 10 } }, t.socialTitle),
+                    e('input', { placeholder: "Instagram handle", value: formData.instagram, onChange: ev => setFormData({ ...formData, instagram: ev.target.value }), className: 'custom-input' }),
+                    e('input', { placeholder: "Telegram handle", value: formData.telegram, onChange: ev => setFormData({ ...formData, telegram: ev.target.value }), className: 'custom-input' }),
+                    e('input', { placeholder: "WhatsApp phone", value: formData.whatsapp, onChange: ev => setFormData({ ...formData, whatsapp: ev.target.value }), className: 'custom-input' }),
+
+                    e('label', { style: { display: "block", fontSize: 11, fontWeight: 700, color: var(--accent), textTransform: "uppercase", marginBottom: 6, marginTop: 10 } }, t.statusTitle),
+                    e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 } },
+                        STATUS_OPTIONS.map(opt => (
+                            e('div', { key: opt.key, onClick: () => setFormData({ ...formData, [opt.key]: !formData[opt.key] }), style: { display: "flex", alignItems: "center", gap: 6, background: formData[opt.key] ? "rgba(0,191,179,0.12)" : "rgba(255,255,255,0.02)", padding: "10px 12px", borderRadius: 12, cursor: "pointer", border: `1px solid ${formData[opt.key] ? var(--accent) : 'transparent'}` } },
+                                e('span', null, opt.icon), e('span', { style: { fontSize: 11, flex: 1, color: formData[opt.key] ? "#fff" : "rgba(255,255,255,0.4)" } }, lang === 'ua' ? opt.labelUa : opt.labelRu)
+                            )
+                        ))
+                    )
+                )
+            );
+        }
+
+        function BottomNav({ view, setView }) {
+            const navItems = [ 
+                { id: "map", icon: "📍" }, { id: "housing", icon: "🔑" }, 
+                { id: "feed", icon: "🏠", isMain: true }, 
+                { id: "messages", icon: "✉" }, { id: "profile", icon: "👤" } 
+            ];
+            return e('div', { className: 'bottom-nav' },
+                e('div', { className: 'nav-container' },
+                    navItems.map(item => {
+                        const isSel = view === item.id;
+                        return e('button', { key: item.id, onClick: () => setView(item.id), className: `nav-item-btn ${item.isMain ? 'main-btn' : ''} ${isSel ? 'active' : ''}` }, item.icon);
+                    })
+                )
+            );
+        }
+
+        function App() {
+            const [lang, setLang] = useState(null);
+            const [me, setMe] = useState(null);
+            const [usersList, setUsersList] = useState(MASTER_SEED_DATA);
+            const [activeTab, setActiveTab] = useState("feed");
+            const [navigationFlowState, setNavigationFlowState] = useState("langSelect");
+            const [selectedUserContext, setSelectedUserContext] = useState(null);
+
+            useEffect(() => {
+                if (lang && db) {
+                    const unsubscribeCloudListener = db.collection("users").onSnapshot(snapshot => {
+                        const loadedFromCloud = [];
+                        snapshot.forEach(doc => loadedFromCloud.push({ id: doc.id, ...doc.data() }));
+                        if (loadedFromCloud.length > 0) {
+                            setUsersList(loadedFromCloud);
+                        } else {
+                            setUsersList(MASTER_SEED_DATA);
+                        }
+                    }, () => {});
+                    return () => unsubscribeCloudListener();
+                }
+            }, [lang]);
+
+            const triggerRegistrationSubmit = (name, phone) => {
+                const generatedId = "user_" + Date.now();
+                const accountObj = { 
+                    id: generatedId, 
+                    name, 
+                    location: "Киев, Украина", 
+                    occupation: "Founder & Traveler", 
+                    bio: "Привет! Я прошел регистрацию в LifeUp Network. Рад познакомиться!", 
+                    isHost: true, 
+                    instagram: "", 
+                    telegram: "", 
+                    whatsapp: phone,
+                    canDrive: false,
+                    lookingForCompanion: true,
+                    openToMeet: true
+                };
+                
+                db.collection("users").doc(generatedId).set(accountObj).catch(()=>{});
+                
+                setMe(accountObj);
+                setUsersList([accountObj, ...usersList]);
+                setNavigationFlowState("mainFlow");
+                setActiveTab("feed");
+            };
+
+            const triggerProfileSave = (updatedForm) => {
+                setMe(updatedForm);
+                db.collection("users").doc(updatedForm.id).set(updatedForm).catch(()=>{});
+                setNavigationFlowState("mainFlow");
+                setActiveTab("profile");
+            };
+
+            if (navigationFlowState === "langSelect") return e(LanguageSelectionPage, { onSelect: c => { setLang(c); setNavigationFlowState("auth"); } });
+            if (navigationFlowState === "auth") return e(NetworkRegistrationPage, { onDone: triggerRegistrationSubmit, lang: lang, onBack: () => setNavigationFlowState("langSelect") });
+
+            const selectActiveViewBodyContent = () => {
+                if (navigationFlowState === "viewProfile" && selectedUserContext) return e(CompleteUserProfileView, { user: selectedUserContext, isSelf: selectedUserContext.id === me?.id, onBack: () => setNavigationFlowState("mainFlow"), onOpenChat: u => { setSelectedUserContext(u); setNavigationFlowState("chatView"); }, onEdit: () => setNavigationFlowState("editProfile"), lang: lang });
+                if (navigationFlowState === "editProfile") return e(EditUserProfileScreen, { user: me, onSave: triggerProfileSave, onCancel: () => setNavigationFlowState("mainFlow"), lang: lang });
+                if (navigationFlowState === "chatView" && selectedUserContext) return e(PrivateChatWindowView, { user: selectedUserContext, onBack: () => setNavigationFlowState("mainFlow"), lang: lang });
+
+                switch (activeTab) {
+                    case "feed": return e(MainFeedScreen, { users: usersList, onSelectUser: u => { setSelectedUserContext(u); setNavigationFlowState("viewProfile"); }, lang: lang, onLangToggle: () => setNavigationFlowState("langSelect"), me: me, onSelectMyProfile: () => { setSelectedUserContext(me); setNavigationFlowState("viewProfile"); } });
+                    case "map": return e(InteractiveMapScreen, { users: usersList, onSelectUser: u => { setSelectedUserContext(u); setNavigationFlowState("viewProfile"); }, lang: lang });
+                    case "housing": return e(CouchsurfingHousingScreen, { users: usersList, onSelectUser: u => { setSelectedUserContext(u); setNavigationFlowState("viewProfile"); }, lang: lang });
+                    case "messages": return e(ActiveDialogsListScreen, { users: usersList, onOpenChat: u => { setSelectedUserContext(u); setNavigationFlowState("chatView"); }, lang: lang });
+                    case "profile": return e(CompleteUserProfileView, { user: me, isSelf: true, lang: lang, onEdit: () => setNavigationFlowState("editProfile"), onBack: () => setActiveTab("feed") });
+                    default: return null;
+                }
+            };
+
+            const isBottomNavigationMenuVisible = navigationFlowState === "mainFlow";
+
+            return e('div', { style: { display: "flex", justifyContent: "center", minHeight: "100vh" } },
+                e('div', { style: { width: "100%", maxWidth: 430, height: "100vh", position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", paddingBottom: isBottomNavigationMenuVisible ? "95px" : "0", boxShadow: "0 0 30px rgba(0,0,0,0.5)" } },
+                    selectActiveViewBodyContent(),
+                    isBottomNavigationMenuVisible ? e(BottomNav, { view: activeTab, setView: setActiveTab }) : null
+                )
+            );
+        }
+
+        const containerRootElement = document.getElementById('root');
+        const reactApplicationRootInstance = ReactDOM.createRoot(containerRootElement);
+        reactApplicationRootInstance.render(e(App));
     </script>
 </body>
 </html>
